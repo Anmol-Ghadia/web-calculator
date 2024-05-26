@@ -6,7 +6,7 @@
     <title>Calcualtor</title>
 </head>
 <body>
-    <div class="display_container"><span id="display"></span></div>
+    <div class="display_container"><span id="display"></span><span id="display_append"></span></div>
     <br>
     <input id="btn_1" type="button" value="1" onclick="accept_input(this)">
     <input id="btn_2" type="button" value="2" onclick="accept_input(this)">
@@ -35,6 +35,10 @@
 
     <input id="btn_backspace" type="button" value="<-" onclick="remove_input()">
     <input id="btn_equal" type="button" value="=" onclick="compute()">
+
+    <br>
+
+    <div class="output_container"><span id="output_display"></span></div>
 </body>
 <link rel="stylesheet" href="style.css">
 <script src="script.js"></script>
