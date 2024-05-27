@@ -227,6 +227,7 @@ function remove_input() {
     if (len != 0) {
         calc_display.innerHTML = calc_display.innerHTML.substring(0,len -1);
     }
+    update_display();
 }
 
 // **** UTILS ****

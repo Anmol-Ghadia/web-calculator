@@ -5,3 +5,16 @@
 body{
     background-color: gray;
 }
+
+.keypad_container{
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+}
+
+.keypad_container button {
+}
+
+#btn_0 {
+    grid-column-start: 1;
+    grid-column-end: 3;
+}
