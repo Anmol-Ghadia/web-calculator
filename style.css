@@ -2,8 +2,24 @@
     color: #955;
 }
 
+#output_display {
+    color: greenyellow;    
+}
+
 body{
+    height: 100vh;
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
     background-color: gray;
+}
+
+.container {
+    width: min(60%,200px);
 }
 
 .keypad_container{

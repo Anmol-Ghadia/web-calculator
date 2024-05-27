@@ -2,19 +2,26 @@
 Automatically closes any open brackets and displayed visually as grayed out close brackets until "=" is pressed
 
 ## Working of calculator
+1) Perform translation
 1) Remove all syntax sugars
 1) continue if passing all checks else undefined
 1) Make the data structure by analyzing characters left to right and inside-out
 1) Iteratively computing the DS with a depth first approach
 
-## Syntax sugars
-1) +- becomes -
-1) a bracket right after a number has implicit multiplication
+## Translation
+1) changes the symbol of multiplication 
 
-1) decimal point shoul have numbers on both side
+## Syntax sugars
+1) +- becomes - ✅
+1) a bracket right after a number has implicit multiplication ✅
+1) Add implicit 0 before + and minus if a number is missing ✅
+1) add brackets to follow BODMAS rule
+
+1) decimal point should have numbers on both side
 
 ## Checks
-a) check that no two operators are consecutive
+a) check that each operator has two operands ✅
+b) check that no two operators are consecutive ✅ Solved by the first check
 
 ## TODO
 1) Add Syntax Sugars

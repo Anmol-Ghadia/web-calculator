@@ -8,7 +8,7 @@ calc_display_append.innerHTML = "";
 const output_display = document.getElementById("output_display");
 output_display.innerHTML = "";
 
-// TODO !!!
+// Evaluates the expression and displays appropriately
 function compute() {
     
     calc_display.innerHTML += compute_closed_brackets();
@@ -18,12 +18,58 @@ function compute() {
     // Add checks and syntax sugar deconstructors here
     str = remove_syntax_sugars(str);
     if (logging) console.log("After Syntax Sugar removed:" + str);
+
+    if (!passes_all_checks(str)) {
+        // TODO !!!
+        // Handle case where an incorrect expression is entered
+        output_display.innerHTML = "Undefined";
+        return;
+    }
+
     const data_structure = parse_ds(str);
     if (logging) console.log("Data Structure:" + data_structure);
     const output = evaluate_data_structure(data_structure);
     if (logging) console.log("Value:" + output);
     output_display.innerHTML = output;
 
+}
+
+// Returns true if all checks are passed by the given expression
+function passes_all_checks(str) {
+    
+    const bool_1 = check_both_side_of_operators(str);
+    // Add more if required TODO !!!
+
+    return bool_1;
+}
+
+// Checks that all operators have numbers on both sides
+function check_both_side_of_operators(str) {
+
+    if (logging) console.log("(5) Received for check:" + str);
+
+    if (!"+-*/)".includes(str[0]) && !"+-*/(".includes(str[str.length-1])) {
+        for (let index = 1; index < str.length-1; index++) {
+            const prev_ele = str[index-1];
+            const ele = str[index];
+            const next_ele = str[index+1];
+            if ("+-*/".split("").includes(ele)) {
+                // Current element is an operator. check both sides
+                const valid_left = "0123456789)".split("");
+                const valid_right = "0123456789(".split("");
+                if (!(valid_left.includes(prev_ele) && valid_right.includes(next_ele))) {
+                    console.log("(5) found incorrect charcters beside operator, check failed at:" + prev_ele + ele + next_ele);
+                    return false;
+                }
+            }
+        }
+        
+        return true;
+
+    }
+
+    if (logging) console.log("(5) less than 3 atomaics found. Check failed");
+    return false;
 }
 
 // Recursively evaluate the nested data structure are renturn the answer
@@ -78,9 +124,93 @@ function evaluate_expression(a, op, b) {
 // TODO !!!
 // Returns the expression without syntax sugars 
 function remove_syntax_sugars(str) {
-    
+    str = remove_synatx_sugar_plus_minus(str);
+    str = remove_synatx_sugar_implicit_multiplication(str);
+    str = remove_synatx_sugar_plus_minus_both_side_number(str);
 
     return str;
+}
+
+// De sugars plus and minus sign where a placeholder 0 is placed on left 
+//    side of the sign if no numbers exist
+function remove_synatx_sugar_plus_minus_both_side_number(str) {
+    console.log("(4) Received:" + str);
+
+    var out_str = "";
+
+    var last_element_was_number = false;
+    for (let index = 0; index < str.length; index++) {
+        const ele = str[index];
+        
+        if (!last_element_was_number && "+-".split("").includes(ele)) {
+            out_str += "0";
+            last_element_was_number = false;
+        } else if ("0123456789".split("").includes(ele)) {
+            last_element_was_number = true;
+        } else {
+            last_element_was_number = false;
+        }
+
+        out_str += ele;
+
+    }
+
+    console.log("(4) de sugared:" + out_str);
+    return out_str;
+}
+
+
+// De sugars the implicit multiplication introduced by number followed by bracket
+function remove_synatx_sugar_implicit_multiplication(str) {
+    if (logging) console.log("(3) Received:" + str);
+
+    var out_str = "";
+
+    var last_element_was_number = false;
+    for (let index = 0; index < str.length; index++) {
+        const ele = str[index];
+        
+        if (last_element_was_number && ele == "(") {
+            out_str += "*";
+        } else if ("0123456789".split("").includes(ele)) {
+            last_element_was_number = true;
+        } else {
+            last_element_was_number = false;
+        }
+
+        out_str += ele;
+    }
+
+    if (logging) console.log("(3) de sugared:" + out_str);
+    return out_str;
+}
+
+// De sugars the plus minus operator
+function remove_synatx_sugar_plus_minus(str) {
+    if (logging) console.log("(2) Received:"+ str);
+    
+    if (str.length < 2) return str
+    var out_str = "";
+    var last_ele_plus_mius = false;
+    for (let index = 0; index < str.length-1; index++) {
+        const ele = str[index];
+        const next_ele = str[index+1];
+
+        if (last_ele_plus_mius) {
+            last_ele_plus_mius = false;
+        } else if (ele == "+" && next_ele == "-") {
+            // Desugar
+            out_str += "-";
+            last_ele_plus_mius = true;
+        } else {
+            out_str += ele;
+        }
+    }
+    
+    out_str += str[str.length-1];
+    
+    if (logging) console.log("(3) de sugared:"+ out_str);
+    return out_str;
 }
 
 
