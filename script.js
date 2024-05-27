@@ -26,10 +26,54 @@ function compute() {
 
 }
 
+// Recursively evaluate the nested data structure are renturn the answer
 function evaluate_data_structure(nested_arr) {
+    
+    var out_arr = nested_arr.map(ele => {
+        if (typeof ele == "number") {
+            return ele
+        } else if (typeof ele == "string") {
+            return ele
+        } else if (Array.isArray(ele)) {
+            return evaluate_data_structure(ele);
+        } else {
+            return ele;
+        }
+    })
 
-    return 0;
+    if (out_arr.length == 1) {
+        return out_arr[0];
+    } else if (out_arr.length == 2) {
+        return -99
+    } else if (out_arr.length == 3) {
+        return evaluate_expression(out_arr[0],out_arr[1],out_arr[2]);
+    } else {
+        if ((out_arr.length-3)%2 != 0) console.log("ERROR: Incorrect size of array (102)");
+
+        var total = out_arr[0];
+        for (let index = 0; index < (out_arr.length-1)/2; index++) {
+            total = evaluate_expression(total,out_arr[(index*2)+1],out_arr[(index*2)+2])
+        }
+        return total;    }
 }
+
+// Evaluates the expression with a and b ints and op operator
+function evaluate_expression(a, op, b) {
+    switch (op) {
+        case "+":
+            return a+b;
+        case "-":
+            return a-b
+        case "*":
+            return a*b
+        case "/":
+            return a/b;
+        default:
+            console.log("Error (101)");
+            break;
+    }
+}
+
 
 // TODO !!!
 // Returns the expression without syntax sugars 
@@ -37,6 +81,20 @@ function remove_syntax_sugars(str) {
     
 
     return str;
+}
+
+
+// Returns an array with correct type for ints which are direct children
+function convert_to_correct_type(arr) {
+    var out_arr = [];
+    arr.forEach(ele => {
+        if (!Array.isArray(ele) && !"+-*/".split("").includes(ele)) {
+            out_arr.push(parseInt(ele));
+        } else {
+            out_arr.push(ele);
+        }
+    });
+    return out_arr;
 }
 
 // // Returns max depth of brackets in the expression
@@ -118,7 +176,7 @@ function parse_ds(str) {
     });
     out_arr.push(current_chunck);
     
-    return removeEmptyElementsTopLevel(out_arr);
+    return convert_to_correct_type(removeEmptyElementsTopLevel(out_arr));
 }
 
 // Returns an array with no empty elements as direct children
