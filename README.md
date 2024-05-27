@@ -9,7 +9,8 @@ Automatically closes any open brackets and displayed visually as grayed out clos
 1) Iteratively computing the DS with a depth first approach
 
 ## Translation
-1) changes the symbol of multiplication 
+1) changes the symbol of multiplication and division to simple form ✅
+1) Removes any commas ✅
 
 ## Syntax sugars
 1) +- becomes - ✅
@@ -24,11 +25,13 @@ a) check that each operator has two operands ✅
 b) check that no two operators are consecutive ✅ Solved by the first check
 
 ## TODO
-1) Add Syntax Sugars
-1) Add checks
+1) ~~Add Syntax Sugars~~
+1) ~~Add checks~~
 1) Add Floating Point numbers
+1) ~~Add modulo operators~~
 1) Add % and modulo operators
 1) Add History
 1) Add Auto Compute feature
-1) CSS pending
+1) ~~CSS pending~~
+1) CSS polishing
 1) Add togglable Dark Theme

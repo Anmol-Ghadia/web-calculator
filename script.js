@@ -4,9 +4,17 @@ var logging = false;
 const calc_display = document.getElementById("display");
 calc_display.innerHTML = "";
 const calc_display_append = document.getElementById("display_append");
-calc_display_append.innerHTML = "";
+calc_display_append.innerHTML = "=";
 const output_display = document.getElementById("output_display");
 output_display.innerHTML = "";
+
+function clear_input(){
+    calc_display.innerHTML = "";
+
+    output_display.innerHTML = "";
+    update_display();
+}
+
 
 // Evaluates the expression and displays appropriately
 function compute() {
@@ -15,7 +23,10 @@ function compute() {
     var str = calc_display.innerHTML;
     update_display();
     
-    // Add checks and syntax sugar deconstructors here
+
+    str = translate_expression(str);
+    if (logging) console.log("After translation:" + str);
+
     str = remove_syntax_sugars(str);
     if (logging) console.log("After Syntax Sugar removed:" + str);
 
@@ -43,17 +54,36 @@ function passes_all_checks(str) {
     return bool_1;
 }
 
+// Translates the expression that is understandable by the data structure
+function translate_expression(str) {
+    console.log("(6) Received for translation:" + str);
+    
+    var char_map = {
+        "×":"*",
+        "÷":"/",
+        ",":""
+    };
+    var out_str = "";
+
+    var out_str = str.split('').map(function(char) {
+        return char_map[char] || char;
+    }).join('');
+
+    console.log("(6) After translation:" + out_str);
+    return out_str;
+}
+
 // Checks that all operators have numbers on both sides
 function check_both_side_of_operators(str) {
 
     if (logging) console.log("(5) Received for check:" + str);
 
-    if (!"+-*/)".includes(str[0]) && !"+-*/(".includes(str[str.length-1])) {
+    if (!"+-*/%)".includes(str[0]) && !"+-*/%(".includes(str[str.length-1])) {
         for (let index = 1; index < str.length-1; index++) {
             const prev_ele = str[index-1];
             const ele = str[index];
             const next_ele = str[index+1];
-            if ("+-*/".split("").includes(ele)) {
+            if ("+-*/%".split("").includes(ele)) {
                 // Current element is an operator. check both sides
                 const valid_left = "0123456789)".split("");
                 const valid_right = "0123456789(".split("");
@@ -114,6 +144,8 @@ function evaluate_expression(a, op, b) {
             return a*b
         case "/":
             return a/b;
+        case "%":
+            return a*(1/100)*b;   
         default:
             console.log("Error (101)");
             break;
@@ -218,7 +250,7 @@ function remove_synatx_sugar_plus_minus(str) {
 function convert_to_correct_type(arr) {
     var out_arr = [];
     arr.forEach(ele => {
-        if (!Array.isArray(ele) && !"+-*/".split("").includes(ele)) {
+        if (!Array.isArray(ele) && !"+-*/%".split("").includes(ele)) {
             out_arr.push(parseInt(ele));
         } else {
             out_arr.push(ele);
@@ -295,7 +327,7 @@ function parse_ds(str) {
             } else if ("0123456789".split("").includes(ele)) {
                 if (logging) console.log("letter:"+ele+" (2)")
                 current_chunck += ele;
-            } else if ("+-*/".split("").includes(ele)) {
+            } else if ("+-*/%".split("").includes(ele)) {
                 if (logging) console.log("letter:"+ele+" (3)")
                 out_arr.push(current_chunck);
                 current_chunck = "";
@@ -341,7 +373,12 @@ function compute_closed_brackets() {
 
 // Updates the text displayed and runs any routines
 function update_display() {
-    calc_display_append.innerHTML = compute_closed_brackets();
+    const txt = compute_closed_brackets();
+    if (txt.length == 0) {
+        calc_display_append.innerHTML = "=";
+    } else {
+        calc_display_append.innerHTML = txt;
+    }
 }
 
 
