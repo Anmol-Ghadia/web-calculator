@@ -15,33 +15,58 @@ function clear_input(){
     update_auto_complete_display();
 }
 
+// returns an array of size 2 by evaluating the 
+//      provided expression as string
+// Index 0: 0 if expression is evaluated properly,
+//          1 if expression is invalid
+// Index 1: correct value of the expression only if index 0 == 0
+function compute(inp_str) {
+
+    const out_arr = [];
+
+    inp_str = translate_expression(inp_str);
+    if (logging) console.log("After translation:" + inp_str);
+
+    inp_str = remove_syntax_sugars(inp_str);
+    if (logging) console.log("After Syntax Sugar removed:" + inp_str);
+
+    if (!passes_all_checks(inp_str)) {
+        // An incorrect expression is entered
+        out_arr.push(1);
+        return out_arr;
+    }
+
+    // TODO: division by 0 case
+    out_arr.push(0);
+
+    const data_structure = parse_ds(inp_str);
+    if (logging) console.log("Data Structure:" + data_structure);
+
+    const output = evaluate_data_structure(data_structure);
+    if (logging) console.log("Value:" + output);
+
+    out_arr.push(output);
+    return out_arr;
+}
+
 
 // Evaluates the expression and displays appropriately
-function compute() {
+function equals_compute() {
     
+    // Close all brackets and update equals button
     calc_display.innerHTML += compute_closed_brackets();
     var str = calc_display.innerHTML;
     update_auto_complete_display();
     
+    const arr = compute(str);
 
-    str = translate_expression(str);
-    if (logging) console.log("After translation:" + str);
-
-    str = remove_syntax_sugars(str);
-    if (logging) console.log("After Syntax Sugar removed:" + str);
-
-    if (!passes_all_checks(str)) {
+    if (arr[0] == 1) {
+        // Incorrect expression
         // TODO !!!
-        // Handle case where an incorrect expression is entered
-        output_display.innerHTML = "Undefined";
-        return;
-    }
 
-    const data_structure = parse_ds(str);
-    if (logging) console.log("Data Structure:" + data_structure);
-    const output = evaluate_data_structure(data_structure);
-    if (logging) console.log("Value:" + output);
-    output_display.innerHTML = output;
+    }
+    // Correct expression
+    output_display.innerHTML = arr[1];
 
 }
 
