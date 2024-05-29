@@ -120,17 +120,58 @@ function evaluate_data_structure(nested_arr) {
     if (out_arr.length == 1) {
         return out_arr[0];
     } else if (out_arr.length == 2) {
-        return -99
+        return -999;
     } else if (out_arr.length == 3) {
         return evaluate_expression(out_arr[0],out_arr[1],out_arr[2]);
     } else {
-        if ((out_arr.length-3)%2 != 0) console.log("ERROR: Incorrect size of array (102)");
+        if ((out_arr.length-3)%2 != 0) console.log("ERROR: Incorrect size of array (102)",out_arr);
 
-        var total = out_arr[0];
-        for (let index = 0; index < (out_arr.length-1)/2; index++) {
-            total = evaluate_expression(total,out_arr[(index*2)+1],out_arr[(index*2)+2])
+        var updated_out_arr = out_arr;
+        const operators = "/*+-".split("");
+        // BODMAS rule
+        while (updated_out_arr.length != 1) {
+
+            operators.forEach(current_operator => {
+                for (let index = 1; index < updated_out_arr.length; index+=2) {
+                    const element = updated_out_arr[index];
+                    if (element == current_operator) {
+                        if (logging) console.log("==> op. match at index:",index);
+                    
+                        const element_left = updated_out_arr[index-1];
+                        const element_right = updated_out_arr[index+1];
+                        
+                        const value = evaluate_expression(element_left,element,element_right);
+                        
+                        updated_out_arr[index -1] = value;
+                        // remove the index from array and return new array
+                        updated_out_arr = shift_element_left(updated_out_arr,index);
+                        updated_out_arr = shift_element_left(updated_out_arr,index);
+                    }
+                
+                }
+            if (logging) console.log("=== ",current_operator," ===");
+            if (logging) console.log(updated_out_arr);
+            
+            });
         }
-        return total;    }
+        
+        return updated_out_arr[0];    
+    }
+}
+
+// remove the index from array and return new array
+function shift_element_left(in_arr, remove_index) {
+    
+    out_arr = [];
+
+    // Push everything that is not at the given index
+    for (let current_index = 0; current_index < in_arr.length; current_index++) {
+        if (current_index != remove_index) {
+            out_arr.push(in_arr[current_index]);
+        }
+    }
+
+    return out_arr;
 }
 
 // Evaluates the expression with a and b ints and op operator
