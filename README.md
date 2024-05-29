@@ -16,7 +16,7 @@ Automatically closes any open brackets and displayed visually as grayed out clos
 1) +- becomes - ✅
 1) a bracket right after a number has implicit multiplication ✅
 1) Add implicit 0 before + and minus if a number is missing ✅
-1) add brackets to follow BODMAS rule
+1) ~~add brackets to follow BODMAS rule~~ (indstead modified evaluation rules) ✅ 
 
 1) decimal point should have numbers on both side
 
