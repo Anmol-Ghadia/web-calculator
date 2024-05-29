@@ -12,7 +12,7 @@ function clear_input(){
     calc_display.innerHTML = "";
 
     output_display.innerHTML = "";
-    update_display();
+    update_auto_complete_display();
 }
 
 
@@ -21,7 +21,7 @@ function compute() {
     
     calc_display.innerHTML += compute_closed_brackets();
     var str = calc_display.innerHTML;
-    update_display();
+    update_auto_complete_display();
     
 
     str = translate_expression(str);
@@ -413,20 +413,24 @@ function compute_closed_brackets() {
 }
 
 // Updates the text displayed and runs any routines
-function update_display() {
+function update_auto_complete_display() {
     const txt = compute_closed_brackets();
     if (txt.length == 0) {
         calc_display_append.innerHTML = "=";
     } else {
         calc_display_append.innerHTML = txt;
     }
+
+    // TODO: temporarily compute the expression and display grayed out result
+    // output_display.innerHTML = ; !!!
+
 }
 
 
 // Adds the corresponding input to display
 function accept_input(btn) {
     calc_display.innerHTML += btn.value;
-    update_display();
+    update_auto_complete_display();
 }
 
 // Removes the last character entered if any exist
@@ -435,7 +439,7 @@ function remove_input() {
     if (len != 0) {
         calc_display.innerHTML = calc_display.innerHTML.substring(0,len -1);
     }
-    update_display();
+    update_auto_complete_display();
 }
 
 // **** UTILS ****

@@ -28,7 +28,7 @@ body{
     display: grid;
 }
 
-#output_display {
+.output_display {
     
     width: 100%;
     height: 100%;
@@ -39,6 +39,11 @@ body{
     align-items: center;
     justify-content: center;
 }
+
+.output_grayed {
+    color: red;
+}
+
 
 #display {
     
