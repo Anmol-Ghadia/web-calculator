@@ -64,10 +64,12 @@ function equals_compute() {
         // Incorrect expression
         // TODO !!!
 
-    }
-    // Correct expression
-    output_display.innerHTML = arr[1];
+    } else {
+        // Correct expression
+        output_display.innerHTML = arr[1];
+        output_display.classList.remove("output_grayed");
 
+    }
 }
 
 // Returns true if all checks are passed by the given expression
@@ -447,7 +449,21 @@ function update_auto_complete_display() {
     }
 
     // TODO: temporarily compute the expression and display grayed out result
-    // output_display.innerHTML = ; !!!
+    const str = calc_display.innerHTML + txt;
+    if (str.length == 0) {
+        // TODO: handle case where input is nothing
+        return;
+    }
+    const arr = compute(str);
+    
+    if (arr[0] == 1) {
+        // Incorrect expression
+        // TODO !!!
+        
+    } else {
+        output_display.innerHTML = arr[1];
+        output_display.classList.add("output_grayed");
+    }
 
 }
 

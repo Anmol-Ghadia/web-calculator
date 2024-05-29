@@ -41,7 +41,7 @@ body{
 }
 
 .output_grayed {
-    color: red;
+    opacity: 60%;
 }
 
 
