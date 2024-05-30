@@ -13,32 +13,35 @@
         <span id="display"></span>
         <button type="button" id="display_append" onclick="equals_compute()"></button>
 
-        <div class="bracket_container">
+        <div class="double_button_container">
             <button id="btn_left_brkt" type="button" value="(" onclick="accept_input(this)">(</button>
             <button id="btn_right_brkt" type="button" value=")" onclick="accept_input(this)">)</button>
         </div>
-        <button id="btn_percent" type="button" value="%" onclick="accept_input(this)">%</button>
+        <div class="double_button_container">
+            <button id="btn_percent" type="button" value="%" onclick="accept_input(this)">%</button>
+            <button id="btn_power" type="button" value="^" onclick="accept_input(this)">^</button>
+        </div>
         <button id="btn_clear" type="button" value="AC" onclick="clear_input()">AC</button>
         <button id="btn_backspace" type="button" onclick="remove_input()">←</button>
         
         <button id="btn_7" type="button" value="7" onclick="accept_input(this)">7</button>
         <button id="btn_8" type="button" value="8" onclick="accept_input(this)">8</button>
         <button id="btn_9" type="button" value="9" onclick="accept_input(this)">9</button>
-        <button id="btn_plus" type="button" value="+" onclick="accept_input(this)">+</button>
+        <button id="btn_div" type="button" value="÷" onclick="accept_input(this)">÷</button>
         
         <button id="btn_4" type="button" value="4" onclick="accept_input(this)">4</button>
         <button id="btn_5" type="button" value="5" onclick="accept_input(this)">5</button>
         <button id="btn_6" type="button" value="6" onclick="accept_input(this)">6</button>
-        <button id="btn_minus" type="button" value="-" onclick="accept_input(this)">-</button>
+        <button id="btn_mult" type="button" value="×" onclick="accept_input(this)">×</button>
         
         <button id="btn_1" type="button" value="1" onclick="accept_input(this)">1</button>
         <button id="btn_2" type="button" value="2" onclick="accept_input(this)">2</button>
         <button id="btn_3" type="button" value="3" onclick="accept_input(this)">3</button>
-        <button id="btn_mult" type="button" value="×" onclick="accept_input(this)">×</button>
+        <button id="btn_minus" type="button" value="-" onclick="accept_input(this)">-</button>
         
         <button id="btn_0" type="button" value="0" onclick="accept_input(this)">0</button>
-        <button id="btn_decimal" type="button" value="." onclick="accept_input(this)" disabled >.</button>
-        <button id="btn_div" type="button" value="÷" onclick="accept_input(this)">÷</button>
+        <button id="btn_decimal" type="button" value="." onclick="accept_input(this)">.</button>
+        <button id="btn_plus" type="button" value="+" onclick="accept_input(this)">+</button>
     
     </div>
 </body>

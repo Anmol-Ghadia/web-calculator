@@ -35,11 +35,13 @@ function compute(inp_str) {
         out_arr.push(1);
         return out_arr;
     }
-
+    
     // TODO: division by 0 case
     out_arr.push(0);
-
+    
     const data_structure = parse_ds(inp_str);
+    // console.log("abc");
+    // console.log(data_structure); !!!
     if (logging) console.log("Data Structure:" + data_structure);
 
     const output = evaluate_data_structure(data_structure);
@@ -83,7 +85,7 @@ function passes_all_checks(str) {
 
 // Translates the expression that is understandable by the data structure
 function translate_expression(str) {
-    console.log("(6) Received for translation:" + str);
+    if (logging) console.log("(6) Received for translation:" + str);
     
     var char_map = {
         "×":"*",
@@ -96,7 +98,7 @@ function translate_expression(str) {
         return char_map[char] || char;
     }).join('');
 
-    console.log("(6) After translation:" + out_str);
+    if (logging) console.log("(6) After translation:" + out_str);
     return out_str;
 }
 
@@ -105,15 +107,15 @@ function check_both_side_of_operators(str) {
 
     if (logging) console.log("(5) Received for check:" + str);
 
-    if (!"+-*/%)".includes(str[0]) && !"+-*/%(".includes(str[str.length-1])) {
+    if (!"+-*/%^)".includes(str[0]) && !"+-*/%^(".includes(str[str.length-1])) {
         for (let index = 1; index < str.length-1; index++) {
             const prev_ele = str[index-1];
             const ele = str[index];
             const next_ele = str[index+1];
-            if ("+-*/%".split("").includes(ele)) {
+            if ("+-*/%^".split("").includes(ele)) {
                 // Current element is an operator. check both sides
-                const valid_left = "0123456789)".split("");
-                const valid_right = "0123456789(".split("");
+                const valid_left = "0123456789).".split("");
+                const valid_right = "0123456789(.".split("");
                 if (!(valid_left.includes(prev_ele) && valid_right.includes(next_ele))) {
                     console.log("(5) found incorrect charcters beside operator, check failed at:" + prev_ele + ele + next_ele);
                     return false;
@@ -154,7 +156,7 @@ function evaluate_data_structure(nested_arr) {
         if ((out_arr.length-3)%2 != 0) console.log("ERROR: Incorrect size of array (102)",out_arr);
 
         var updated_out_arr = out_arr;
-        const operators = "/*+-".split("");
+        const operators = "^/*+-".split("");
         // BODMAS rule
         const max_loop_count = 16;
         let loop_count = 0;
@@ -217,6 +219,12 @@ function evaluate_expression(a, op, b) {
             return a/b;
         case "%":
             return a*(1/100)*b;   
+        case "^":
+            let total = a;
+            for (let count = 1; count < b; count++) {
+                total *= a;
+            }
+            return total;
         default:
             console.log("Error (101)");
             break;
@@ -237,7 +245,7 @@ function remove_syntax_sugars(str) {
 // De sugars plus and minus sign where a placeholder 0 is placed on left 
 //    side of the sign if no numbers exist
 function remove_synatx_sugar_plus_minus_both_side_number(str) {
-    console.log("(4) Received:" + str);
+    if (logging) console.log("(4) Received:" + str);
 
     var out_str = "";
 
@@ -258,7 +266,7 @@ function remove_synatx_sugar_plus_minus_both_side_number(str) {
 
     }
 
-    console.log("(4) de sugared:" + out_str);
+    if (logging) console.log("(4) de sugared:" + out_str);
     return out_str;
 }
 
@@ -321,8 +329,14 @@ function remove_synatx_sugar_plus_minus(str) {
 function convert_to_correct_type(arr) {
     var out_arr = [];
     arr.forEach(ele => {
-        if (!Array.isArray(ele) && !"+-*/%".split("").includes(ele)) {
-            out_arr.push(parseInt(ele));
+        if (!Array.isArray(ele) && !"+-*/%^".split("").includes(ele)) {
+            if (ele.split("").includes(".")) {
+                // Number is a float
+                out_arr.push(parseFloat(ele));
+            } else {
+                // Number is an int
+                out_arr.push(parseInt(ele));
+            }
         } else {
             out_arr.push(ele);
         }
@@ -395,10 +409,10 @@ function parse_ds(str) {
                 inside_bracket = true;
                 bracket_count++;
                 current_chunck = "(";
-            } else if ("0123456789".split("").includes(ele)) {
+            } else if ("0123456789.".split("").includes(ele)) {
                 if (logging) console.log("letter:"+ele+" (2)")
                 current_chunck += ele;
-            } else if ("+-*/%".split("").includes(ele)) {
+            } else if ("+-*/%^".split("").includes(ele)) {
                 if (logging) console.log("letter:"+ele+" (3)")
                 out_arr.push(current_chunck);
                 current_chunck = "";
@@ -408,7 +422,7 @@ function parse_ds(str) {
         }
     });
     out_arr.push(current_chunck);
-    
+
     return convert_to_correct_type(removeEmptyElementsTopLevel(out_arr));
 }
 

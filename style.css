@@ -73,7 +73,7 @@ button {
     margin: 2px;
 }
 
-.bracket_container {
+.double_button_container {
     display: grid;
     grid-template-columns: 1fr 1fr;
 }
