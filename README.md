@@ -17,25 +17,24 @@ Automatically closes any open brackets and displayed visually as grayed out clos
 1) a bracket right after a number has implicit multiplication ✅
 1) Add implicit 0 before + and minus if a number is missing ✅
 1) ~~add brackets to follow BODMAS rule~~ (indstead modified evaluation rules) ✅ 
-
-1) decimal point should have numbers on both side
+1) ~~decimal point should have numbers on both side~~ (js can handle vague decimal cases) ✅ 
 
 ## Checks
-a) check that each operator has two operands ✅
-b) check that no two operators are consecutive ✅ Solved by the first check
+1) check that each operator has two operands ✅
+1) check that no two operators are consecutive ✅ Solved by the first check
 
 ## TODO
-1) ~~Add Syntax Sugars~~
-1) ~~Add checks~~
-1) Add Floating Point numbers
-1) ~~Add modulo operators~~
-1) Add % and modulo operators
+1) adding opening bracket at the start leads to NaN
 1) Add History
-1) Add Auto Compute feature
-1) ~~CSS pending~~
 1) CSS polishing
 1) Add togglable Dark Theme
-1) adding opening bracket at the start leads to NaN
+1) ~~Add % and power operators~~
+1) ~~Add Auto Compute feature~~
+1) ~~CSS pending~~
+1) ~~Add Syntax Sugars~~
+1) ~~Add checks~~
+1) ~~Add Floating Point numbers~~
+1) ~~Add modulo operators~~
 
 # Blog
 
