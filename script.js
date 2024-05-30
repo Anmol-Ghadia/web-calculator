@@ -1,5 +1,5 @@
 var logging = false;
-
+const error_text = "error";
 
 const calc_display = document.getElementById("display");
 calc_display.innerHTML = "";
@@ -22,33 +22,26 @@ function clear_input(){
 // Index 1: correct value of the expression only if index 0 == 0
 function compute(inp_str) {
 
-    const out_arr = [];
-
     inp_str = translate_expression(inp_str);
     if (logging) console.log("After translation:" + inp_str);
-
+    
     inp_str = remove_syntax_sugars(inp_str);
     if (logging) console.log("After Syntax Sugar removed:" + inp_str);
-
+    
     if (!passes_all_checks(inp_str)) {
         // An incorrect expression is entered
-        out_arr.push(1);
-        return out_arr;
+        return [1,];
     }
     
     // TODO: division by 0 case
-    out_arr.push(0);
     
     const data_structure = parse_ds(inp_str);
-    // console.log("abc");
-    // console.log(data_structure); !!!
     if (logging) console.log("Data Structure:" + data_structure);
-
-    const output = evaluate_data_structure(data_structure);
-    if (logging) console.log("Value:" + output);
-
-    out_arr.push(output);
-    return out_arr;
+    
+    const evaluated_arr = evaluate_data_structure(data_structure);
+    if (logging) console.log("Value:");
+    
+    return evaluated_arr;
 }
 
 
@@ -64,12 +57,15 @@ function equals_compute() {
 
     if (arr[0] == 1) {
         // Incorrect expression
-        // TODO !!!
+        output_display.innerHTML = error_text;
+        output_display.classList.remove("output_grayed");
+        output_display.classList.add("output_incorrect");
 
     } else {
         // Correct expression
         output_display.innerHTML = arr[1];
         output_display.classList.remove("output_grayed");
+        output_display.classList.remove("output_incorrect");
 
     }
 }
@@ -132,63 +128,70 @@ function check_both_side_of_operators(str) {
 }
 
 // Recursively evaluate the nested data structure are renturn the answer
+// returns an array:
+// index 0: 0 if value is valid
+//          1 if value is incorrect
+// index 1: correct value if index 0 == 0
 function evaluate_data_structure(nested_arr) {
     
     var out_arr = nested_arr.map(ele => {
         if (typeof ele == "number") {
-            return ele
+            return ele;
         } else if (typeof ele == "string") {
-            return ele
+            return ele;
         } else if (Array.isArray(ele)) {
-            return evaluate_data_structure(ele);
+            const sub_arr = evaluate_data_structure(ele);
+            if (sub_arr[0] == 1) return [1,];
+            return sub_arr[1];
         } else {
             return ele;
         }
     })
 
     if (out_arr.length == 1) {
-        return out_arr[0];
+        return [0,out_arr[0]];
     } else if (out_arr.length == 2) {
-        return -999;
+        return [1,];
     } else if (out_arr.length == 3) {
-        return evaluate_expression(out_arr[0],out_arr[1],out_arr[2]);
-    } else {
-        if ((out_arr.length-3)%2 != 0) console.log("ERROR: Incorrect size of array (102)",out_arr);
-
-        var updated_out_arr = out_arr;
-        const operators = "^/*+-".split("");
-        // BODMAS rule
-        const max_loop_count = 16;
-        let loop_count = 0;
-        while (updated_out_arr.length != 1 && loop_count != max_loop_count) {
-            loop_count++;
-
-            operators.forEach(current_operator => {
-                for (let index = 1; index < updated_out_arr.length; index+=2) {
-                    const element = updated_out_arr[index];
-                    if (element == current_operator) {
-                        if (logging) console.log("==> op. match at index:",index);
-                    
-                        const element_left = updated_out_arr[index-1];
-                        const element_right = updated_out_arr[index+1];
-                        
-                        const value = evaluate_expression(element_left,element,element_right);
-                        
-                        updated_out_arr[index -1] = value;
-                        // remove the index from array and return new array
-                        updated_out_arr = shift_element_left(updated_out_arr,index);
-                        updated_out_arr = shift_element_left(updated_out_arr,index);
-                    }
-                
-                }
-            if (logging) console.log("=== ",current_operator," ===");
-            if (logging) console.log(updated_out_arr);
-            
-            });
-        }
-        
-        return updated_out_arr[0];    
+        return [0,evaluate_expression(out_arr[0],out_arr[1],out_arr[2])];
     }
+    if ((out_arr.length-3)%2 != 0) {
+        console.log("ERROR: Incorrect size of array (102)",out_arr);
+        return [1,];
+    }
+    var updated_out_arr = out_arr;
+    const operators = "^/*+-".split("");
+    // BODMAS rule
+    const max_loop_count = 16;
+    let loop_count = 0;
+    while (updated_out_arr.length != 1 && loop_count != max_loop_count) {
+        loop_count++;
+
+        operators.forEach(current_operator => {
+            for (let index = 1; index < updated_out_arr.length; index+=2) {
+                const element = updated_out_arr[index];
+                if (element == current_operator) {
+                    if (logging) console.log("==> op. match at index:",index);
+                
+                    const element_left = updated_out_arr[index-1];
+                    const element_right = updated_out_arr[index+1];
+                    
+                    const value = evaluate_expression(element_left,element,element_right);
+                    
+                    updated_out_arr[index -1] = value;
+                    // remove the index from array and return new array
+                    updated_out_arr = shift_element_left(updated_out_arr,index);
+                    updated_out_arr = shift_element_left(updated_out_arr,index);
+                }
+            
+            }
+        if (logging) console.log("=== ",current_operator," ===");
+        if (logging) console.log(updated_out_arr);
+        
+        });
+    }
+    
+    return [0,updated_out_arr[0]];
 }
 
 // remove the index from array and return new array
@@ -469,17 +472,21 @@ function update_auto_complete_display() {
     const str = calc_display.innerHTML + txt;
     if (str.length == 0) {
         // TODO: handle case where input is nothing
+        output_display.classList.remove("output_grayed");
+        output_display.classList.remove("output_incorrect");
         return;
     }
     const arr = compute(str);
     
     if (arr[0] == 1) {
         // Incorrect expression
-        // TODO !!!
+        output_display.classList.remove("output_grayed");
+        output_display.classList.add("output_incorrect");
         
     } else {
         output_display.innerHTML = arr[1];
         output_display.classList.add("output_grayed");
+        output_display.classList.remove("output_incorrect");
     }
 
 }

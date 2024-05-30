@@ -44,6 +44,9 @@ body{
     opacity: 60%;
 }
 
+.output_incorrect {
+    color: red;
+}
 
 #display {
     
