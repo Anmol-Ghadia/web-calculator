@@ -1,7 +1,7 @@
 # WebCalculator
 Automatically closes any open brackets and displayed visually as grayed out close brackets until "=" is pressed
 
-## Working of calculator
+## workflow of calculator
 1) Perform translation
 1) Remove all syntax sugars
 1) continue if passing all checks else undefined
@@ -24,10 +24,11 @@ Automatically closes any open brackets and displayed visually as grayed out clos
 1) check that no two operators are consecutive ✅ Solved by the first check
 
 ## TODO
-1) adding opening bracket at the start leads to NaN
 1) Add History
 1) CSS polishing
 1) Add togglable Dark Theme
+1) Handle case where many digits are displayed
+1) ~~adding opening bracket at the start leads to NaN~~
 1) ~~Add % and power operators~~
 1) ~~Add Auto Compute feature~~
 1) ~~CSS pending~~
