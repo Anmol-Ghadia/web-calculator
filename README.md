@@ -35,6 +35,7 @@ b) check that no two operators are consecutive ✅ Solved by the first check
 1) ~~CSS pending~~
 1) CSS polishing
 1) Add togglable Dark Theme
+1) adding opening bracket at the start leads to NaN
 
 # Blog
 

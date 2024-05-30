@@ -156,7 +156,10 @@ function evaluate_data_structure(nested_arr) {
         var updated_out_arr = out_arr;
         const operators = "/*+-".split("");
         // BODMAS rule
-        while (updated_out_arr.length != 1) {
+        const max_loop_count = 16;
+        let loop_count = 0;
+        while (updated_out_arr.length != 1 && loop_count != max_loop_count) {
+            loop_count++;
 
             operators.forEach(current_operator => {
                 for (let index = 1; index < updated_out_arr.length; index+=2) {
