@@ -44,6 +44,13 @@ function compute(inp_str) {
     return evaluated_arr;
 }
 
+// function add_history(formula,answer) {
+//     const history_cell = document.createElement('div');
+//     const history_formula = document.createElement('div');
+//     const history_answer = document.createElement('div');
+
+// }
+
 
 // Evaluates the expression and displays appropriately
 function equals_compute() {

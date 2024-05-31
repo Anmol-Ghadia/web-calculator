@@ -10,12 +10,41 @@ body{
     background-color: #8ecae6;
 }
 
-.container {
+.conainer {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    width: max(60%,400px);
+    height: max(70%,400px);
+    font-size: xxx-large;
+}
+
+.history_container {
+    overflow-y: scroll;
+    /* border: 5px solid black; */
+    display: flex;
+    flex-direction: column;
+    flex-flow: column-reverse;
+}
+
+.history_cell {
+    border-top: 2px solid red;
+    padding: 2px 5px;
+}
+
+.history_formula {
+    overflow: hidden;
+    font-size: x-large;
+    text-align: right;
+}
+
+.history_answer {
+    font-size: xx-large;
+}
+
+.calculator_container {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: 1.5fr repeat(7, 1fr);
-    width: max(60%,400px);
-    height: max(70%,400px);
     font-size: xxx-large;
 }
 
