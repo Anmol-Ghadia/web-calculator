@@ -44,12 +44,24 @@ function compute(inp_str) {
     return evaluated_arr;
 }
 
-// function add_history(formula,answer) {
-//     const history_cell = document.createElement('div');
-//     const history_formula = document.createElement('div');
-//     const history_answer = document.createElement('div');
+function add_history(formula,answer) {
+    const history_cell = document.createElement('div');
+    const history_formula = document.createElement('div');
+    const history_answer = document.createElement('div');
 
-// }
+    history_cell.classList.add("history_cell");
+    history_formula.classList.add("history_formula");
+    history_answer.classList.add("history_answer");
+
+    history_formula.innerHTML = formula+"=";
+    history_answer.innerHTML = answer;
+
+    history_cell.appendChild(history_formula);
+    history_cell.appendChild(history_answer);
+
+    const history_container = document.getElementsByClassName("history_container")[0];
+    history_container.appendChild(history_cell);
+}
 
 
 // Evaluates the expression and displays appropriately
@@ -67,13 +79,13 @@ function equals_compute() {
         output_display.innerHTML = error_text;
         output_display.classList.remove("output_grayed");
         output_display.classList.add("output_incorrect");
-
+        
     } else {
         // Correct expression
         output_display.innerHTML = arr[1];
         output_display.classList.remove("output_grayed");
         output_display.classList.remove("output_incorrect");
-
+        add_history(str,arr[1]);
     }
 }
 

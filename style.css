@@ -10,7 +10,7 @@ body{
     background-color: #8ecae6;
 }
 
-.conainer {
+.container {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     width: max(60%,400px);
