@@ -10,20 +10,28 @@ body{
     background-color: #8ecae6;
 }
 
+#history_toggle {
+    /* Nothing here */
+}
+
+.history_hide {
+    width: 0px;
+}
+
+.history_show {
+    width: 300px;
+}
+
 .container {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    width: max(60%,400px);
-    height: max(70%,400px);
+    display: flex;
     font-size: xxx-large;
 }
 
 .history_container {
     overflow-y: scroll;
-    /* border: 5px solid black; */
     display: flex;
-    flex-direction: column;
     flex-flow: column-reverse;
+    transition: all 500ms cubic-bezier(0.455, 0.03, 0.515, 0.955) 0s;
 }
 
 .history_cell {

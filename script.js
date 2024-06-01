@@ -8,6 +8,26 @@ calc_display_append.innerHTML = "=";
 const output_display = document.getElementById("output_display");
 output_display.innerHTML = "";
 
+var history_shown = false;
+
+function history_button_clicked() {
+    const history_button = document.getElementById("history_toggle_btn");
+    const history_container = document.getElementsByClassName("history_container")[0];
+    if (history_shown) {
+        // Hide history
+        history_container.classList.remove("history_show");
+        history_container.classList.add("history_hide");
+        history_button.innerHTML = ">";
+        history_shown = false;
+    } else {
+        // show history
+        history_container.classList.add("history_show");
+        history_container.classList.remove("history_hide");
+        history_button.innerHTML = "<";
+        history_shown = true;
+    }
+}
+
 function clear_input(){
     calc_display.innerHTML = "";
 
