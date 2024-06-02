@@ -13,9 +13,10 @@ Automatically closes any open brackets and displayed visually as grayed out clos
 1) Removes any commas ✅
 
 ## Syntax sugars
-1) +- becomes - ✅
+1) `+-` becomes `-` ✅
 1) a bracket right after a number has implicit multiplication ✅
-1) Add implicit 0 before + and minus if a number is missing ✅
+1) Add implicit `0` before `+` and `-` if a number is missing ✅
+1) `%` becomes `*0.01` called as expanding the percent symbol
 1) ~~add brackets to follow BODMAS rule~~ (indstead modified evaluation rules) ✅ 
 1) ~~decimal point should have numbers on both side~~ (js can handle vague decimal cases) ✅ 
 
@@ -25,11 +26,11 @@ Automatically closes any open brackets and displayed visually as grayed out clos
 
 ## TODO
 1) Add cursor, so that the user can edit mistakes inbetween the expression
-1) recheck the evaluation rule of %
 1) debug the issue of (1)-(1)
 1) CSS polishing
 1) Add togglable Dark Theme
 1) Handle case where many digits are displayed
+1) ~~recheck the evaluation rule of `%`~~
 1) ~~Add History~~
 1) ~~adding opening bracket at the start leads to NaN~~
 1) ~~Add % and power operators~~

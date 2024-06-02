@@ -142,12 +142,12 @@ function check_both_side_of_operators(str) {
 
     if (logging) console.log("(5) Received for check:" + str);
 
-    if (!"+-*/%^)".includes(str[0]) && !"+-*/%^(".includes(str[str.length-1])) {
+    if (!"+-*/^)".includes(str[0]) && !"+-*/^(".includes(str[str.length-1])) {
         for (let index = 1; index < str.length-1; index++) {
             const prev_ele = str[index-1];
             const ele = str[index];
             const next_ele = str[index+1];
-            if ("+-*/%^".split("").includes(ele)) {
+            if ("+-*/^".split("").includes(ele)) {
                 // Current element is an operator. check both sides
                 const valid_left = "0123456789).".split("");
                 const valid_right = "0123456789(.".split("");
@@ -259,8 +259,6 @@ function evaluate_expression(a, op, b) {
             return a*b
         case "/":
             return a/b;
-        case "%":
-            return a*(1/100)*b;   
         case "^":
             let total = a;
             for (let count = 1; count < b; count++) {
@@ -273,14 +271,27 @@ function evaluate_expression(a, op, b) {
     }
 }
 
-
-// TODO !!!
 // Returns the expression without syntax sugars 
 function remove_syntax_sugars(str) {
     str = remove_synatx_sugar_plus_minus(str);
     str = remove_synatx_sugar_implicit_multiplication(str);
     str = remove_synatx_sugar_plus_minus_both_side_number(str);
+    str = remove_syntax_sugar_percent(str);
 
+    return str;
+}
+
+function remove_syntax_sugar_percent(str) {
+    if (logging) console.log("(11) Received:",str);
+    
+    str = Array.from(str).map((char, index) => {
+        if (char == "%") {
+            return "*0.01";
+        }
+        return char;
+    }).join("");
+    
+    if (logging) console.log("(11) After De sugar:",str);
     return str;
 }
 
@@ -371,7 +382,7 @@ function remove_synatx_sugar_plus_minus(str) {
 function convert_to_correct_type(arr) {
     var out_arr = [];
     arr.forEach(ele => {
-        if (!Array.isArray(ele) && !"+-*/%^".split("").includes(ele)) {
+        if (!Array.isArray(ele) && !"+-*/^".split("").includes(ele)) {
             if (ele.split("").includes(".")) {
                 // Number is a float
                 out_arr.push(parseFloat(ele));
@@ -454,7 +465,7 @@ function parse_ds(str) {
             } else if ("0123456789.".split("").includes(ele)) {
                 if (logging) console.log("letter:"+ele+" (2)")
                 current_chunck += ele;
-            } else if ("+-*/%^".split("").includes(ele)) {
+            } else if ("+-*/^".split("").includes(ele)) {
                 if (logging) console.log("letter:"+ele+" (3)")
                 out_arr.push(current_chunck);
                 current_chunck = "";
