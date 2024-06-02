@@ -35,6 +35,41 @@ function clear_input(){
     update_auto_complete_display();
 }
 
+// check that the percent does not have a number after it
+function check_percent_is_not_followed_by_number(str) {
+
+    let pre_percent = false;
+    let found_mistake = false;
+    
+    str.split("").forEach(ele => {
+        console.log("current_element:" , ele);
+        if (pre_percent) {
+            console.log("(0)" , ele);
+            if (!"+-*/%^(".includes(ele)) {
+                console.log("(1)" , ele);
+                found_mistake = true;
+                return;
+            }
+            console.log("(2)" , ele);
+            pre_percent = false;
+        }
+        if (ele == "%") {
+            console.log("(3)" , ele);
+            pre_percent = true;
+        }
+        console.log("(4)" , ele);
+    });
+    
+    return !found_mistake;
+}
+
+// Checks that all pre checks are satisfied
+function passes_all_pre_checks(str) {
+    const bool_1 = check_percent_is_not_followed_by_number(str);
+
+    return bool_1;
+}
+
 // returns an array of size 2 by evaluating the 
 //      provided expression as string
 // Index 0: 0 if expression is evaluated properly,
@@ -44,6 +79,11 @@ function compute(inp_str) {
 
     inp_str = translate_expression(inp_str);
     if (logging) console.log("After translation:" + inp_str);
+
+    if (!passes_all_pre_checks(inp_str)) {
+        // An incorrect expression is entered
+        return [1,];
+    }
     
     inp_str = remove_syntax_sugars(inp_str);
     if (logging) console.log("After Syntax Sugar removed:" + inp_str);
@@ -64,6 +104,21 @@ function compute(inp_str) {
     return evaluated_arr;
 }
 
+// Adds spacing to improve readibility of the formula when displayed
+function pre_process_history_formula(in_formula) {
+
+    let out_formula = Array.from(in_formula).map((char,index) => {
+        if ("+-×÷^()".includes(char)) {
+            return " " + char + " ";
+        } else {
+            return char;
+        }
+    }).join("");
+
+    return out_formula;
+}
+
+// Adds the given formula and answer as a dom element in the history tab
 function add_history(formula,answer) {
     const history_cell = document.createElement('div');
     const history_formula = document.createElement('div');
@@ -73,7 +128,7 @@ function add_history(formula,answer) {
     history_formula.classList.add("history_formula");
     history_answer.classList.add("history_answer");
 
-    history_formula.innerHTML = formula+"=";
+    history_formula.innerHTML = pre_process_history_formula(formula+" =");
     history_answer.innerHTML = answer;
 
     history_cell.appendChild(history_formula);

@@ -3,8 +3,9 @@ Automatically closes any open brackets and displayed visually as grayed out clos
 
 ## workflow of calculator
 1) Perform translation
+1) Perform Pre checks
 1) Remove all syntax sugars
-1) continue if passing all checks else undefined
+1) Perform Post checks
 1) Make the data structure by analyzing characters left to right and inside-out
 1) Iteratively computing the DS with a depth first approach
 
@@ -12,19 +13,23 @@ Automatically closes any open brackets and displayed visually as grayed out clos
 1) changes the symbol of multiplication and division to simple form ✅
 1) Removes any commas ✅
 
+## Pre Check
+1) check that  `%` operator is not followed by a number ✅
+
 ## Syntax sugars
 1) `+-` becomes `-` ✅
 1) a bracket right after a number has implicit multiplication ✅
 1) Add implicit `0` before `+` and `-` if a number is missing ✅
-1) `%` becomes `*0.01` called as expanding the percent symbol
+1) `%` becomes `*0.01` called as expanding the percent symbol ✅
 1) ~~add brackets to follow BODMAS rule~~ (indstead modified evaluation rules) ✅ 
 1) ~~decimal point should have numbers on both side~~ (js can handle vague decimal cases) ✅ 
 
-## Checks
-1) check that each operator has two operands ✅
+## Post Check
+1) check that each operator has two operands except (`%` should be followed by `*`) ✅
 1) check that no two operators are consecutive ✅ Solved by the first check
 
 ## TODO
+1) ~~Formula in the history tab should have space beside operators for better visibility~~
 1) Add cursor, so that the user can edit mistakes inbetween the expression
 1) debug the issue of (1)-(1)
 1) CSS polishing
