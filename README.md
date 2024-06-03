@@ -29,12 +29,12 @@ Automatically closes any open brackets and displayed visually as grayed out clos
 1) check that no two operators are consecutive ✅ Solved by the first check
 
 ## TODO
-1) ~~Formula in the history tab should have space beside operators for better visibility~~
-1) Add cursor, so that the user can edit mistakes inbetween the expression
-1) debug the issue of (1)-(1)
 1) CSS polishing
 1) Add togglable Dark Theme
 1) Handle case where many digits are displayed
+1) ~~debug the issue of (1)-(1)~~
+1) ~~Add cursor, so that the user can edit mistakes inbetween the expression~~ Scrapped
+1) ~~Formula in the history tab should have space beside operators for better visibility~~
 1) ~~recheck the evaluation rule of `%`~~
 1) ~~Add History~~
 1) ~~adding opening bracket at the start leads to NaN~~

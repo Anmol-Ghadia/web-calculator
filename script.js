@@ -42,22 +42,18 @@ function check_percent_is_not_followed_by_number(str) {
     let found_mistake = false;
     
     str.split("").forEach(ele => {
-        console.log("current_element:" , ele);
+        if (logging) console.log("(12) current_element:" , ele);
         if (pre_percent) {
-            console.log("(0)" , ele);
             if (!"+-*/%^(".includes(ele)) {
-                console.log("(1)" , ele);
+                if (logging) console.log("(12)" , ele);
                 found_mistake = true;
                 return;
             }
-            console.log("(2)" , ele);
             pre_percent = false;
         }
         if (ele == "%") {
-            console.log("(3)" , ele);
             pre_percent = true;
         }
-        console.log("(4)" , ele);
     });
     
     return !found_mistake;
@@ -84,6 +80,7 @@ function compute(inp_str) {
         // An incorrect expression is entered
         return [1,];
     }
+    if (logging) console.log("Passed all pre Checks:" + inp_str);
     
     inp_str = remove_syntax_sugars(inp_str);
     if (logging) console.log("After Syntax Sugar removed:" + inp_str);
@@ -92,6 +89,7 @@ function compute(inp_str) {
         // An incorrect expression is entered
         return [1,];
     }
+    if (logging) console.log("Passed all post Checks:" + inp_str);
     
     // TODO: division by 0 case
     
@@ -364,7 +362,7 @@ function remove_synatx_sugar_plus_minus_both_side_number(str) {
         if (!last_element_was_number && "+-".split("").includes(ele)) {
             out_str += "0";
             last_element_was_number = false;
-        } else if ("0123456789".split("").includes(ele)) {
+        } else if ("0123456789)".split("").includes(ele)) {
             last_element_was_number = true;
         } else {
             last_element_was_number = false;
@@ -473,14 +471,41 @@ function convert_to_correct_type(arr) {
 // }
 
 
+// Returns true if the bracket at index 0 is closed at the last index
+//       if char at first index is not bracket then returns false 
+function first_bracket_closed_last(str) {
+    if (str[0] != "(") return false;
+
+    // First char is opening bracket
+    let bracket_count = 0;
+    let closed_initial_bracket = false;
+
+    for (let index = 0; index < str.length; index++) {
+        const char = str[index];
+        if (char == "(") bracket_count++;
+        if (char == ")") bracket_count--;
+        if (closed_initial_bracket) return false;
+        if (bracket_count == 0) closed_initial_bracket=true;
+    }
+
+    return true;
+}
+
 // Returns an array of nested arrays
 function parse_ds(str) {
 
+    if (logging) console.log("Parse DS :" + str);
+    
     //  code to deal with user entered opening and closing brackets
-    if (str.substring(0,1) == "(") {
+    // if (str.substring(0,1) == "(") {
+    //     str = str.substring(1,str.length-1);
+    // }
+    if (first_bracket_closed_last(str)) {
         str = str.substring(1,str.length-1);
     }
-
+    if (logging) console.log("Front, last bracket removed :" + str);
+    
+    // if (logging) console.log("First_last bracket :" + str);
     var out_arr = [];
     var current_chunck = "";
 
