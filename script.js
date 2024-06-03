@@ -305,19 +305,15 @@ function shift_element_left(in_arr, remove_index) {
 function evaluate_expression(a, op, b) {
     switch (op) {
         case "+":
-            return a+b;
+            return Decimal.add(a,b);
         case "-":
-            return a-b
-        case "*":
-            return a*b
+            return Decimal.sub(a,b);
+            case "*":
+                return Decimal.mul(a,b);
         case "/":
-            return a/b;
+            return Decimal.div(a,b);
         case "^":
-            let total = a;
-            for (let count = 1; count < b; count++) {
-                total *= a;
-            }
-            return total;
+            return Decimal.pow(a,b);
         default:
             console.log("Error (101)");
             break;
