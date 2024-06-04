@@ -30,8 +30,8 @@ Automatically closes any open brackets and displayed visually as grayed out clos
 
 ## TODO
 1) ~~Design portrait friendly css as part of Mobile-first design~~
-1) Design Landscape css
 1) add JS to deal with history tab in different orientations
+1) Design Landscape css
 1) CSS polishing
 1) Add togglable Dark Theme
 1) Decrease font size for output if large number needs to be displayed

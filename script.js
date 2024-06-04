@@ -1,5 +1,6 @@
 var logging = false;
 const error_text = "error";
+const history_tab_portrait_height = "20%";
 
 const calc_display = document.getElementById("display");
 calc_display.innerHTML = "";
@@ -12,19 +13,32 @@ var history_shown = false;
 
 function history_button_clicked() {
     const history_button = document.getElementById("history_toggle_btn");
-    const history_container = document.getElementsByClassName("history_container")[0];
-    if (history_shown) {
-        // Hide history
-        history_container.classList.remove("history_show");
-        history_container.classList.add("history_hide");
-        history_button.innerHTML = ">";
-        history_shown = false;
+    const history_container = document.getElementById("history_container");
+    if (isOrientationPortrait()) {
+        if (history_shown) {
+            // Hide history
+            history_container.style.height = "0%";
+            history_button.innerHTML = "△";
+            history_shown = false;
+        } else {
+            // show history    
+            history_container.style.height = history_tab_portrait_height;
+            history_button.innerHTML = "▽";
+            history_shown = true;
+        }
     } else {
-        // show history
-        history_container.classList.add("history_show");
-        history_container.classList.remove("history_hide");
-        history_button.innerHTML = "<";
-        history_shown = true;
+        // TODO landscape mode !!!
+        if (history_shown) {
+            // Hide history
+            history_container.style.width = "0%";
+            history_button.innerHTML = "<";
+            history_shown = false;
+        } else {
+            // show history    
+            history_container.style.width = history_tab_portrait_height;
+            history_button.innerHTML = ">";
+            history_shown = true;
+        }
     }
 }
 
@@ -642,4 +656,18 @@ function repeatString(str, numTimes) {
         repeatedString += str;
     }
     return repeatedString;
+}
+
+// Returns true if portrait window
+function isOrientationPortrait() {
+    // Get the width and height of the window
+    var width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+    var height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+
+    // Compare width and height to determine orientation
+    if (width > height) {
+        return false;
+    } else {
+        return true;
+    }
 }
