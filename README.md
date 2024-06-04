@@ -29,11 +29,14 @@ Automatically closes any open brackets and displayed visually as grayed out clos
 1) check that no two operators are consecutive ✅ Solved by the first check
 
 ## TODO
-1) Decrease font size for output if large number needs to be displayed
+1) ~~Design portrait friendly css as part of Mobile-first design~~
+1) Design Landscape css
+1) add JS to deal with history tab in different orientations
 1) CSS polishing
 1) Add togglable Dark Theme
-1) ~~Use decimal.js for floating point arithmetic~~
+1) Decrease font size for output if large number needs to be displayed
 1) Handle case where many digits are displayed
+1) ~~Use decimal.js for floating point arithmetic~~
 1) ~~debug the issue of (1)-(1)~~
 1) ~~Add cursor, so that the user can edit mistakes inbetween the expression~~ Scrapped
 1) ~~Formula in the history tab should have space beside operators for better visibility~~
