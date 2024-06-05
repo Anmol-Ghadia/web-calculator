@@ -31,10 +31,13 @@ Automatically closes any open brackets and displayed visually as grayed out clos
 ## TODO
 1) Add logic to pick random color pallete from group of palletes
 1) CSS polishing
+1) Make the app a PWA
+1) Refactor Code
 1) single decimal point gives Nan
 1) Fix Error and Nan situations
 1) Decrease font size for output if large number needs to be displayed
 1) Handle case where many digits are displayed
+1) ~~Copy the latest answer to clipboard when equals is clicked~~
 1) ~~Add togglable Dark Theme~~ Scrapped
 1) ~~Design portrait friendly css as part of Mobile-first design~~
 1) ~~add JS to deal with history tab in different orientations~~

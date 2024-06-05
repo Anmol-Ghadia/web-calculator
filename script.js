@@ -11,6 +11,13 @@ const output_display = document.getElementById("output_display");
 output_display.innerHTML = "";
 
 var history_shown = false;
+addEventListener("DOMContentLoaded", init);
+
+// Startup routine
+function init() {
+    history_button_clicked();
+    history_button_clicked();
+}
 
 function history_button_clicked() {
     const history_button = document.getElementById("history_toggle_btn");
@@ -182,6 +189,9 @@ function equals_compute() {
         output_display.classList.remove("output_grayed");
         output_display.classList.remove("output_incorrect");
         add_history(str,arr[1]);
+        navigator.clipboard.writeText(arr[1]).catch(err => {
+            console.error('Could not copy text: ', arr[1], err);
+        });
     }
 }
 
