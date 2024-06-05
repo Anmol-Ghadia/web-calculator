@@ -1,0 +1,24 @@
+/* Most elements are painted with this */
+.theme_primary_1 {
+    background-color: #8ba0a4;
+}
+    
+/* very few elements are painted with this */
+.theme_secondary_1 {
+    background-color: #eaeaea;
+}
+
+/* Brigtest color */
+.theme_highlight_1 {
+    background-color: #d74a49;
+}
+
+/* Should be visible on primary and highlight */
+.theme_primary_text_1 {
+    color: #183e4b;
+}
+    
+/* Should be visible on secondary */
+.theme_secondary_text_1 {
+    color: #1b4552;
+}

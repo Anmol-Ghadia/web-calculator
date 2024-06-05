@@ -16,7 +16,68 @@ addEventListener("DOMContentLoaded", init);
 // Startup routine
 function init() {
     history_button_clicked();
-    history_button_clicked();
+    // history_button_clicked();
+    generateTheme();
+    applyTheme();
+}
+
+// Adds the given formula and answer as a dom element in the history tab
+function add_history(formula,answer) {
+    const history_cell = document.createElement('div');
+    const history_formula = document.createElement('div');
+    const history_answer = document.createElement('div');
+    const history_cell_top_spacer = document.createElement('div');
+
+    history_cell_top_spacer.classList.add("history_cell_top_spacer");
+    history_cell.classList.add("history_cell");
+    history_formula.classList.add("history_formula");
+    history_answer.classList.add("history_answer");
+    
+    // Styling
+    history_cell_top_spacer.classList.add(theme_highlight);
+    history_answer.classList.add(theme_secondary_text)
+    history_formula.classList.add(theme_primary_text)
+
+    history_formula.innerHTML = pre_process_history_formula(formula+" =");
+    history_answer.innerHTML = answer;
+
+    history_cell.appendChild(history_cell_top_spacer);
+    history_cell.appendChild(history_formula);
+    history_cell.appendChild(history_answer);
+
+    const history_container = document.getElementsByClassName("history_container")[0];
+    history_container.appendChild(history_cell);
+}
+
+function applyTheme() {
+
+    // text
+    document.getElementsByClassName("output_display")[0].classList.add(theme_primary_text);
+    document.getElementById("display").classList.add(theme_secondary_text);
+
+    // Background color
+    // document.getElementsByTagName("body")[0].classList.add(theme_secodary);
+    // document.getElementById("container").classList.add(theme_secodary);
+    document.getElementById("calculator_container").classList.add(theme_secodary);
+    document.getElementById("display").classList.add(theme_secodary);
+    document.getElementsByClassName("output_container")[0].classList.add(theme_highlight);
+    document.getElementsByClassName("history_container")[0].classList.add(theme_secodary);
+    
+    // text + background
+    Array.from(document.getElementsByTagName("button")).forEach(ele => {
+        ele.classList.add(theme_primary);
+        ele.classList.add(theme_primary_text);
+    })
+}
+
+function generateTheme() {
+    
+    // TODO !!! Add randomizer
+    theme_primary = "theme_primary_1";
+    theme_secodary = "theme_secondary_1";
+    theme_highlight = "theme_highlight_1";
+    theme_primary_text = "theme_primary_text_1";
+    theme_secondary_text = "theme_secondary_text_1"
 }
 
 function history_button_clicked() {
@@ -145,27 +206,6 @@ function pre_process_history_formula(in_formula) {
 
     return out_formula;
 }
-
-// Adds the given formula and answer as a dom element in the history tab
-function add_history(formula,answer) {
-    const history_cell = document.createElement('div');
-    const history_formula = document.createElement('div');
-    const history_answer = document.createElement('div');
-
-    history_cell.classList.add("history_cell");
-    history_formula.classList.add("history_formula");
-    history_answer.classList.add("history_answer");
-
-    history_formula.innerHTML = pre_process_history_formula(formula+" =");
-    history_answer.innerHTML = answer;
-
-    history_cell.appendChild(history_formula);
-    history_cell.appendChild(history_answer);
-
-    const history_container = document.getElementsByClassName("history_container")[0];
-    history_container.appendChild(history_cell);
-}
-
 
 // Evaluates the expression and displays appropriately
 function equals_compute() {

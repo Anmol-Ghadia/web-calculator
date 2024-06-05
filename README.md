@@ -30,6 +30,7 @@ Automatically closes any open brackets and displayed visually as grayed out clos
 
 ## TODO
 1) Add logic to pick random color pallete from group of palletes
+1) clicking equals and then calculating should copy the value from previous answer
 1) CSS polishing
 1) Make the app a PWA
 1) Refactor Code

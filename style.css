@@ -7,9 +7,6 @@
 body{
     height: 100vh;
     width: 100%;
-
-    /*  */
-    background-color: #8ecae6;
 }
 
 #container {
@@ -18,9 +15,6 @@ body{
     
     display: flex;
     flex-direction: column;
-    
-    /*  */
-    /* font-size: xxx-large; */
 }
 
 #calculator_container {
@@ -46,6 +40,8 @@ body{
 
 #history_toggle {
     /* Nothing here */
+    border-radius: 0px;
+
 }
 
 .output_container {
@@ -53,7 +49,6 @@ body{
     grid-column-end: 5;
     grid-row-start: 1;
     grid-row-end: 2;
-    background-color: orange;
     display: grid;
 }
 
@@ -65,7 +60,6 @@ body{
     /*  */
     font-size: 10vh;
     display: flex;
-    color: #023047;
     text-align: center;
     align-items: center;
     justify-content: center;
@@ -89,23 +83,16 @@ body{
     /*  */
     display: flex;
     align-items: center;
-    border: #023047 2px solid;
     margin: 2px;
     justify-content: right;
 
-    color: #023047;
 }
 
 button {
     font-size: 5vh;
 
-    /*  */
-    color: #fb8500;
-    background-color: azure;
-    /* border-radius: 50%; */
-    border-color: #023047;
-    border-width: 2px;
-    /* margin: 2px; */
+    border-width: 0px;
+    /* margin: 1px; */
 }
 
 #display_equals{
@@ -123,15 +110,21 @@ button {
 }
 
 .history_cell {
-    border-top: 0.15vh solid #fb8500;
-    padding: 0.5vh 2vw;
-
+    /* border-top: 0.15vh solid #fb8500; */
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     /*  */
 }
 
+.history_cell_top_spacer {
+    width: 100%;
+    height: 2px;
+}
+
 .history_formula {
+    margin: 0.5vh 0.5vw;
+
     display: flex;
     align-items: center;
     font-size: 2vh;
@@ -142,13 +135,12 @@ button {
 }
 
 .history_answer {
+    margin: 0.5vh 0.5vw;
+
     display: flex;
     justify-content: right;
     text-align: center;
     font-size: 3vh;
-
-    /*  */
-
 }
 
 /* width */
@@ -158,19 +150,17 @@ button {
 
 /* Track */
 ::-webkit-scrollbar-track {
-    border: 0.1px solid #fb8500;
-    border-radius: 1vh;
+    border: 1px solid #444444;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-    background: #fb8500;
-    border-radius: 1vh;
+    background: #666666;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-    background: #023047;
+    background: #444444;
 }
 
 @media only screen and (orientation: landscape) {
@@ -194,6 +184,7 @@ button {
         width: 60vh;
         height: 70vh;
         order: 1;
+        border-radius: 1vh 0px 0px 1vh;
     }
     
     #history_container {
@@ -205,5 +196,14 @@ button {
     #history_toggle_btn {
         height: 70vh;
         order: 3;
+        border-radius: 0px 1vh 1vh 0px;
+    }
+
+    #btn_0 {
+        border-radius: 0px 0px 0px 1vh;
+    }
+
+    .output_container {
+        border-radius: 1vh 0px 0px 0px;
     }
 }
