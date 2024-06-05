@@ -1,6 +1,7 @@
 var logging = false;
 const error_text = "error";
 const history_tab_portrait_height = "20%";
+const history_tab_landscape_width = "30vh";
 
 const calc_display = document.getElementById("display");
 calc_display.innerHTML = "";
@@ -15,6 +16,7 @@ function history_button_clicked() {
     const history_button = document.getElementById("history_toggle_btn");
     const history_container = document.getElementById("history_container");
     if (isOrientationPortrait()) {
+        history_container.style.width = "100%";
         if (history_shown) {
             // Hide history
             history_container.style.height = "0%";
@@ -28,19 +30,26 @@ function history_button_clicked() {
         }
     } else {
         // TODO landscape mode !!!
+        history_container.style.height = "70vh";
         if (history_shown) {
             // Hide history
             history_container.style.width = "0%";
-            history_button.innerHTML = "<";
+            history_button.innerHTML = ">";
             history_shown = false;
         } else {
             // show history    
-            history_container.style.width = history_tab_portrait_height;
-            history_button.innerHTML = ">";
+            history_container.style.width = history_tab_landscape_width;
+            history_button.innerHTML = "<";
             history_shown = true;
         }
     }
 }
+
+// Render history tab
+addEventListener("resize", (event) => {
+    history_button_clicked();
+    history_button_clicked();
+});
 
 function clear_input(){
     calc_display.innerHTML = "";
