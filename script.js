@@ -1,7 +1,7 @@
 var logging = false;
 const error_text = "error";
-const history_tab_portrait_height = "20%";
-const history_tab_landscape_width = "30vh";
+const history_tab_portrait_height = "30%";
+const history_tab_landscape_width = "35vh";
 
 const calc_display = document.getElementById("display");
 calc_display.innerHTML = "";
@@ -35,6 +35,7 @@ function add_history(formula,answer) {
     
     // Styling
     history_cell_top_spacer.classList.add(theme_highlight);
+    history_cell.classList.add(theme_secodary);
     history_answer.classList.add(theme_secondary_text)
     history_formula.classList.add(theme_primary_text)
 
@@ -98,7 +99,7 @@ function history_button_clicked() {
         }
     } else {
         // TODO landscape mode !!!
-        history_container.style.height = "70vh";
+        history_container.style.height = "100%";
         if (history_shown) {
             // Hide history
             history_container.style.width = "0%";

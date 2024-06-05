@@ -23,28 +23,22 @@ body{
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: 1.5fr repeat(6, 1fr);
-    
-    /*  */
-    font-size: xxx-large;
 }
 
 #history_container {
     height: 0%;
-
-    /*  */
     overflow-y: scroll;
     display: flex;
     flex-flow: column-reverse;
-    transition: all 250ms cubic-bezier(0.455, 0.03, 0.515, 0.955) 0s;
+    transition: height 100ms cubic-bezier(0.215, 0.610, 0.355, 1);
 }
 
 #history_toggle {
-    /* Nothing here */
     border-radius: 0px;
-
 }
 
 .output_container {
+    margin: 1px;
     grid-column-start: 1;
     grid-column-end: 5;
     grid-row-start: 1;
@@ -90,9 +84,17 @@ body{
 
 button {
     font-size: 5vh;
-
     border-width: 0px;
-    /* margin: 1px; */
+    margin: 1px;
+    transition: filter 100ms cubic-bezier(0.55, 0.085, 0.68, 0.53);
+}
+
+button:hover {
+    filter: brightness(90%);
+}
+
+button:active {
+    filter: brightness(75%);
 }
 
 #display_equals{
@@ -110,11 +112,18 @@ button {
 }
 
 .history_cell {
-    /* border-top: 0.15vh solid #fb8500; */
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    /*  */
+    transition: filter 100ms cubic-bezier(0.445, 0.05, 0.55, 0.95);
+}
+
+.history_cell:hover {
+    filter: brightness(90%);
+}
+
+.history_cell:active {
+    filter: brightness(75%);
 }
 
 .history_cell_top_spacer {
@@ -130,7 +139,6 @@ button {
     font-size: 2vh;
     justify-content: left;
 
-    /*  */
     overflow: hidden;
 }
 
@@ -172,7 +180,7 @@ button {
     }
 
     #container {
-        height: 100%;
+        height: 80vh;
         width: 100%;
         display: flex;
         align-items: center;
@@ -182,19 +190,21 @@ button {
 
     #calculator_container {
         width: 60vh;
-        height: 70vh;
+        height: 100%;
         order: 1;
         border-radius: 1vh 0px 0px 1vh;
     }
     
     #history_container {
-        height: 70vh;
+        height: 100%;
         width: 0%;
         order: 2;
+        transition: width 100ms cubic-bezier(0.215, 0.610, 0.355, 1);
     }
 
     #history_toggle_btn {
-        height: 70vh;
+        margin-left: 0px;
+        height: 100%;
         order: 3;
         border-radius: 0px 1vh 1vh 0px;
     }
@@ -205,5 +215,6 @@ button {
 
     .output_container {
         border-radius: 1vh 0px 0px 0px;
+        margin-right: 1px;
     }
 }

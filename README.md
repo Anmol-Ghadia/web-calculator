@@ -31,6 +31,9 @@ Automatically closes any open brackets and displayed visually as grayed out clos
 ## TODO
 1) Add logic to pick random color pallete from group of palletes
 1) clicking equals and then calculating should copy the value from previous answer
+1) clicking on a history cell copies the answer to clipboard
+1) clicking on a history cell adds it to the calculator display
+1) Add Keyboard Support for the calculator
 1) CSS polishing
 1) Make the app a PWA
 1) Refactor Code
