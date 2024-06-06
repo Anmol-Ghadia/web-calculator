@@ -221,19 +221,15 @@ function equals_compute() {
     if (arr[0] == 1) {
         // Incorrect expression
         output_display.innerHTML = error_text;
-        output_display.classList.remove("output_grayed");
-        output_display.classList.add("output_incorrect");
-        
     } else {
         // Correct expression
         output_display.innerHTML = arr[1];
-        output_display.classList.remove("output_grayed");
-        output_display.classList.remove("output_incorrect");
         add_history(str,arr[1]);
         navigator.clipboard.writeText(arr[1]).catch(err => {
             console.error('Could not copy text: ', arr[1], err);
         });
     }
+    output_display.classList.remove("output_grayed");
 }
 
 // Returns true if all checks are passed by the given expression
@@ -673,21 +669,16 @@ function update_auto_complete_display() {
     if (str.length == 0) {
         // TODO: handle case where input is nothing
         output_display.classList.remove("output_grayed");
-        output_display.classList.remove("output_incorrect");
         return;
     }
     const arr = compute(str);
     
     if (arr[0] == 1) {
         // Incorrect expression
-        output_display.classList.remove("output_grayed");
-        output_display.classList.add("output_incorrect");
-        
     } else {
         output_display.innerHTML = arr[1];
-        output_display.classList.add("output_grayed");
-        output_display.classList.remove("output_incorrect");
     }
+    output_display.classList.add("output_grayed");
 
 }
 
