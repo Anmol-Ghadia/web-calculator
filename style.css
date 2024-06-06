@@ -47,7 +47,6 @@ body{
 }
 
 .output_display {
-    
     width: 100%;
     height: 100%;
     font-size: 10vh;
@@ -57,12 +56,12 @@ body{
     justify-content: center;
 }
 
-.output_grayed {
-    opacity: 60%;
+::selection {
+    background-color: #999999;
 }
 
-.output_incorrect {
-    /* opacity: 60%; */
+.output_grayed {
+    opacity: 60%;
 }
 
 #display {
@@ -138,6 +137,7 @@ button:active {
     justify-content: left;
 
     overflow: hidden;
+    user-select: none;
 }
 
 .history_answer {

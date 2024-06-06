@@ -54,6 +54,8 @@ function applyTheme() {
 
     // text
     document.getElementsByClassName("output_display")[0].classList.add(theme_primary_text);
+    // document.getElementsByClassName("output_display")[0].style.
+
     document.getElementById("display").classList.add(theme_secondary_text);
 
     // Background color
