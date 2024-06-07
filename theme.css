@@ -1,24 +1,79 @@
-/* Most elements are painted with this */
+/* 
+Primary
+- Most elements are painted with this
+
+Secondary
+- very few elements are painted with this
+
+Highlight
+- Brigtest color
+
+Text 1
+- Should be visible on primary and highlight
+
+Text 2
+- Should be visible on secondary
+*/
+
+/* 1 */
 .theme_primary_1 {
     background-color: #8ba0a4;
 }
     
-/* very few elements are painted with this */
 .theme_secondary_1 {
     background-color: #eaeaea;
 }
 
-/* Brigtest color */
 .theme_highlight_1 {
     background-color: #d74a49;
 }
 
-/* Should be visible on primary and highlight */
 .theme_primary_text_1 {
     color: #183e4b;
 }
     
-/* Should be visible on secondary */
 .theme_secondary_text_1 {
     color: #1b4552;
+}
+
+/* 2 */
+.theme_primary_2 {
+    background-color: #74a892;
+}
+    
+.theme_secondary_2 {
+    background-color: #e5c185;
+}
+
+.theme_highlight_2 {
+    background-color: #c7522a;
+}
+
+.theme_primary_text_2 {
+    color: #fbf2c4;
+}
+    
+.theme_secondary_text_2 {
+    color: #008585;
+}
+
+/* 2 */
+.theme_primary_3 {
+    background-color: #ffee93;
+}
+    
+.theme_secondary_3 {
+    background-color: #79adcc;
+}
+
+.theme_highlight_3 {
+    background-color: #adf7b6;
+}
+
+.theme_primary_text_3 {
+    color: #555;
+}
+    
+.theme_secondary_text_3 {
+    color: #2c4875;
 }

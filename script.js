@@ -39,6 +39,13 @@ function add_history(formula,answer) {
     history_answer.classList.add(theme_secondary_text)
     history_formula.classList.add(theme_primary_text)
 
+    history_cell.addEventListener('click', function() {
+        // Copy the answer text to the clipboard
+        navigator.clipboard.writeText(history_answer.textContent)
+            .catch(err => {
+                console.error('Could not copy answer to clipboard: ', err);
+            });
+    });
     history_formula.innerHTML = pre_process_history_formula(formula+" =");
     history_answer.innerHTML = answer;
 
@@ -51,20 +58,17 @@ function add_history(formula,answer) {
 }
 
 function applyTheme() {
-
     // text
     document.getElementsByClassName("output_display")[0].classList.add(theme_primary_text);
-    // document.getElementsByClassName("output_display")[0].style.
-
     document.getElementById("display").classList.add(theme_secondary_text);
 
     // Background color
-    // document.getElementsByTagName("body")[0].classList.add(theme_secodary);
-    // document.getElementById("container").classList.add(theme_secodary);
+    document.getElementsByTagName("body")[0].classList.add(theme_primary);
     document.getElementById("calculator_container").classList.add(theme_secodary);
     document.getElementById("display").classList.add(theme_secodary);
     document.getElementsByClassName("output_container")[0].classList.add(theme_highlight);
     document.getElementsByClassName("history_container")[0].classList.add(theme_secodary);
+    document.getElementsByClassName("history_container")[0].style.backdrop_filter = "brightness(60%)";
     
     // text + background
     Array.from(document.getElementsByTagName("button")).forEach(ele => {
@@ -73,14 +77,16 @@ function applyTheme() {
     })
 }
 
+// Picks a random theme and sets global variables
 function generateTheme() {
-    
-    // TODO !!! Add randomizer
-    theme_primary = "theme_primary_1";
-    theme_secodary = "theme_secondary_1";
-    theme_highlight = "theme_highlight_1";
-    theme_primary_text = "theme_primary_text_1";
-    theme_secondary_text = "theme_secondary_text_1"
+
+    let current_theme = Math.floor(Math.random() * 3) + 1;
+
+    theme_primary = "theme_primary_" + current_theme;
+    theme_secodary = "theme_secondary_" + current_theme;
+    theme_highlight = "theme_highlight_" + current_theme;
+    theme_primary_text = "theme_primary_text_" + current_theme;
+    theme_secondary_text = "theme_secondary_text_" + current_theme;
 }
 
 function history_button_clicked() {
@@ -230,6 +236,7 @@ function equals_compute() {
         navigator.clipboard.writeText(arr[1]).catch(err => {
             console.error('Could not copy text: ', arr[1], err);
         });
+        calc_display.innerHTML = arr[1];
     }
     output_display.classList.remove("output_grayed");
 }

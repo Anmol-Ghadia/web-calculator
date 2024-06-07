@@ -7,6 +7,7 @@
 body{
     height: 100vh;
     width: 100%;
+    backdrop-filter: brightness(60%);
 }
 
 #container {
