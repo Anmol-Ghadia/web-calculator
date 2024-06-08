@@ -14,6 +14,15 @@ var history_shown = false;
 addEventListener("DOMContentLoaded", init);
 addEventListener('keydown', keyPressHandler);
 
+if ("serviceWorker" in navigator) {
+    window.addEventListener("load", function() {
+      navigator.serviceWorker
+        .register("serviceWorker.js")
+        .then(res => console.log("service worker registered"))
+        .catch(err => console.log("service worker not registered", err))
+    })
+  }
+
 function keyPressHandler(event) {
     if ('0123456789+-*/^%().'.includes(event.key)) {
         accept_input(event.key);
