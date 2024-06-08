@@ -7,7 +7,6 @@
 body{
     height: 100vh;
     width: 100%;
-    backdrop-filter: brightness(60%);
 }
 
 #container {
@@ -39,6 +38,7 @@ body{
 }
 
 .output_container {
+    border-radius: 1vh;
     margin: 1px;
     grid-column-start: 1;
     grid-column-end: 5;
@@ -81,6 +81,7 @@ body{
 }
 
 button {
+    border-radius: 1vh;
     font-size: 5vh;
     border-width: 0px;
     margin: 1px;
@@ -93,6 +94,10 @@ button:hover {
 
 button:active {
     filter: brightness(75%);
+}
+
+button:focus {
+    outline: none;
 }
 
 #display_equals{
@@ -110,6 +115,7 @@ button:active {
 }
 
 .history_cell {
+    margin-left: 2vh;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -150,6 +156,12 @@ button:active {
     font-size: 3vh;
 }
 
+#history_toggle_btn {
+    /* margin: 1px 1px 1px 1px; */
+    border: 1px solid #eaeaea;
+    margin: 0px 0px 2px 0px;
+}
+
 /* width */
 ::-webkit-scrollbar {
     width: 2vh;
@@ -157,7 +169,8 @@ button:active {
 
 /* Track */
 ::-webkit-scrollbar-track {
-    border: 1px solid #444444;
+    /* border: 1px solid #444444; */
+    /* background-color: #ccc; */
 }
 
 /* Handle */
@@ -176,6 +189,7 @@ button:active {
         display: flex;
         justify-content: center;
         align-items: center;
+        backdrop-filter: brightness(60%);
     }
 
     #container {

@@ -12,11 +12,23 @@ output_display.innerHTML = "";
 
 var history_shown = false;
 addEventListener("DOMContentLoaded", init);
+addEventListener('keydown', keyPressHandler);
+
+function keyPressHandler(event) {
+    if ('0123456789+-*/^%().'.includes(event.key)) {
+        accept_input(event.key);
+    } else if (event.key === 'Backspace') {
+        remove_input();
+    } else if (['Enter','='].includes(event.key)) {
+        equals_compute();
+        event.preventDefault();
+    }
+}
 
 // Startup routine
 function init() {
     history_button_clicked();
-    // history_button_clicked();
+    history_button_clicked();
     generateTheme();
     applyTheme();
 }
@@ -691,10 +703,13 @@ function update_auto_complete_display() {
 
 }
 
+function calculator_button_pressed(btn) {
+    accept_input(btn.value);
+}
 
 // Adds the corresponding input to display
-function accept_input(btn) {
-    calc_display.innerHTML += btn.value;
+function accept_input(value) {
+    calc_display.innerHTML += value;
     update_auto_complete_display();
 }
 

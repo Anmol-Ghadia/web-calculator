@@ -29,14 +29,14 @@ Automatically closes any open brackets and displayed visually as grayed out clos
 1) check that no two operators are consecutive ✅ Solved by the first check
 
 ## TODO
-1) Add Keyboard Support for the calculator
 1) Make the app a PWA
 1) Refactor Code
 1) single decimal point gives Nan
 1) Fix Error and Nan situations
 1) Decrease font size for output if large number needs to be displayed
 1) Handle case where many digits are displayed
-1) Add more themes
+1) ~~Add more themes~~ Scraped for only two themes
+1) ~~Add Keyboard Support for the calculator~~
 1) ~~Add dark mode option for background only~~
 1) ~~clicking on a history cell copies the answer to clipboard~~
 1) ~~clicking equals and then calculating should copy the value from previous answer~~
