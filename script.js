@@ -24,6 +24,7 @@ let theme_secondary_text = 'theme_secondary_text_4';
 var history_shown = false;
 addEventListener("DOMContentLoaded", init);
 addEventListener('keydown', keyPressHandler);
+addEventListener('resize', fitTextOutputDisplay);
 
 if ("serviceWorker" in navigator) {
     window.addEventListener("load", function() {
@@ -32,6 +33,29 @@ if ("serviceWorker" in navigator) {
         .then(res => console.log("service worker registered"))
         .catch(err => console.log("service worker not registered", err))
     })
+}
+
+function fitTextOutputDisplay() {
+    var container = output_display; 
+    // var container = document.getElementById('container');
+    
+    var containerWidth = container.offsetWidth;
+    var textWidth = container.scrollWidth;
+    
+    var fontSize = 100* (parseInt(window.getComputedStyle(container).fontSize) / window.innerHeight);
+    // Check if increasing font size makes text fit
+    while (textWidth <= containerWidth && fontSize < 8) {
+        fontSize += 1;
+        container.style.fontSize = fontSize + 'vh';
+        textWidth = container.scrollWidth;
+    }
+    
+    // If increasing font size makes text overflow, decrease font size
+    while (textWidth > containerWidth && fontSize > 1) {
+        fontSize -= 1;
+        container.style.fontSize = fontSize + 'vh';
+        textWidth = container.scrollWidth;
+    }
 }
 
 // Toggles between dark and light theme each time it is called
@@ -265,8 +289,17 @@ function check_percent_is_not_followed_by_number(str) {
 // Checks that all pre checks are satisfied
 function passes_all_pre_checks(str) {
     const bool_1 = check_percent_is_not_followed_by_number(str);
+    const bool_2 = check_starting_character(str);
 
-    return bool_1;
+    return bool_2 && bool_1;
+}
+
+function check_starting_character(str) {
+    if (str.length==0) return true;
+    let char = str[str.length-1];
+    if ("%^*/".split("").includes(char)) return false;
+    console.log("1");
+    return true;
 }
 
 // returns an array of size 2 by evaluating the 
@@ -823,8 +856,10 @@ function update_auto_complete_display() {
     
     if (arr[0] == 1) {
         // Incorrect expression
+        // TODO: can add a popup for user or another way to hint that the expr is wrong
     } else {
         output_display.innerHTML = arr[1];
+        fitTextOutputDisplay();
     }
     output_display.classList.add("output_grayed");
 
@@ -845,6 +880,7 @@ function remove_input() {
     const len = calc_display.innerHTML.length;
     if (len != 0) {
         calc_display.innerHTML = calc_display.innerHTML.substring(0,len -1);
+        if (len==1) output_display.innerHTML='';
     }
     update_auto_complete_display();
 }
