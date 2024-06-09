@@ -75,7 +75,6 @@ body{
     /*  */
     display: flex;
     align-items: center;
-    margin: 2px;
     justify-content: right;
 
 }
@@ -183,13 +182,34 @@ button:focus {
     background: #444444;
 }
 
+#theme_toggle {
+    width: 5vh;
+    height: 5vh;
+    top: 0.5vh;
+    right: 0.5vh;
+    border-radius: 1.5vh;
+    position: absolute;
+    background-color: orange;
+}
+
 @media only screen and (orientation: landscape) {
     /* For wide screens: */
+
     body {
         display: flex;
         justify-content: center;
         align-items: center;
-        backdrop-filter: brightness(60%);
+
+        background: rgb(0,0,0);
+        background: -moz-linear-gradient(159deg, rgba(0,0,0,1) 0%, rgba(20,20,133,1) 66%, rgba(15,15,66,1) 99%);
+        background: -webkit-linear-gradient(159deg, rgba(0,0,0,1) 0%, rgba(20,20,133,1) 66%, rgba(15,15,66,1) 99%);
+        background: linear-gradient(159deg, rgba(0,0,0,1) 0%, rgba(20,20,133,1) 66%, rgba(15,15,66,1) 99%);
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#000000",endColorstr="#0f0f42",GradientType=1);
+        
+        font-family: "Manrope", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 500;
+        font-style: normal;
     }
 
     #container {
@@ -201,37 +221,102 @@ button:focus {
         flex-direction: row;
     }
 
+    .output_container {
+        color: gold;
+        border: 0.3vh solid rgba(255,255,255,0.3);
+        background-color: rgba(255,255,255,0.2);
+        border-radius: 1vh;
+        margin-bottom: 0.4vh;
+    }
+        
+    #display {
+        color: white;
+        background-color: rgba(255,255,255,0.10);
+        border-radius: 1vh;
+        margin: 0.5vh;
+    }
+
     #calculator_container {
         width: 60vh;
         height: 100%;
         order: 1;
-        border-radius: 1vh 0px 0px 1vh;
-    }
     
+        border: 0.5vh solid rgba(255,255,255,0.5);
+        border-right: 0px solid white;
+        padding: 1vh;
+        border-radius: 2vh 0px 0px 2vh;
+    }
+
+    button {
+        color: white;
+        background-color: rgba(0,0,0,0.45);
+
+        font-family: "Manrope", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 400;
+        font-style: normal;
+    }
+
     #history_container {
         height: 100%;
         width: 0%;
         order: 2;
         transition: width 100ms cubic-bezier(0.215, 0.610, 0.355, 1);
-    }
+        overflow-x: hidden;
 
-    #history_toggle_btn {
-        margin: 1px 0px 1px 0px;
-        height: 100%;
-        order: 3;
-        border-radius: 0px 1vh 1vh 0px;
-    }
-
-    #btn_0 {
-        border-radius: 0px 0px 0px 1vh;
-    }
-
-    .output_container {
-        border-radius: 1vh 0px 0px 0px;
-        margin-right: 1px;
+        border-top: 0.5vh solid rgba(255,255,255,0.5);
+        border-bottom: 0.5vh solid rgba(255,255,255,0.5);
     }
 
     .history_cell {
         flex-direction: column;
+        
+        
+        
+        background: rgb(0,0,0);
+        background: -moz-radial-gradient(circle, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.3) 27%, rgba(0,0,0,0.25) 48%, rgba(255,255,255,0) 100%);
+        background: -webkit-radial-gradient(circle, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.3) 27%, rgba(0,0,0,0.25) 48%, rgba(255,255,255,0) 100%);
+        background: radial-gradient(circle, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.3) 27%, rgba(0,0,0,0.25) 48%, rgba(255,255,255,0) 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#000000",endColorstr="#ffffff",GradientType=1);
+
     }
+
+    .history_formula {
+        /* padding: 0vh 1vh; */
+        color: white;
+    }
+
+    .history_answer {
+        /* padding: 0vh 1vh; */
+        color: white;
+    }
+
+    .history_cell_top_spacer {
+
+
+        background: rgb(255,255,255);
+        background: -moz-linear-gradient(90deg, rgba(255,255,255,0) 15%, rgba(255,255,255,0.5) 55%, rgba(255,255,255,0) 95%);
+        background: -webkit-linear-gradient(90deg, rgba(255,255,255,0) 15%, rgba(255,255,255,0.5) 55%, rgba(255,255,255,0) 95%);
+        background: linear-gradient(90deg, rgba(255,255,255,0) 15%, rgba(255,255,255,0.5) 55%, rgba(255,255,255,0) 95%);
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#ffffff",endColorstr="#ffffff",GradientType=1);
+
+        
+
+    }
+
+    .history_btn_container {
+        height: 100%;
+        order: 3;
+        
+        border: 0.5vh solid rgba(255,255,255,0.53);
+        border-left: 0vh solid white;
+        border-radius: 0px 2vh 2vh 0px;
+    }
+
+    #history_toggle_btn {
+        margin: 1vh 1vh 1vh 0px;
+        height: 97.5%;
+        border: 0px solid black;
+    }
+
 }

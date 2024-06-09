@@ -10,6 +10,17 @@ calc_display_append.innerHTML = "=";
 const output_display = document.getElementById("output_display");
 output_display.innerHTML = "";
 
+const theme_toggle = document.getElementById("theme_toggle");
+theme_toggle.addEventListener("click", handle_toggle_theme);
+var light_theme = false;
+
+// Class styling for light mode
+let theme_primary = 'theme_primary_4';
+let theme_secodary = 'theme_secondary_4';
+let theme_highlight = 'theme_highlight_4';
+let theme_primary_text = 'theme_primary_text_4';
+let theme_secondary_text = 'theme_secondary_text_4';
+
 var history_shown = false;
 addEventListener("DOMContentLoaded", init);
 addEventListener('keydown', keyPressHandler);
@@ -21,7 +32,20 @@ if ("serviceWorker" in navigator) {
         .then(res => console.log("service worker registered"))
         .catch(err => console.log("service worker not registered", err))
     })
-  }
+}
+
+// Toggles between dark and light theme each time it is called
+function handle_toggle_theme() {
+    if (light_theme) {
+        // Change to dark theme
+        light_theme = false;
+    } else {
+        // Change to light theme
+        light_theme = true;
+    }
+    applyTheme();
+    console.log("Theme toggled, is white: ", light_theme);
+}
 
 function keyPressHandler(event) {
     if ('0123456789+-*/^%().'.includes(event.key)) {
@@ -38,7 +62,6 @@ function keyPressHandler(event) {
 function init() {
     history_button_clicked();
     history_button_clicked();
-    generateTheme();
     applyTheme();
 }
 
@@ -55,10 +78,15 @@ function add_history(formula,answer) {
     history_answer.classList.add("history_answer");
     
     // Styling
-    history_cell_top_spacer.classList.add(theme_highlight);
-    history_cell.classList.add(theme_secodary);
-    history_answer.classList.add(theme_secondary_text)
-    history_formula.classList.add(theme_primary_text)
+    if (light_theme) {
+        // Current theme is light, (add classes)    
+        history_cell.classList.add(theme_primary);
+        history_cell.classList.add(theme_primary_text);
+        history_answer.classList.add(theme_primary)
+        history_answer.classList.add(theme_primary_text)
+        history_formula.classList.add(theme_primary)
+        history_formula.classList.add(theme_primary_text)
+    }
 
     history_cell.addEventListener('click', function() {
         // Copy the answer text to the clipboard
@@ -79,29 +107,83 @@ function add_history(formula,answer) {
 }
 
 function applyTheme() {
-    // text
-    document.getElementsByClassName("output_display")[0].classList.add(theme_primary_text);
-    document.getElementById("display").classList.add(theme_secondary_text);
+    if (light_theme) {
+        // Current theme is light, (Add theme)
 
-    // Background color
-    document.getElementsByTagName("body")[0].classList.add(theme_primary);
-    document.getElementById("calculator_container").classList.add(theme_secodary);
-    document.getElementById("display").classList.add(theme_secodary);
-    document.getElementsByClassName("output_container")[0].classList.add(theme_highlight);
-    document.getElementsByClassName("history_container")[0].classList.add(theme_secodary);
-    document.getElementsByClassName("history_container")[0].style.backdrop_filter = "brightness(60%)";
-    
-    // text + background
-    Array.from(document.getElementsByTagName("button")).forEach(ele => {
-        ele.classList.add(theme_primary);
-        ele.classList.add(theme_primary_text);
-    })
+        // text
+        document.getElementsByClassName("output_display")[0].classList.add(theme_primary_text);
+        document.getElementById("display").classList.add(theme_secondary_text);
+
+        // Background color
+        document.getElementsByTagName("body")[0].classList.add(theme_primary);
+        document.getElementById("calculator_container").classList.add(theme_secodary);
+        document.getElementById("display").classList.add(theme_secodary);
+        document.getElementsByClassName("output_container")[0].classList.add(theme_highlight);
+        document.getElementsByClassName("history_container")[0].classList.add(theme_secodary);
+        
+        // text + background
+        Array.from(document.getElementsByTagName("button")).forEach(ele => {
+            ele.classList.add(theme_primary);
+            ele.classList.add(theme_primary_text);
+        })
+        Array.from(document.getElementsByClassName("history_cell")).forEach(ele => {
+            ele.classList.add(theme_primary);
+            ele.classList.add(theme_primary_text);
+        })
+
+        Array.from(document.getElementsByClassName("history_formula")).forEach(ele => {
+            ele.classList.add(theme_primary);
+            ele.classList.add(theme_primary_text);
+        })
+        Array.from(document.getElementsByClassName("history_answer")).forEach(ele => {
+            ele.classList.add(theme_primary);
+            ele.classList.add(theme_primary_text);
+        })
+
+
+    } else {
+        // Current theme is dark, (Remove classes)
+
+        // text
+        document.getElementsByClassName("output_display")[0].classList.remove(theme_primary_text);
+        document.getElementById("display").classList.remove(theme_secondary_text);
+
+        // Background color
+        document.getElementsByTagName("body")[0].classList.remove(theme_primary);
+        document.getElementById("calculator_container").classList.remove(theme_secodary);
+        document.getElementById("display").classList.remove(theme_secodary);
+        document.getElementsByClassName("output_container")[0].classList.remove(theme_highlight);
+        document.getElementsByClassName("history_container")[0].classList.remove(theme_secodary);
+        
+        // text + background
+        Array.from(document.getElementsByTagName("button")).forEach(ele => {
+            ele.classList.remove(theme_primary);
+            ele.classList.remove(theme_primary_text);
+        })
+        Array.from(document.getElementsByClassName("history_cell")).forEach(ele => {
+            ele.classList.remove(theme_primary);
+            ele.classList.remove(theme_primary_text);
+        })
+        Array.from(document.getElementsByClassName("history_formula")).forEach(ele => {
+            ele.classList.remove(theme_primary);
+            ele.classList.remove(theme_primary_text);
+        })
+        Array.from(document.getElementsByClassName("history_answer")).forEach(ele => {
+            ele.classList.remove(theme_primary);
+            ele.classList.remove(theme_primary_text);
+        })
+
+
+    }
+
+
 }
 
 // Picks a random theme and sets global variables
 function generateTheme() {
 
-    let current_theme = Math.floor(Math.random() * 3) + 1;
+    // let current_theme = Math.floor(Math.random() * 3) + 1;
+    let current_theme = "1";
 
     theme_primary = "theme_primary_" + current_theme;
     theme_secodary = "theme_secondary_" + current_theme;

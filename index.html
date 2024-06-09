@@ -47,17 +47,24 @@
             <button id="btn_plus" type="button" value="+" onclick="calculator_button_pressed(this)">+</button>
         
         </div>
-        <button id="history_toggle_btn" onclick="history_button_clicked()">△</button>
+        <div class="history_btn_container"><button id="history_toggle_btn" onclick="history_button_clicked()">△</button></div>
         <div id="history_container" class="history_container history_hide">
             <!-- <div class="history_cell">
                 <div class="history_formula">10+3(5%100)</div>
                 <div class="history_answer">1</div>
             </div> -->
         </div>
+        <div id="theme_toggle"></div>
     </div>
 </body>
+<!-- styles -->
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="theme.css">
+<!-- scripts -->
 <script src="library/decimal.js"></script>
 <script src="script.js"></script>
+<!-- fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Teko:wght@300..700&display=swap" rel="stylesheet">
 </html>
