@@ -504,12 +504,48 @@ function evaluate_expression(a, op, b) {
 
 // Returns the expression without syntax sugars 
 function remove_syntax_sugars(str) {
+    str = remove_syntax_sugar_single_decimal(str);
     str = remove_synatx_sugar_plus_minus(str);
     str = remove_synatx_sugar_implicit_multiplication(str);
+    str = remove_syntax_sugar_plus_plus_and_minus_minus(str);
     str = remove_synatx_sugar_plus_minus_both_side_number(str);
     str = remove_syntax_sugar_percent(str);
 
     return str;
+}
+
+function remove_syntax_sugar_single_decimal(str) {
+    if (str === ".") {
+        return "0";
+    }
+    return str;
+}
+
+function remove_syntax_sugar_plus_plus_and_minus_minus(str) {
+    let out_str = '';
+    if (str.length <= 1) return str;
+
+    for (let first_ptr = 0;first_ptr < str.length-1;) {
+        let second_ptr = first_ptr+1;
+        if ("+-".includes(str[first_ptr])) {
+            while (second_ptr < str.length) {
+                if (str[first_ptr]==str[second_ptr]) {
+                    second_ptr++;
+                } else {
+                    break;
+                }
+            }
+        }
+        if ('-'.includes(str[first_ptr]) && ((second_ptr-first_ptr)%2 == 0)) {
+            out_str+= '+';
+        } else {
+            out_str+= str[first_ptr];
+        }
+        first_ptr = second_ptr;
+    }
+    out_str += str[str.length-1];
+
+    return out_str;
 }
 
 function remove_syntax_sugar_percent(str) {

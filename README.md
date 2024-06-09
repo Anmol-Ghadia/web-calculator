@@ -17,8 +17,10 @@ Automatically closes any open brackets and displayed visually as grayed out clos
 1) check that  `%` operator is not followed by a number ✅
 
 ## Syntax sugars
+1) Exact string `.` represents `0`
 1) `+-` becomes `-` ✅
 1) a bracket right after a number has implicit multiplication ✅
+1) `---..` becomes `+` or `-` depending on count and `+++...` becomes `+` ✅
 1) Add implicit `0` before `+` and `-` if a number is missing ✅
 1) `%` becomes `*0.01` called as expanding the percent symbol ✅
 1) ~~add brackets to follow BODMAS rule~~ (indstead modified evaluation rules) ✅ 
@@ -30,16 +32,16 @@ Automatically closes any open brackets and displayed visually as grayed out clos
 
 ## TODO
 1) Add Commas according to international system of counting only for visual component
-1) Add 2 themes only, dark and light
-1) Fix Styling for History tab
+1) Add 2 themes only, dark and light [partially done]
 1) Refactor Code
-1) single decimal point gives Nan
 1) Fix Error and Nan situations
-1) Add syntax sugar for `+` as `--` 
 1) Decrease font size for output if large number needs to be displayed
 1) Handle case where many digits are displayed
 1) Polish the PWA Features
 1) Test Fetures and styling on different devices
+1) ~~single decimal point gives Nan~~
+1) ~~Add syntax sugar for `+` as `--` ~~
+1) ~~Fix Styling for History tab~~
 1) ~~Make the app a PWA~~
 1) ~~Add more themes~~ Scraped for only two themes
 1) ~~Add Keyboard Support for the calculator~~
