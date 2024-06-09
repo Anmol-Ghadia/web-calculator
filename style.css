@@ -7,11 +7,23 @@
 body{
     height: 100vh;
     width: 100%;
+    
+    font-family: "Manrope", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
+
+    background: rgb(0,0,0);
+    background: -moz-linear-gradient(159deg, rgba(0,0,0,1) 0%, rgba(20,20,133,1) 66%, rgba(15,15,66,1) 99%);
+    background: -webkit-linear-gradient(159deg, rgba(0,0,0,1) 0%, rgba(20,20,133,1) 66%, rgba(15,15,66,1) 99%);
+    background: linear-gradient(159deg, rgba(0,0,0,1) 0%, rgba(20,20,133,1) 66%, rgba(15,15,66,1) 99%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#000000",endColorstr="#0f0f42",GradientType=1);
 }
 
 #container {
     height: 100%;
     width: 100%;
+    padding: 1vh;
     
     display: flex;
     flex-direction: column;
@@ -26,8 +38,10 @@ body{
 }
 
 #history_container {
+    margin-top: 0.5vh;
     height: 0%;
     overflow-y: scroll;
+    overflow-x: hidden;
     display: flex;
     flex-flow: column-reverse;
     transition: height 100ms cubic-bezier(0.215, 0.610, 0.355, 1);
@@ -38,8 +52,13 @@ body{
 }
 
 .output_container {
+    color: gold;
     border-radius: 1vh;
-    margin: 1px;
+    border: 0.3vh solid rgba(255,255,255,0.3);
+    background-color: rgba(255,255,255,0.2);
+    
+    margin: 0.5vh;
+    
     grid-column-start: 1;
     grid-column-end: 5;
     grid-row-start: 1;
@@ -72,7 +91,11 @@ body{
     font-size: 5vh;
     padding-right: 2vw;
 
-    /*  */
+    color: white;
+    background-color: rgba(255,255,255,0.10);
+    border-radius: 1vh;
+    margin: 0.5vh;
+    
     display: flex;
     align-items: center;
     justify-content: right;
@@ -84,19 +107,36 @@ button {
     font-size: 5vh;
     border-width: 0px;
     margin: 1px;
-    transition: filter 100ms cubic-bezier(0.55, 0.085, 0.68, 0.53);
+
+    color: white;
+    background-color: rgba(0,0,0,0.45);
+
+    font-family: "Manrope", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+
+    transition: color,background-color,filter 100ms cubic-bezier(0.55, 0.085, 0.68, 0.53),
+    border-radius 500ms cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
 button:hover {
-    filter: brightness(90%);
-}
-
-button:active {
-    filter: brightness(75%);
+    color: gold;
+    background-color: rgba(0,0,0,0.35);
+    border-radius: 2vh;
+    font-weight: 600;
 }
 
 button:focus {
     outline: none;
+}
+
+#display_append {
+    background-color: rgba(255,215,0,0.30);
+}
+
+#btn_clear {
+    background-color: rgba(255,255,255,0.30);
 }
 
 #display_equals{
@@ -118,24 +158,44 @@ button:focus {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
+
+    background: rgb(0,0,0);
+    background: -moz-radial-gradient(circle, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.3) 27%, rgba(0,0,0,0.25) 48%, rgba(255,255,255,0) 100%);
+    background: -webkit-radial-gradient(circle, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.3) 27%, rgba(0,0,0,0.25) 48%, rgba(255,255,255,0) 100%);
+    background: radial-gradient(circle, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.3) 27%, rgba(0,0,0,0.25) 48%, rgba(255,255,255,0) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#000000",endColorstr="#ffffff",GradientType=1);
+
     transition: filter 100ms cubic-bezier(0.445, 0.05, 0.55, 0.95);
 }
 
-.history_cell:hover {
-    filter: brightness(90%);
+.history_cell:hover .history_cell_top_spacer {
+    transform: translateX(20vh);
 }
 
-.history_cell:active {
-    filter: brightness(75%);
+.history_cell:hover .history_answer {
+    color: gold;
+}
+
+.history_cell:hover .history_formula {
+    color: gold;
 }
 
 .history_cell_top_spacer {
     width: 100%;
     height: 2px;
+
+    background: rgb(255,255,255);
+    background: -moz-linear-gradient(90deg, rgba(255,255,255,0) 15%, rgba(255,255,255,0.5) 55%, rgba(255,255,255,0) 95%);
+    background: -webkit-linear-gradient(90deg, rgba(255,255,255,0) 15%, rgba(255,255,255,0.5) 55%, rgba(255,255,255,0) 95%);
+    background: linear-gradient(90deg, rgba(255,255,255,0) 15%, rgba(255,255,255,0.5) 55%, rgba(255,255,255,0) 95%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#ffffff",endColorstr="#ffffff",GradientType=1);
+
+    transition: transform 500ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .history_formula {
     margin: 0.5vh 0.5vw;
+    color: white;
 
     display: flex;
     align-items: center;
@@ -144,21 +204,27 @@ button:focus {
 
     overflow: hidden;
     user-select: none;
+
+    transition: color 100ms cubic-bezier(0.23, 1, 0.320, 1);
 }
 
 .history_answer {
     margin: 0.5vh 0.5vw;
+    color: white;
 
     display: flex;
     justify-content: right;
     text-align: center;
     font-size: 3vh;
+
+    transition: color 100ms cubic-bezier(0.23, 1, 0.320, 1);
+}
+
+.history_btn_container {
 }
 
 #history_toggle_btn {
-    /* margin: 1px 1px 1px 1px; */
-    border: 1px solid #eaeaea;
-    margin: 0px 0px 2px 0px;
+    width: 100%;
 }
 
 /* width */
@@ -168,28 +234,38 @@ button:focus {
 
 /* Track */
 ::-webkit-scrollbar-track {
-    /* border: 1px solid #444444; */
-    /* background-color: #ccc; */
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-    background: #666666;
+    background: rgba(0,0,0,0.45);
+    border-radius: 1vh;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-    background: #444444;
+    background: rgba(0,0,0,0.30);
 }
 
 #theme_toggle {
-    width: 5vh;
-    height: 5vh;
-    top: 0.5vh;
-    right: 0.5vh;
+    width: 4vh;
+    height: 4vh;
+    top: 2vh;
+    right: 2vh;
     border-radius: 1.5vh;
     position: absolute;
-    background-color: orange;
+
+    background-color: rgba(0, 0, 0, 0.6);
+    border: 0.45vh solid rgba(255,255,255,0.70);
+    border-radius: 40%;
+
+    transition: background-color,border 1s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+#theme_toggle:hover {
+    background-color: rgba(0, 0, 0, 0.6);
+    border: 0.7vh solid rgba(255,255,255,1);
+    border-radius: 50%;
 }
 
 @media only screen and (orientation: landscape) {
@@ -199,17 +275,6 @@ button:focus {
         display: flex;
         justify-content: center;
         align-items: center;
-
-        background: rgb(0,0,0);
-        background: -moz-linear-gradient(159deg, rgba(0,0,0,1) 0%, rgba(20,20,133,1) 66%, rgba(15,15,66,1) 99%);
-        background: -webkit-linear-gradient(159deg, rgba(0,0,0,1) 0%, rgba(20,20,133,1) 66%, rgba(15,15,66,1) 99%);
-        background: linear-gradient(159deg, rgba(0,0,0,1) 0%, rgba(20,20,133,1) 66%, rgba(15,15,66,1) 99%);
-        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#000000",endColorstr="#0f0f42",GradientType=1);
-        
-        font-family: "Manrope", sans-serif;
-        font-optical-sizing: auto;
-        font-weight: 500;
-        font-style: normal;
     }
 
     #container {
@@ -219,21 +284,6 @@ button:focus {
         align-items: center;
         justify-content: center;
         flex-direction: row;
-    }
-
-    .output_container {
-        color: gold;
-        border: 0.3vh solid rgba(255,255,255,0.3);
-        background-color: rgba(255,255,255,0.2);
-        border-radius: 1vh;
-        margin-bottom: 0.4vh;
-    }
-        
-    #display {
-        color: white;
-        background-color: rgba(255,255,255,0.10);
-        border-radius: 1vh;
-        margin: 0.5vh;
     }
 
     #calculator_container {
@@ -247,16 +297,6 @@ button:focus {
         border-radius: 2vh 0px 0px 2vh;
     }
 
-    button {
-        color: white;
-        background-color: rgba(0,0,0,0.45);
-
-        font-family: "Manrope", sans-serif;
-        font-optical-sizing: auto;
-        font-weight: 400;
-        font-style: normal;
-    }
-
     #history_container {
         height: 100%;
         width: 0%;
@@ -264,44 +304,23 @@ button:focus {
         transition: width 100ms cubic-bezier(0.215, 0.610, 0.355, 1);
         overflow-x: hidden;
 
+        margin-top: 0px;
         border-top: 0.5vh solid rgba(255,255,255,0.5);
         border-bottom: 0.5vh solid rgba(255,255,255,0.5);
     }
 
     .history_cell {
         flex-direction: column;
-        
-        
-        
-        background: rgb(0,0,0);
-        background: -moz-radial-gradient(circle, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.3) 27%, rgba(0,0,0,0.25) 48%, rgba(255,255,255,0) 100%);
-        background: -webkit-radial-gradient(circle, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.3) 27%, rgba(0,0,0,0.25) 48%, rgba(255,255,255,0) 100%);
-        background: radial-gradient(circle, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.3) 27%, rgba(0,0,0,0.25) 48%, rgba(255,255,255,0) 100%);
-        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#000000",endColorstr="#ffffff",GradientType=1);
-
-    }
-
-    .history_formula {
-        /* padding: 0vh 1vh; */
-        color: white;
     }
 
     .history_answer {
-        /* padding: 0vh 1vh; */
-        color: white;
+        margin-top: 0px;
+        margin-bottom: 0px;
     }
-
-    .history_cell_top_spacer {
-
-
-        background: rgb(255,255,255);
-        background: -moz-linear-gradient(90deg, rgba(255,255,255,0) 15%, rgba(255,255,255,0.5) 55%, rgba(255,255,255,0) 95%);
-        background: -webkit-linear-gradient(90deg, rgba(255,255,255,0) 15%, rgba(255,255,255,0.5) 55%, rgba(255,255,255,0) 95%);
-        background: linear-gradient(90deg, rgba(255,255,255,0) 15%, rgba(255,255,255,0.5) 55%, rgba(255,255,255,0) 95%);
-        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#ffffff",endColorstr="#ffffff",GradientType=1);
-
-        
-
+    
+    .history_formula {
+        margin-top: 0px;
+        margin-bottom: 0px;
     }
 
     .history_btn_container {
@@ -311,12 +330,13 @@ button:focus {
         border: 0.5vh solid rgba(255,255,255,0.53);
         border-left: 0vh solid white;
         border-radius: 0px 2vh 2vh 0px;
+        
+        padding-left: 0.4vh;
+        padding-right: 1vh;
     }
 
     #history_toggle_btn {
         margin: 1vh 1vh 1vh 0px;
         height: 97.5%;
-        border: 0px solid black;
     }
-
 }

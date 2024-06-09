@@ -35,6 +35,7 @@ Automatically closes any open brackets and displayed visually as grayed out clos
 1) Refactor Code
 1) single decimal point gives Nan
 1) Fix Error and Nan situations
+1) Add syntax sugar for `+` as `--` 
 1) Decrease font size for output if large number needs to be displayed
 1) Handle case where many digits are displayed
 1) Polish the PWA Features
