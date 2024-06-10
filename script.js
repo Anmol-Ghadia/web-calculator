@@ -88,14 +88,29 @@ function fitTextOutputDisplay() {
 
 // Toggles between dark and light theme each time it is called
 function handleThemeToggle() {
+    let lightThemeFile = 'lightTheme.css';
     if (IS_LIGHT_THEME) {
         // Change to dark theme
+
+        var stylesheet = document.querySelector('link[href="' + lightThemeFile + '"][rel="stylesheet"]');
+        if (stylesheet) {
+            stylesheet.parentNode.removeChild(stylesheet);
+        }
+
         IS_LIGHT_THEME = false;
     } else {
         // Change to light theme
+        
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = lightThemeFile;
+
+        document.head.appendChild(link);
+            
         IS_LIGHT_THEME = true;
     }
-    applyTheme();
+    // applyTheme();
     if (SHOW_LOGS) console.log("Theme toggled, is white: ", IS_LIGHT_THEME);
 }
 
@@ -257,6 +272,7 @@ function handleHistoryToggleButtonClick() {
     }
 }
 
+// All clear of output and input display
 function clearInput(){
     CALC_INPUT_DISPLAY_ELEMENT.innerHTML = "";
 

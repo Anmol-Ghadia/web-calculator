@@ -31,13 +31,14 @@ Automatically closes any open brackets and displayed visually as grayed out clos
 1) check that no two operators are consecutive ✅ Solved by the first check
 
 ## TODO
-1) Add 2 themes only, dark and light [partially done]
-1) Refactor Code
+1) Fix Solving algorithm
 1) Fix Error and Nan situations
-1) Handle case where many digits are displayed
 1) Polish the PWA Features
 1) Test Fetures and styling on different devices
 1) Add Commas according to international system of counting only for visual component
+1) ~~Handle case where many digits are displayed~~
+1) ~~Add 2 themes only, dark and light [partially done]~~
+1) ~~Refactor Code~~
 1) ~~Decrease font size for output if large number needs to be displayed~~
 1) ~~Last number should not be displayed on the screen~~
 1) ~~single decimal point gives Nan~~
