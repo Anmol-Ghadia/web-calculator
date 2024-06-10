@@ -25,7 +25,6 @@ var IS_HISTORY_SHOWN = false;
 addEventListener("DOMContentLoaded", () => {
     handleHistoryToggleButtonClick();
     handleHistoryToggleButtonClick();
-    applyTheme();
 })
 addEventListener("resize", () => {
     handleHistoryToggleButtonClick();
@@ -44,17 +43,6 @@ if ("serviceWorker" in navigator) {
         .catch(err => console.log("service worker not registered", err))
     })
 }
-
-// TODO
-// ========================
-// Class styling for light mode
-let theme_primary = 'theme_primary_4';
-let theme_secodary = 'theme_secondary_4';
-let theme_highlight = 'theme_highlight_4';
-let theme_primary_text = 'theme_primary_text_4';
-let theme_secondary_text = 'theme_secondary_text_4';
-
-// ========================
 
 // Functions
 // ========================
@@ -110,7 +98,6 @@ function handleThemeToggle() {
             
         IS_LIGHT_THEME = true;
     }
-    // applyTheme();
     if (SHOW_LOGS) console.log("Theme toggled, is white: ", IS_LIGHT_THEME);
 }
 
@@ -167,75 +154,6 @@ function appendHistory(formula,answer) {
 
     const history_container = document.getElementsByClassName("history_container")[0];
     history_container.appendChild(historyCellElement);
-}
-// TODO !!!
-function applyTheme() {
-    if (IS_LIGHT_THEME) {
-        // Current theme is light, (Add theme)
-
-        // text
-        document.getElementsByClassName("output_display")[0].classList.add(theme_primary_text);
-        document.getElementById("display").classList.add(theme_secondary_text);
-
-        // Background color
-        document.getElementsByTagName("body")[0].classList.add(theme_primary);
-        document.getElementById("calculator_container").classList.add(theme_secodary);
-        document.getElementById("display").classList.add(theme_secodary);
-        document.getElementsByClassName("output_container")[0].classList.add(theme_highlight);
-        document.getElementsByClassName("history_container")[0].classList.add(theme_secodary);
-        
-        // text + background
-        Array.from(document.getElementsByTagName("button")).forEach(ele => {
-            ele.classList.add(theme_primary);
-            ele.classList.add(theme_primary_text);
-        })
-        Array.from(document.getElementsByClassName("history_cell")).forEach(ele => {
-            ele.classList.add(theme_primary);
-            ele.classList.add(theme_primary_text);
-        })
-
-        Array.from(document.getElementsByClassName("history_formula")).forEach(ele => {
-            ele.classList.add(theme_primary);
-            ele.classList.add(theme_primary_text);
-        })
-        Array.from(document.getElementsByClassName("history_answer")).forEach(ele => {
-            ele.classList.add(theme_primary);
-            ele.classList.add(theme_primary_text);
-        })
-
-
-    } else {
-        // Current theme is dark, (Remove classes)
-
-        // text
-        document.getElementsByClassName("output_display")[0].classList.remove(theme_primary_text);
-        document.getElementById("display").classList.remove(theme_secondary_text);
-
-        // Background color
-        document.getElementsByTagName("body")[0].classList.remove(theme_primary);
-        document.getElementById("calculator_container").classList.remove(theme_secodary);
-        document.getElementById("display").classList.remove(theme_secodary);
-        document.getElementsByClassName("output_container")[0].classList.remove(theme_highlight);
-        document.getElementsByClassName("history_container")[0].classList.remove(theme_secodary);
-        
-        // text + background
-        Array.from(document.getElementsByTagName("button")).forEach(ele => {
-            ele.classList.remove(theme_primary);
-            ele.classList.remove(theme_primary_text);
-        })
-        Array.from(document.getElementsByClassName("history_cell")).forEach(ele => {
-            ele.classList.remove(theme_primary);
-            ele.classList.remove(theme_primary_text);
-        })
-        Array.from(document.getElementsByClassName("history_formula")).forEach(ele => {
-            ele.classList.remove(theme_primary);
-            ele.classList.remove(theme_primary_text);
-        })
-        Array.from(document.getElementsByClassName("history_answer")).forEach(ele => {
-            ele.classList.remove(theme_primary);
-            ele.classList.remove(theme_primary_text);
-        })
-    }
 }
 
 // Handler for opening/closing history tab
