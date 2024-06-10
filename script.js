@@ -1,31 +1,41 @@
-var logging = false;
-const error_text = "error";
-const history_tab_portrait_height = "30%";
-const history_tab_landscape_width = "35vh";
+// Configurable vars
+// ========================
+var SHOW_LOGS = false;
+const ERROR_TEXT = "error";
 
-const calc_display = document.getElementById("display");
-calc_display.innerHTML = "";
-const calc_display_append = document.getElementById("display_append");
-calc_display_append.innerHTML = "=";
-const output_display = document.getElementById("output_display");
-output_display.innerHTML = "";
+// Global Vars
+// ========================
+const HISTORY_TAB_PORTRAIT_HEIGHT = "30%";
+const HISTORY_TAB_LANDSCAPE_WIDTH = "35vh";
 
-const theme_toggle = document.getElementById("theme_toggle");
-theme_toggle.addEventListener("click", handle_toggle_theme);
-var light_theme = false;
+const CALC_INPUT_DISPLAY_ELEMENT = document.getElementById("display");
+CALC_INPUT_DISPLAY_ELEMENT.innerHTML = "";
+const EQUALS_BUTTON_ELEMENT = document.getElementById("display_append");
+const CALC_OUTPUT_DISPLAY_ELEMENT = document.getElementById("output_display");
+CALC_OUTPUT_DISPLAY_ELEMENT.innerHTML = "";
 
-// Class styling for light mode
-let theme_primary = 'theme_primary_4';
-let theme_secodary = 'theme_secondary_4';
-let theme_highlight = 'theme_highlight_4';
-let theme_primary_text = 'theme_primary_text_4';
-let theme_secondary_text = 'theme_secondary_text_4';
+const THEME_TOGGLE_ELEMENT = document.getElementById("theme_toggle");
+THEME_TOGGLE_ELEMENT.addEventListener("click", handleThemeToggle);
+var IS_LIGHT_THEME = false;
 
-var history_shown = false;
-addEventListener("DOMContentLoaded", init);
+var IS_HISTORY_SHOWN = false;
+
+// Event Listeners
+// ========================
+addEventListener("DOMContentLoaded", () => {
+    handleHistoryToggleButtonClick();
+    handleHistoryToggleButtonClick();
+    applyTheme();
+})
+addEventListener("resize", () => {
+    handleHistoryToggleButtonClick();
+    handleHistoryToggleButtonClick();
+    fitTextOutputDisplay();
+});
 addEventListener('keydown', keyPressHandler);
-addEventListener('resize', fitTextOutputDisplay);
 
+// PWA Service worker
+// ========================
 if ("serviceWorker" in navigator) {
     window.addEventListener("load", function() {
       navigator.serviceWorker
@@ -35,14 +45,32 @@ if ("serviceWorker" in navigator) {
     })
 }
 
+// TODO
+// ========================
+// Class styling for light mode
+let theme_primary = 'theme_primary_4';
+let theme_secodary = 'theme_secondary_4';
+let theme_highlight = 'theme_highlight_4';
+let theme_primary_text = 'theme_primary_text_4';
+let theme_secondary_text = 'theme_secondary_text_4';
+
+// ========================
+
+// Functions
+// ========================
+
+// recomputes the best font-size in calculator output display
 function fitTextOutputDisplay() {
-    var container = output_display; 
+    var container = CALC_OUTPUT_DISPLAY_ELEMENT; 
     // var container = document.getElementById('container');
     
     var containerWidth = container.offsetWidth;
     var textWidth = container.scrollWidth;
     
-    var fontSize = 100* (parseInt(window.getComputedStyle(container).fontSize) / window.innerHeight);
+    var fontSize = parseInt(window.getComputedStyle(container).fontSize);
+    fontSize /= window.innerHeight;
+    fontSize *= 100;
+
     // Check if increasing font size makes text fit
     while (textWidth <= containerWidth && fontSize < 8) {
         fontSize += 1;
@@ -59,79 +87,75 @@ function fitTextOutputDisplay() {
 }
 
 // Toggles between dark and light theme each time it is called
-function handle_toggle_theme() {
-    if (light_theme) {
+function handleThemeToggle() {
+    if (IS_LIGHT_THEME) {
         // Change to dark theme
-        light_theme = false;
+        IS_LIGHT_THEME = false;
     } else {
         // Change to light theme
-        light_theme = true;
+        IS_LIGHT_THEME = true;
     }
     applyTheme();
-    console.log("Theme toggled, is white: ", light_theme);
+    if (SHOW_LOGS) console.log("Theme toggled, is white: ", IS_LIGHT_THEME);
 }
 
+// Handler for Key presses
 function keyPressHandler(event) {
     if ('0123456789+-*/^%().'.includes(event.key)) {
-        accept_input(event.key);
+        acceptInput(event.key);
     } else if (event.key === 'Backspace') {
-        remove_input();
+        removeInput();
     } else if (['Enter','='].includes(event.key)) {
-        equals_compute();
+        handleEqualsButton();
         event.preventDefault();
     }
 }
 
-// Startup routine
-function init() {
-    history_button_clicked();
-    history_button_clicked();
-    applyTheme();
-}
-
 // Adds the given formula and answer as a dom element in the history tab
-function add_history(formula,answer) {
-    const history_cell = document.createElement('div');
-    const history_formula = document.createElement('div');
-    const history_answer = document.createElement('div');
-    const history_cell_top_spacer = document.createElement('div');
+function appendHistory(formula,answer) {
+    const historyCellElement = document.createElement('div');
+    const historyFormulaElement = document.createElement('div');
+    const historyAnswerElement = document.createElement('div');
+    const hitoryCellTopSpacer = document.createElement('div');
 
-    history_cell_top_spacer.classList.add("history_cell_top_spacer");
-    history_cell.classList.add("history_cell");
-    history_formula.classList.add("history_formula");
-    history_answer.classList.add("history_answer");
+    hitoryCellTopSpacer.classList.add("history_cell_top_spacer");
+    historyCellElement.classList.add("history_cell");
+    historyFormulaElement.classList.add("history_formula");
+    historyAnswerElement.classList.add("history_answer");
     
     // Styling
-    if (light_theme) {
-        // Current theme is light, (add classes)    
-        history_cell.classList.add(theme_primary);
-        history_cell.classList.add(theme_primary_text);
-        history_answer.classList.add(theme_primary)
-        history_answer.classList.add(theme_primary_text)
-        history_formula.classList.add(theme_primary)
-        history_formula.classList.add(theme_primary_text)
+    if (IS_LIGHT_THEME) {
+        // Current theme is light, (add classes)
+        // TODO !!!
+        historyCellElement.classList.add(theme_primary);
+        historyCellElement.classList.add(theme_primary_text);
+        historyAnswerElement.classList.add(theme_primary)
+        historyAnswerElement.classList.add(theme_primary_text)
+        historyFormulaElement.classList.add(theme_primary)
+        historyFormulaElement.classList.add(theme_primary_text)
     }
 
-    history_cell.addEventListener('click', function() {
+    historyCellElement.addEventListener('click', function() {
         // Copy the answer text to the clipboard
-        navigator.clipboard.writeText(history_answer.textContent)
+        navigator.clipboard.writeText(historyAnswerElement.textContent)
             .catch(err => {
                 console.error('Could not copy answer to clipboard: ', err);
             });
     });
-    history_formula.innerHTML = pre_process_history_formula(formula+" =");
-    history_answer.innerHTML = answer;
 
-    history_cell.appendChild(history_cell_top_spacer);
-    history_cell.appendChild(history_formula);
-    history_cell.appendChild(history_answer);
+    historyFormulaElement.innerHTML = beautifyHistoryFormula(formula+" =");
+    historyAnswerElement.innerHTML = answer;
+
+    historyCellElement.appendChild(hitoryCellTopSpacer);
+    historyCellElement.appendChild(historyFormulaElement);
+    historyCellElement.appendChild(historyAnswerElement);
 
     const history_container = document.getElementsByClassName("history_container")[0];
-    history_container.appendChild(history_cell);
+    history_container.appendChild(historyCellElement);
 }
-
+// TODO !!!
 function applyTheme() {
-    if (light_theme) {
+    if (IS_LIGHT_THEME) {
         // Current theme is light, (Add theme)
 
         // text
@@ -196,105 +220,83 @@ function applyTheme() {
             ele.classList.remove(theme_primary);
             ele.classList.remove(theme_primary_text);
         })
-
-
     }
-
-
 }
 
-// Picks a random theme and sets global variables
-function generateTheme() {
-
-    // let current_theme = Math.floor(Math.random() * 3) + 1;
-    let current_theme = "1";
-
-    theme_primary = "theme_primary_" + current_theme;
-    theme_secodary = "theme_secondary_" + current_theme;
-    theme_highlight = "theme_highlight_" + current_theme;
-    theme_primary_text = "theme_primary_text_" + current_theme;
-    theme_secondary_text = "theme_secondary_text_" + current_theme;
-}
-
-function history_button_clicked() {
-    const history_button = document.getElementById("history_toggle_btn");
-    const history_container = document.getElementById("history_container");
+// Handler for opening/closing history tab
+function handleHistoryToggleButtonClick() {
+    const historyToggleButtonElement = document.getElementById("history_toggle_btn");
+    const historyContainerElement = document.getElementById("history_container");
     if (isOrientationPortrait()) {
-        history_container.style.width = "100%";
-        if (history_shown) {
+        historyContainerElement.style.width = "100%";
+        if (IS_HISTORY_SHOWN) {
             // Hide history
-            history_container.style.height = "0%";
-            history_button.innerHTML = "△";
-            history_shown = false;
+            historyContainerElement.style.height = "0%";
+            historyToggleButtonElement.innerHTML = "△";
+            IS_HISTORY_SHOWN = false;
         } else {
             // show history    
-            history_container.style.height = history_tab_portrait_height;
-            history_button.innerHTML = "▽";
-            history_shown = true;
+            historyContainerElement.style.height = HISTORY_TAB_PORTRAIT_HEIGHT;
+            historyToggleButtonElement.innerHTML = "▽";
+            IS_HISTORY_SHOWN = true;
         }
     } else {
-        // TODO landscape mode !!!
-        history_container.style.height = "100%";
-        if (history_shown) {
+        // landscape
+        historyContainerElement.style.height = "100%";
+        if (IS_HISTORY_SHOWN) {
             // Hide history
-            history_container.style.width = "0%";
-            history_button.innerHTML = ">";
-            history_shown = false;
+            historyContainerElement.style.width = "0%";
+            historyToggleButtonElement.innerHTML = ">";
+            IS_HISTORY_SHOWN = false;
         } else {
             // show history    
-            history_container.style.width = history_tab_landscape_width;
-            history_button.innerHTML = "<";
-            history_shown = true;
+            historyContainerElement.style.width = HISTORY_TAB_LANDSCAPE_WIDTH;
+            historyToggleButtonElement.innerHTML = "<";
+            IS_HISTORY_SHOWN = true;
         }
     }
 }
 
-// Render history tab
-addEventListener("resize", (event) => {
-    history_button_clicked();
-    history_button_clicked();
-});
+function clearInput(){
+    CALC_INPUT_DISPLAY_ELEMENT.innerHTML = "";
 
-function clear_input(){
-    calc_display.innerHTML = "";
-
-    output_display.innerHTML = "";
-    update_auto_complete_display();
+    CALC_OUTPUT_DISPLAY_ELEMENT.innerHTML = "";
+    updateEqualsButton();
 }
 
 // check that the percent does not have a number after it
-function check_percent_is_not_followed_by_number(str) {
+function CheckPercentIsNotFollowedByNumber(str) {
 
-    let pre_percent = false;
-    let found_mistake = false;
+    let lastCharacterWasPercent = false;
+    let foundMistake = false;
     
     str.split("").forEach(ele => {
-        if (logging) console.log("(12) current_element:" , ele);
-        if (pre_percent) {
+        if (SHOW_LOGS) console.log("(12) current_element:" , ele);
+        if (lastCharacterWasPercent) {
             if (!"+-*/%^(".includes(ele)) {
-                if (logging) console.log("(12)" , ele);
-                found_mistake = true;
+                if (SHOW_LOGS) console.log("(12)" , ele);
+                foundMistake = true;
                 return;
             }
-            pre_percent = false;
+            lastCharacterWasPercent = false;
         }
         if (ele == "%") {
-            pre_percent = true;
+            lastCharacterWasPercent = true;
         }
     });
     
-    return !found_mistake;
+    return !foundMistake;
 }
 
 // Checks that all pre checks are satisfied
-function passes_all_pre_checks(str) {
-    const bool_1 = check_percent_is_not_followed_by_number(str);
-    const bool_2 = check_starting_character(str);
+function doAllChecksPass(str) {
+    const bool_1 = CheckPercentIsNotFollowedByNumber(str);
+    const bool_2 = checkStartingCharacter(str);
 
     return bool_2 && bool_1;
 }
 
-function check_starting_character(str) {
+function checkStartingCharacter(str) {
     if (str.length==0) return true;
     let char = str[str.length-1];
     if ("%^*/".split("").includes(char)) return false;
@@ -307,41 +309,41 @@ function check_starting_character(str) {
 // Index 0: 0 if expression is evaluated properly,
 //          1 if expression is invalid
 // Index 1: correct value of the expression only if index 0 == 0
-function compute(inp_str) {
+function compute(inpStr) {
 
-    inp_str = translate_expression(inp_str);
-    if (logging) console.log("After translation:" + inp_str);
+    inpStr = translateExpression(inpStr);
+    if (SHOW_LOGS) console.log("After translation:" + inpStr);
 
-    if (!passes_all_pre_checks(inp_str)) {
+    if (!doAllChecksPass(inpStr)) {
         // An incorrect expression is entered
         return [1,];
     }
-    if (logging) console.log("Passed all pre Checks:" + inp_str);
+    if (SHOW_LOGS) console.log("Passed all pre Checks:" + inpStr);
     
-    inp_str = remove_syntax_sugars(inp_str);
-    if (logging) console.log("After Syntax Sugar removed:" + inp_str);
+    inpStr = removeSyntaxSugars(inpStr);
+    if (SHOW_LOGS) console.log("After Syntax Sugar removed:" + inpStr);
     
-    if (!passes_all_checks(inp_str)) {
+    if (!doAllChecksPass(inpStr)) {
         // An incorrect expression is entered
         return [1,];
     }
-    if (logging) console.log("Passed all post Checks:" + inp_str);
+    if (SHOW_LOGS) console.log("Passed all post Checks:" + inpStr);
     
     // TODO: division by 0 case
     
-    const data_structure = parse_ds(inp_str);
-    if (logging) console.log("Data Structure:" + data_structure);
+    const dataStructure = parseDataStructure(inpStr);
+    if (SHOW_LOGS) console.log("Data Structure:" + dataStructure);
     
-    const evaluated_arr = evaluate_data_structure(data_structure);
-    if (logging) console.log("Value:");
+    const evaluatedArray = evaluateDataStructure(dataStructure);
+    if (SHOW_LOGS) console.log("Value:");
     
-    return evaluated_arr;
+    return evaluatedArray;
 }
 
 // Adds spacing to improve readibility of the formula when displayed
-function pre_process_history_formula(in_formula) {
+function beautifyHistoryFormula(inFormula) {
 
-    let out_formula = Array.from(in_formula).map((char,index) => {
+    let outFormula = Array.from(inFormula).map((char,index) => {
         if ("+-×÷^()".includes(char)) {
             return " " + char + " ";
         } else {
@@ -349,46 +351,46 @@ function pre_process_history_formula(in_formula) {
         }
     }).join("");
 
-    return out_formula;
+    return outFormula;
 }
 
 // Evaluates the expression and displays appropriately
-function equals_compute() {
+function handleEqualsButton() {
     
     // Close all brackets and update equals button
-    calc_display.innerHTML += compute_closed_brackets();
-    var str = calc_display.innerHTML;
-    update_auto_complete_display();
+    CALC_INPUT_DISPLAY_ELEMENT.innerHTML += calculateClosingBracketsString();
+    var str = CALC_INPUT_DISPLAY_ELEMENT.innerHTML;
+    updateEqualsButton();
     
     const arr = compute(str);
 
     if (arr[0] == 1) {
         // Incorrect expression
-        output_display.innerHTML = error_text;
+        CALC_OUTPUT_DISPLAY_ELEMENT.innerHTML = ERROR_TEXT;
     } else {
         // Correct expression
-        output_display.innerHTML = arr[1];
-        add_history(str,arr[1]);
+        CALC_OUTPUT_DISPLAY_ELEMENT.innerHTML = arr[1];
+        appendHistory(str,arr[1]);
         navigator.clipboard.writeText(arr[1]).catch(err => {
             console.error('Could not copy text: ', arr[1], err);
         });
-        calc_display.innerHTML = arr[1];
+        CALC_INPUT_DISPLAY_ELEMENT.innerHTML = arr[1];
     }
-    output_display.classList.remove("output_grayed");
+    CALC_OUTPUT_DISPLAY_ELEMENT.classList.remove("output_grayed");
 }
 
 // Returns true if all checks are passed by the given expression
-function passes_all_checks(str) {
+function doAllChecksPass(str) {
     
-    const bool_1 = check_both_side_of_operators(str);
+    const bool_1 = checkBothSideOfOperators(str);
     // Add more if required TODO !!!
 
     return bool_1;
 }
 
 // Translates the expression that is understandable by the data structure
-function translate_expression(str) {
-    if (logging) console.log("(6) Received for translation:" + str);
+function translateExpression(str) {
+    if (SHOW_LOGS) console.log("(6) Received for translation:" + str);
     
     var char_map = {
         "×":"*",
@@ -401,36 +403,34 @@ function translate_expression(str) {
         return char_map[char] || char;
     }).join('');
 
-    if (logging) console.log("(6) After translation:" + out_str);
+    if (SHOW_LOGS) console.log("(6) After translation:" + out_str);
     return out_str;
 }
 
 // Checks that all operators have numbers on both sides
-function check_both_side_of_operators(str) {
+function checkBothSideOfOperators(str) {
 
-    if (logging) console.log("(5) Received for check:" + str);
+    if (SHOW_LOGS) console.log("(5) Received for check:" + str);
 
     if (!"+-*/^)".includes(str[0]) && !"+-*/^(".includes(str[str.length-1])) {
         for (let index = 1; index < str.length-1; index++) {
-            const prev_ele = str[index-1];
+            const previousElement = str[index-1];
             const ele = str[index];
-            const next_ele = str[index+1];
+            const nextElement = str[index+1];
             if ("+-*/^".split("").includes(ele)) {
                 // Current element is an operator. check both sides
                 const valid_left = "0123456789).".split("");
                 const valid_right = "0123456789(.".split("");
-                if (!(valid_left.includes(prev_ele) && valid_right.includes(next_ele))) {
-                    console.log("(5) found incorrect charcters beside operator, check failed at:" + prev_ele + ele + next_ele);
+                if (!(valid_left.includes(previousElement) && valid_right.includes(nextElement))) {
+                    console.log("(5) found incorrect charcters beside operator, check failed at:" + previousElement + ele + nextElement);
                     return false;
                 }
             }
         }
-        
         return true;
-
     }
 
-    if (logging) console.log("(5) less than 3 atomaics found. Check failed");
+    if (SHOW_LOGS) console.log("(5) less than 3 atomaics found. Check failed");
     return false;
 }
 
@@ -439,15 +439,15 @@ function check_both_side_of_operators(str) {
 // index 0: 0 if value is valid
 //          1 if value is incorrect
 // index 1: correct value if index 0 == 0
-function evaluate_data_structure(nested_arr) {
+function evaluateDataStructure(nestedArray) {
     
-    var out_arr = nested_arr.map(ele => {
+    var outArray = nestedArray.map(ele => {
         if (typeof ele == "number") {
             return ele;
         } else if (typeof ele == "string") {
             return ele;
         } else if (Array.isArray(ele)) {
-            const sub_arr = evaluate_data_structure(ele);
+            const sub_arr = evaluateDataStructure(ele);
             if (sub_arr[0] == 1) return [1,];
             return sub_arr[1];
         } else {
@@ -455,80 +455,80 @@ function evaluate_data_structure(nested_arr) {
         }
     })
 
-    if (out_arr.length == 1) {
-        return [0,out_arr[0]];
-    } else if (out_arr.length == 2) {
+    if (outArray.length == 1) {
+        return [0,outArray[0]];
+    } else if (outArray.length == 2) {
         return [1,];
-    } else if (out_arr.length == 3) {
-        return [0,evaluate_expression(out_arr[0],out_arr[1],out_arr[2])];
+    } else if (outArray.length == 3) {
+        return [0,evaluateExpression(outArray[0],outArray[1],outArray[2])];
     }
-    if ((out_arr.length-3)%2 != 0) {
-        console.log("ERROR: Incorrect size of array (102)",out_arr);
+    if ((outArray.length-3)%2 != 0) {
+        console.log("ERROR: Incorrect size of array (102)",outArray);
         return [1,];
     }
-    var updated_out_arr = out_arr;
+    var updatedOutArray = outArray;
     const operators = "^/*+-".split("");
     // BODMAS rule
-    const max_loop_count = 16;
-    let loop_count = 0;
-    while (updated_out_arr.length != 1 && loop_count != max_loop_count) {
-        loop_count++;
+    const maxLoopCount = 16;
+    let loopCount = 0;
+    while (updatedOutArray.length != 1 && loopCount != maxLoopCount) {
+        loopCount++;
 
         operators.forEach(current_operator => {
-            for (let index = 1; index < updated_out_arr.length; index+=2) {
-                const element = updated_out_arr[index];
+            for (let index = 1; index < updatedOutArray.length; index+=2) {
+                const element = updatedOutArray[index];
                 if (element == current_operator) {
-                    if (logging) console.log("==> op. match at index:",index);
+                    if (SHOW_LOGS) console.log("==> op. match at index:",index);
                 
-                    const element_left = updated_out_arr[index-1];
-                    const element_right = updated_out_arr[index+1];
+                    const element_left = updatedOutArray[index-1];
+                    const element_right = updatedOutArray[index+1];
                     
-                    const value = evaluate_expression(element_left,element,element_right);
+                    const value = evaluateExpression(element_left,element,element_right);
                     
-                    updated_out_arr[index -1] = value;
+                    updatedOutArray[index -1] = value;
                     // remove the index from array and return new array
-                    updated_out_arr = shift_element_left(updated_out_arr,index);
-                    updated_out_arr = shift_element_left(updated_out_arr,index);
+                    updatedOutArray = shiftElementsLeft(updatedOutArray,index);
+                    updatedOutArray = shiftElementsLeft(updatedOutArray,index);
                 }
             
             }
-        if (logging) console.log("=== ",current_operator," ===");
-        if (logging) console.log(updated_out_arr);
+        if (SHOW_LOGS) console.log("=== ",current_operator," ===");
+        if (SHOW_LOGS) console.log(updatedOutArray);
         
         });
     }
     
-    return [0,updated_out_arr[0]];
+    return [0,updatedOutArray[0]];
 }
 
 // remove the index from array and return new array
-function shift_element_left(in_arr, remove_index) {
+function shiftElementsLeft(inArray, indexToRemove) {
     
-    out_arr = [];
+    outArray = [];
 
     // Push everything that is not at the given index
-    for (let current_index = 0; current_index < in_arr.length; current_index++) {
-        if (current_index != remove_index) {
-            out_arr.push(in_arr[current_index]);
+    for (let currentIndex = 0; currentIndex < inArray.length; currentIndex++) {
+        if (currentIndex != indexToRemove) {
+            outArray.push(inArray[currentIndex]);
         }
     }
 
-    return out_arr;
+    return outArray;
 }
 
 // Evaluates the expression with a and b ints and op operator
-function evaluate_expression(a, op, b) {
-    switch (op) {
+function evaluateExpression(opperandA, opperator, opperandB) {
+    switch (opperator) {
         case "+":
-            return Decimal.add(a,b);
+            return Decimal.add(opperandA,opperandB);
         case "-":
-            return Decimal.sub(a,b);
+            return Decimal.sub(opperandA,opperandB);
             case "*":
-                return Decimal.mul(a,b);
+                return Decimal.mul(opperandA,opperandB);
         case "/":
-            return Decimal.div(a,b);
+            return Decimal.div(opperandA,opperandB);
         case "^":
-            return Decimal.pow(a,b);
+            return Decimal.pow(opperandA,opperandB);
         default:
             console.log("Error (101)");
             break;
@@ -536,274 +536,252 @@ function evaluate_expression(a, op, b) {
 }
 
 // Returns the expression without syntax sugars 
-function remove_syntax_sugars(str) {
-    str = remove_syntax_sugar_single_decimal(str);
-    str = remove_synatx_sugar_plus_minus(str);
-    str = remove_synatx_sugar_implicit_multiplication(str);
-    str = remove_syntax_sugar_plus_plus_and_minus_minus(str);
-    str = remove_synatx_sugar_plus_minus_both_side_number(str);
-    str = remove_syntax_sugar_percent(str);
+function removeSyntaxSugars(inString) {
+    inString = removeSyntaxSugarSingleDecimal(inString);
+    inString = removeSyntaxSugarPlusMinus(inString);
+    inString = removeSyntaxSugarImplicitMultiplication(inString);
+    inString = removeSyntaxSugarPlusPlusAndMinusMinus(inString);
+    inString = removeSyntaxSugarPlusMinusBothSideNumber(inString);
+    inString = removeSyntaxSugarPercent(inString);
 
-    return str;
+    return inString;
 }
 
-function remove_syntax_sugar_single_decimal(str) {
-    if (str === ".") {
+// Returns 0 as a string if only a decimal is found in str,,
+//   otherwise no change
+function removeSyntaxSugarSingleDecimal(inString) {
+    if (inString === ".") {
         return "0";
     }
-    return str;
+    return inString;
 }
 
-function remove_syntax_sugar_plus_plus_and_minus_minus(str) {
-    let out_str = '';
-    if (str.length <= 1) return str;
+// removes multiple plus or minus one after another
+function removeSyntaxSugarPlusPlusAndMinusMinus(inString) {
+    let outString = '';
+    if (inString.length <= 1) return inString;
 
-    for (let first_ptr = 0;first_ptr < str.length-1;) {
-        let second_ptr = first_ptr+1;
-        if ("+-".includes(str[first_ptr])) {
-            while (second_ptr < str.length) {
-                if (str[first_ptr]==str[second_ptr]) {
-                    second_ptr++;
+    for (let firstPtr = 0;firstPtr < inString.length-1;) {
+        let secondPtr = firstPtr+1;
+        if ("+-".includes(inString[firstPtr])) {
+            while (secondPtr < inString.length) {
+                if (inString[firstPtr]==inString[secondPtr]) {
+                    secondPtr++;
                 } else {
                     break;
                 }
             }
         }
-        if ('-'.includes(str[first_ptr]) && ((second_ptr-first_ptr)%2 == 0)) {
-            out_str+= '+';
+        if ('-'.includes(inString[firstPtr]) && ((secondPtr-firstPtr)%2 == 0)) {
+            outString+= '+';
         } else {
-            out_str+= str[first_ptr];
+            outString+= inString[firstPtr];
         }
-        first_ptr = second_ptr;
+        firstPtr = secondPtr;
     }
-    out_str += str[str.length-1];
+    outString += inString[inString.length-1];
 
-    return out_str;
+    return outString;
 }
 
-function remove_syntax_sugar_percent(str) {
-    if (logging) console.log("(11) Received:",str);
+// Changes a % into a `*0.01` expression
+function removeSyntaxSugarPercent(inString) {
+    if (SHOW_LOGS) console.log("(11) Received:",inString);
     
-    str = Array.from(str).map((char, index) => {
+    inString = Array.from(inString).map((char, index) => {
         if (char == "%") {
             return "*0.01";
         }
         return char;
     }).join("");
     
-    if (logging) console.log("(11) After De sugar:",str);
-    return str;
+    if (SHOW_LOGS) console.log("(11) After De sugar:",inString);
+    return inString;
 }
 
 // De sugars plus and minus sign where a placeholder 0 is placed on left 
 //    side of the sign if no numbers exist
-function remove_synatx_sugar_plus_minus_both_side_number(str) {
-    if (logging) console.log("(4) Received:" + str);
+function removeSyntaxSugarPlusMinusBothSideNumber(inString) {
+    if (SHOW_LOGS) console.log("(4) Received:" + inString);
 
-    var out_str = "";
+    var outStr = "";
 
-    var last_element_was_number = false;
-    for (let index = 0; index < str.length; index++) {
-        const ele = str[index];
+    var lastCharWasNumber = false;
+    for (let index = 0; index < inString.length; index++) {
+        const ele = inString[index];
         
-        if (!last_element_was_number && "+-".split("").includes(ele)) {
-            out_str += "0";
-            last_element_was_number = false;
+        if (!lastCharWasNumber && "+-".split("").includes(ele)) {
+            outStr += "0";
+            lastCharWasNumber = false;
         } else if ("0123456789)".split("").includes(ele)) {
-            last_element_was_number = true;
+            lastCharWasNumber = true;
         } else {
-            last_element_was_number = false;
+            lastCharWasNumber = false;
         }
 
-        out_str += ele;
+        outStr += ele;
 
     }
 
-    if (logging) console.log("(4) de sugared:" + out_str);
-    return out_str;
+    if (SHOW_LOGS) console.log("(4) de sugared:" + outStr);
+    return outStr;
 }
 
 
 // De sugars the implicit multiplication introduced by number followed by bracket
-function remove_synatx_sugar_implicit_multiplication(str) {
-    if (logging) console.log("(3) Received:" + str);
+function removeSyntaxSugarImplicitMultiplication(inString) {
+    if (SHOW_LOGS) console.log("(3) Received:" + inString);
 
-    var out_str = "";
+    var outString = "";
 
-    var last_element_was_number = false;
-    for (let index = 0; index < str.length; index++) {
-        const ele = str[index];
+    var lastCharWasNumber = false;
+    for (let index = 0; index < inString.length; index++) {
+        const ele = inString[index];
         
-        if (last_element_was_number && ele == "(") {
-            out_str += "*";
+        if (lastCharWasNumber && ele == "(") {
+            outString += "*";
         } else if ("0123456789".split("").includes(ele)) {
-            last_element_was_number = true;
+            lastCharWasNumber = true;
         } else {
-            last_element_was_number = false;
+            lastCharWasNumber = false;
         }
 
-        out_str += ele;
+        outString += ele;
     }
 
-    if (logging) console.log("(3) de sugared:" + out_str);
-    return out_str;
+    if (SHOW_LOGS) console.log("(3) de sugared:" + outString);
+    return outString;
 }
 
 // De sugars the plus minus operator
-function remove_synatx_sugar_plus_minus(str) {
-    if (logging) console.log("(2) Received:"+ str);
+function removeSyntaxSugarPlusMinus(inString) {
+    if (SHOW_LOGS) console.log("(2) Received:"+ inString);
     
-    if (str.length < 2) return str
-    var out_str = "";
+    if (inString.length < 2) return inString
+    var outString = "";
     var last_ele_plus_mius = false;
-    for (let index = 0; index < str.length-1; index++) {
-        const ele = str[index];
-        const next_ele = str[index+1];
+    for (let index = 0; index < inString.length-1; index++) {
+        const ele = inString[index];
+        const next_ele = inString[index+1];
 
         if (last_ele_plus_mius) {
             last_ele_plus_mius = false;
         } else if (ele == "+" && next_ele == "-") {
             // Desugar
-            out_str += "-";
+            outString += "-";
             last_ele_plus_mius = true;
         } else {
-            out_str += ele;
+            outString += ele;
         }
     }
     
-    out_str += str[str.length-1];
+    outString += inString[inString.length-1];
     
-    if (logging) console.log("(3) de sugared:"+ out_str);
-    return out_str;
+    if (SHOW_LOGS) console.log("(3) de sugared:"+ outString);
+    return outString;
 }
 
 
 // Returns an array with correct type for ints which are direct children
-function convert_to_correct_type(arr) {
-    var out_arr = [];
-    arr.forEach(ele => {
+function convertElementsToCorrectType(inArray) {
+    var outArray = [];
+    inArray.forEach(ele => {
         if (!Array.isArray(ele) && !"+-*/^".split("").includes(ele)) {
             if (ele.split("").includes(".")) {
                 // Number is a float
-                out_arr.push(parseFloat(ele));
+                outArray.push(parseFloat(ele));
             } else {
                 // Number is an int
-                out_arr.push(parseInt(ele));
+                outArray.push(parseInt(ele));
             }
         } else {
-            out_arr.push(ele);
+            outArray.push(ele);
         }
     });
-    return out_arr;
+    return outArray;
 }
-
-// // Returns max depth of brackets in the expression
-// function compute_max_depth(str) {
-//     var max_depth = 0;
-//     var open_brackets = 0;
-
-//     str.split("").forEach(ele => {
-//         if (ele == "(") {
-//             open_brackets++;
-//             if (open_brackets > max_depth) {
-//                 max_depth = open_brackets;
-//             }
-//         };
-//         if (ele == ")") {
-//             open_brackets--;
-//         }
-//     });
-
-//     return max_depth;
-// }
-
 
 // Returns true if the bracket at index 0 is closed at the last index
 //       if char at first index is not bracket then returns false 
-function first_bracket_closed_last(str) {
-    if (str[0] != "(") return false;
+function isStringWrappedInBrackets(inString) {
+    if (inString[0] != "(") return false;
 
     // First char is opening bracket
-    let bracket_count = 0;
-    let closed_initial_bracket = false;
+    let bracketCount = 0;
+    let haveClosedInitialBracket = false;
 
-    for (let index = 0; index < str.length; index++) {
-        const char = str[index];
-        if (char == "(") bracket_count++;
-        if (char == ")") bracket_count--;
-        if (closed_initial_bracket) return false;
-        if (bracket_count == 0) closed_initial_bracket=true;
+    for (let index = 0; index < inString.length; index++) {
+        const char = inString[index];
+        if (char == "(") bracketCount++;
+        if (char == ")") bracketCount--;
+        if (haveClosedInitialBracket) return false;
+        if (bracketCount == 0) haveClosedInitialBracket=true;
     }
 
     return true;
 }
 
 // Returns an array of nested arrays
-function parse_ds(str) {
+function parseDataStructure(inString) {
 
-    if (logging) console.log("Parse DS :" + str);
+    if (SHOW_LOGS) console.log("Parse DS :" + inString);
     
-    //  code to deal with user entered opening and closing brackets
-    // if (str.substring(0,1) == "(") {
-    //     str = str.substring(1,str.length-1);
-    // }
-    if (first_bracket_closed_last(str)) {
-        str = str.substring(1,str.length-1);
+    if (isStringWrappedInBrackets(inString)) {
+        inString = inString.substring(1,inString.length-1);
     }
-    if (logging) console.log("Front, last bracket removed :" + str);
+    if (SHOW_LOGS) console.log("Front, last bracket removed :" + inString);
     
-    // if (logging) console.log("First_last bracket :" + str);
-    var out_arr = [];
-    var current_chunck = "";
+    var outArray = [];
+    var currentChunk = "";
 
-    var inside_bracket = false;
-    var bracket_count = 0;
+    var insideBrackets = false;
+    var bracketCounter = 0;
 
-    str.split("").forEach(ele => {
-        if (logging) console.log("=== " + ele + " ===");
-        if (inside_bracket) {
+    inString.split("").forEach(ele => {
+        if (SHOW_LOGS) console.log("=== " + ele + " ===");
+        if (insideBrackets) {
             // Inside the bracket, only count brackets until last one is closed
-            if (logging) console.log("letter:"+ele+" (0)")
+            if (SHOW_LOGS) console.log("letter:"+ele+" (0)")
             
             if (ele == "(") {
-                bracket_count++;
+                bracketCounter++;
             } else if (ele == ")") {
-                bracket_count--;
+                bracketCounter--;
             }
 
-            current_chunck += ele;
+            currentChunk += ele;
 
-            if (bracket_count == 0) {
-                if (logging) console.log("====================================");
-                if (logging) console.log(" Computing inner bracket");
-                if (logging) console.log("====================================");
-                out_arr.push(parse_ds(current_chunck));
-                current_chunck = "";
-                inside_bracket = false;
+            if (bracketCounter == 0) {
+                if (SHOW_LOGS) console.log("====================================");
+                if (SHOW_LOGS) console.log(" Computing inner bracket");
+                if (SHOW_LOGS) console.log("====================================");
+                outArray.push(parseDataStructure(currentChunk));
+                currentChunk = "";
+                insideBrackets = false;
             }
 
         } else {
             
             if (ele == "(") {
-                if (logging) console.log("letter:"+ele+" (1)")
-                inside_bracket = true;
-                bracket_count++;
-                current_chunck = "(";
+                if (SHOW_LOGS) console.log("letter:"+ele+" (1)")
+                insideBrackets = true;
+                bracketCounter++;
+                currentChunk = "(";
             } else if ("0123456789.".split("").includes(ele)) {
-                if (logging) console.log("letter:"+ele+" (2)")
-                current_chunck += ele;
+                if (SHOW_LOGS) console.log("letter:"+ele+" (2)")
+                currentChunk += ele;
             } else if ("+-*/^".split("").includes(ele)) {
-                if (logging) console.log("letter:"+ele+" (3)")
-                out_arr.push(current_chunck);
-                current_chunck = "";
-                out_arr.push(ele);
+                if (SHOW_LOGS) console.log("letter:"+ele+" (3)")
+                outArray.push(currentChunk);
+                currentChunk = "";
+                outArray.push(ele);
             }
 
         }
     });
-    out_arr.push(current_chunck);
+    outArray.push(currentChunk);
 
-    return convert_to_correct_type(removeEmptyElementsTopLevel(out_arr));
+    return convertElementsToCorrectType(removeEmptyElementsTopLevel(outArray));
 }
 
 // Returns an array with no empty elements as direct children
@@ -820,36 +798,36 @@ function removeEmptyElementsTopLevel(arr) {
 
 // Returns the correct number of brackets that should be appended 
 // to make the expression valid
-function compute_closed_brackets() {
-    const str = calc_display.innerHTML;
-    var open_brackets = 0;
+function calculateClosingBracketsString() {
+    const str = CALC_INPUT_DISPLAY_ELEMENT.innerHTML;
+    var bracketCounter = 0;
 
     str.split("").forEach(ele => {
         if (ele == "(") {
-            open_brackets++;
+            bracketCounter++;
         };
         if (ele == ")") {
-            open_brackets--;
+            bracketCounter--;
         }
     });
 
-    return repeatString(")", open_brackets);
+    return repeatString(")", bracketCounter);
 }
 
 // Updates the text displayed and runs any routines
-function update_auto_complete_display() {
-    const txt = compute_closed_brackets();
+function updateEqualsButton() {
+    const txt = calculateClosingBracketsString();
     if (txt.length == 0) {
-        calc_display_append.innerHTML = "=";
+        EQUALS_BUTTON_ELEMENT.innerHTML = "=";
     } else {
-        calc_display_append.innerHTML = txt;
+        EQUALS_BUTTON_ELEMENT.innerHTML = txt;
     }
 
     // TODO: temporarily compute the expression and display grayed out result
-    const str = calc_display.innerHTML + txt;
+    const str = CALC_INPUT_DISPLAY_ELEMENT.innerHTML + txt;
     if (str.length == 0) {
         // TODO: handle case where input is nothing
-        output_display.classList.remove("output_grayed");
+        CALC_OUTPUT_DISPLAY_ELEMENT.classList.remove("output_grayed");
         return;
     }
     const arr = compute(str);
@@ -858,31 +836,31 @@ function update_auto_complete_display() {
         // Incorrect expression
         // TODO: can add a popup for user or another way to hint that the expr is wrong
     } else {
-        output_display.innerHTML = arr[1];
+        CALC_OUTPUT_DISPLAY_ELEMENT.innerHTML = arr[1];
         fitTextOutputDisplay();
     }
-    output_display.classList.add("output_grayed");
+    CALC_OUTPUT_DISPLAY_ELEMENT.classList.add("output_grayed");
 
 }
 
-function calculator_button_pressed(btn) {
-    accept_input(btn.value);
+function calculatorButtonPressed(btn) {
+    acceptInput(btn.value);
 }
 
 // Adds the corresponding input to display
-function accept_input(value) {
-    calc_display.innerHTML += value;
-    update_auto_complete_display();
+function acceptInput(value) {
+    CALC_INPUT_DISPLAY_ELEMENT.innerHTML += value;
+    updateEqualsButton();
 }
 
 // Removes the last character entered if any exist
-function remove_input() {
-    const len = calc_display.innerHTML.length;
+function removeInput() {
+    const len = CALC_INPUT_DISPLAY_ELEMENT.innerHTML.length;
     if (len != 0) {
-        calc_display.innerHTML = calc_display.innerHTML.substring(0,len -1);
-        if (len==1) output_display.innerHTML='';
+        CALC_INPUT_DISPLAY_ELEMENT.innerHTML = CALC_INPUT_DISPLAY_ELEMENT.innerHTML.substring(0,len -1);
+        if (len==1) CALC_OUTPUT_DISPLAY_ELEMENT.innerHTML='';
     }
-    update_auto_complete_display();
+    updateEqualsButton();
 }
 
 // **** UTILS ****

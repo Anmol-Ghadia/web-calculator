@@ -14,40 +14,40 @@
             <div class="output_container"><span class="output_display" id="output_display"></span></div>
             
             <span id="display" class=""></span>
-            <button type="button" id="display_append" onclick="equals_compute()"></button>
+            <button type="button" id="display_append" onclick="handleEqualsButton()">=</button>
 
             <div class="double_button_container">
-                <button id="btn_left_brkt" type="button" value="(" onclick="calculator_button_pressed(this)">(</button>
-                <button id="btn_right_brkt" type="button" value=")" onclick="calculator_button_pressed(this)">)</button>
+                <button id="btn_left_brkt" type="button" value="(" onclick="calculatorButtonPressed(this)">(</button>
+                <button id="btn_right_brkt" type="button" value=")" onclick="calculatorButtonPressed(this)">)</button>
             </div>
             <div class="double_button_container">
-                <button id="btn_percent" type="button" value="%" onclick="calculator_button_pressed(this)">%</button>
-                <button id="btn_power" type="button" value="^" onclick="calculator_button_pressed(this)">^</button>
+                <button id="btn_percent" type="button" value="%" onclick="calculatorButtonPressed(this)">%</button>
+                <button id="btn_power" type="button" value="^" onclick="calculatorButtonPressed(this)">^</button>
             </div>
-            <button id="btn_backspace" type="button" onclick="remove_input()">←</button>
-            <button id="btn_clear" type="button" value="AC" onclick="clear_input()">AC</button>
+            <button id="btn_backspace" type="button" onclick="removeInput()">←</button>
+            <button id="btn_clear" type="button" value="AC" onclick="clearInput()">AC</button>
             
-            <button id="btn_7" type="button" value="7" onclick="calculator_button_pressed(this)">7</button>
-            <button id="btn_8" type="button" value="8" onclick="calculator_button_pressed(this)">8</button>
-            <button id="btn_9" type="button" value="9" onclick="calculator_button_pressed(this)">9</button>
-            <button id="btn_div" type="button" value="÷" onclick="calculator_button_pressed(this)">÷</button>
+            <button id="btn_7" type="button" value="7" onclick="calculatorButtonPressed(this)">7</button>
+            <button id="btn_8" type="button" value="8" onclick="calculatorButtonPressed(this)">8</button>
+            <button id="btn_9" type="button" value="9" onclick="calculatorButtonPressed(this)">9</button>
+            <button id="btn_div" type="button" value="÷" onclick="calculatorButtonPressed(this)">÷</button>
             
-            <button id="btn_4" type="button" value="4" onclick="calculator_button_pressed(this)">4</button>
-            <button id="btn_5" type="button" value="5" onclick="calculator_button_pressed(this)">5</button>
-            <button id="btn_6" type="button" value="6" onclick="calculator_button_pressed(this)">6</button>
-            <button id="btn_mult" type="button" value="×" onclick="calculator_button_pressed(this)">×</button>
+            <button id="btn_4" type="button" value="4" onclick="calculatorButtonPressed(this)">4</button>
+            <button id="btn_5" type="button" value="5" onclick="calculatorButtonPressed(this)">5</button>
+            <button id="btn_6" type="button" value="6" onclick="calculatorButtonPressed(this)">6</button>
+            <button id="btn_mult" type="button" value="×" onclick="calculatorButtonPressed(this)">×</button>
             
-            <button id="btn_1" type="button" value="1" onclick="calculator_button_pressed(this)">1</button>
-            <button id="btn_2" type="button" value="2" onclick="calculator_button_pressed(this)">2</button>
-            <button id="btn_3" type="button" value="3" onclick="calculator_button_pressed(this)">3</button>
-            <button id="btn_minus" type="button" value="-" onclick="calculator_button_pressed(this)">-</button>
+            <button id="btn_1" type="button" value="1" onclick="calculatorButtonPressed(this)">1</button>
+            <button id="btn_2" type="button" value="2" onclick="calculatorButtonPressed(this)">2</button>
+            <button id="btn_3" type="button" value="3" onclick="calculatorButtonPressed(this)">3</button>
+            <button id="btn_minus" type="button" value="-" onclick="calculatorButtonPressed(this)">-</button>
             
-            <button id="btn_0" type="button" value="0" onclick="calculator_button_pressed(this)">0</button>
-            <button id="btn_decimal" type="button" value="." onclick="calculator_button_pressed(this)">.</button>
-            <button id="btn_plus" type="button" value="+" onclick="calculator_button_pressed(this)">+</button>
+            <button id="btn_0" type="button" value="0" onclick="calculatorButtonPressed(this)">0</button>
+            <button id="btn_decimal" type="button" value="." onclick="calculatorButtonPressed(this)">.</button>
+            <button id="btn_plus" type="button" value="+" onclick="calculatorButtonPressed(this)">+</button>
         
         </div>
-        <div class="history_btn_container"><button id="history_toggle_btn" onclick="history_button_clicked()">△</button></div>
+        <div class="history_btn_container"><button id="history_toggle_btn" onclick="handleHistoryToggleButtonClick()">△</button></div>
         <div id="history_container" class="history_container history_hide">
             <!-- <div class="history_cell">
                 <div class="history_formula">10+3(5%100)</div>
