@@ -71,26 +71,3 @@ Automatically closes any open brackets and displayed visually as grayed out clos
 1) ~~Add checks~~
 1) ~~Add Floating Point numbers~~
 1) ~~Add modulo operators~~
-
----
----
-
-# Blog
-
-## Working
-Making a calculator seemed like a straight forward task When I came up with the idea you only need a keypad to input different numbers and operator, a display and finally some basic logic that would evaluate the expression. Although correct, this explanation lacks the finer details and simplifies the problem at hand. the problem lies in interpreting the entered expression that is entered and then evaluating it in a way that adheres to the rules of operators being used
-
-### My first take on the problem:
-Utilizing the fundamental pillar of software design: breaking the problem into smaller manageably chunks, i decided to break the problem into 4 main parts
-- User interface
-- Converting the form of the data
-- Evaluating the datastructure
-- Styling the calculator
-
-The first part is easy, accept the user input and append it to the existing expression which is just a string at this point. This can be achieved with html and minimal JavaScript. The problem becomes more evident as we tackle the second part. It is worth mentioning that although part 2 and 3 do different things both are built on the same foundation of the data structure being used.
-
-### Designing the data structure:
-It is important to first outline the requirements that should be satisfied by a suitable data structure.  This not only provides an initial starting point for designing the structure but it also helps evaluate the appropriateness of the structure for the problem. I came up with the following requirements albeit vague it suffices for this stage:
-- Should be recursive in nature
-- Should distinguish between numbers(operands) and operators
--
