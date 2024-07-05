@@ -1,7 +1,12 @@
 # WebCalculator
-Automatically closes any open brackets and displayed visually as grayed out close brackets until `=` is pressed
+A user-friendly web-based calculator available in both light and dark themes. It can be installed on any device as a Progressive Web App (PWA).
 
-## workflow of calculator
+Features include auto bracket completion and history tab to keep track calculations among other smaller ones.
+
+## Working of the calculator
+The calculator implements a parser and evaluater built from scratch. Hence, this section is aimed at giving an overview of the parser and evaluator.
+
+### Workflow of calculator
 1) Perform translation
 1) Perform Pre checks
 1) Remove all syntax sugars
@@ -9,14 +14,14 @@ Automatically closes any open brackets and displayed visually as grayed out clos
 1) Make the data structure by analyzing characters left to right and inside-out
 1) Iteratively computing the DS with a depth first approach
 
-## Translation
+### Translation
 1) changes the symbol of multiplication and division to simple form ✅
 1) Removes any commas ✅
 
-## Pre Check
+### Pre Check
 1) check that  `%` operator is not followed by a number ✅
 
-## Syntax sugars
+### Syntax sugars
 1) Exact string `.` represents `0`
 1) `+-` becomes `-` ✅
 1) a bracket right after a number has implicit multiplication ✅
@@ -26,16 +31,29 @@ Automatically closes any open brackets and displayed visually as grayed out clos
 1) ~~add brackets to follow BODMAS rule~~ (indstead modified evaluation rules) ✅ 
 1) ~~decimal point should have numbers on both side~~ (js can handle vague decimal cases) ✅ 
 
-## Post Check
+### Post Check
 1) check that each operator has two operands except (`%` should be followed by `*`) ✅
 1) check that no two operators are consecutive ✅ Solved by the first check
 
-## TODO
-1) Fix Solving algorithm
-1) Fix Error and Nan situations
-1) Polish the PWA Features
-1) Test Fetures and styling on different devices
+### Evaluator
+The evaluator is quite complex but it does the following steps in the given order
+1) Generate an intermediate data structure to represent the expression. This data structure is comprises of various data types such as numbers, strings for operators and nested arrays for brackets
+1) The evaluator iteratively evaluates the the expression from left to right for each operator as specified by the BODMAS rule.
+1) Whenever a Array(brackets) is encountered, it recursively first evaluates the sub expression insider the array(brackets)
+1) The intermediate data structure is worked on repeatedly until it contains only a single number, the answer or is error.
+
+## Attributions:
+I highly recommend checking out the following resources:
+1) favicon [Flaticon-keys](https://www.flaticon.com/free-icons/calculator)
+
+## Future TODOs
 1) Add Commas according to international system of counting only for visual component
+
+## TODOs
+1) ~~Test Fetures and styling on different devices~~
+1) ~~Fix Error and Nan situations~~
+1) ~~Fix Solving algorithm~~
+1) ~~Polish the PWA Features~~
 1) ~~Handle case where many digits are displayed~~
 1) ~~Add 2 themes only, dark and light [partially done]~~
 1) ~~Refactor Code~~

@@ -2,12 +2,12 @@ const cacheName = "calc-pwa-v1";
 const assets = [
     "./",
     "./index.html",
-    "./icons/512.png",
+    "./icons/favicon.png",
     "./library/decimal.js",
     "./manifest.json",
     "./script.js",
     "./style.css",
-    "./theme.css"
+    "./lightTheme.css",
 ];
 
 self.addEventListener("install", installEvent => {
@@ -23,24 +23,6 @@ self.addEventListener("install", installEvent => {
         })
     )
 })
-
-// self.addEventListener('install', (event) => {
-//     console.info('Event: Install');
-  
-//     event.waitUntil(
-//       caches.open(cacheName)
-//       .then((cache) => {
-//         return cache.addAll(assets)
-//         .then(() => {
-//             console.info('All files are cached');
-//             return self.skipWaiting();
-//         })
-//         .catch((error) =>  {
-//             console.error('Failed to cache', error);
-//         })
-//       })
-//     );
-//   });
 
 self.addEventListener("fetch", fetchEvent => {
     fetchEvent.respondWith(
