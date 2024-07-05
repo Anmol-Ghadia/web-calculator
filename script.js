@@ -223,7 +223,7 @@ function CheckPercentIsNotFollowedByNumber(str) {
 }
 
 // Checks that all pre checks are satisfied
-function doAllChecksPass(str) {
+function doAllPostChecksPass(str) {
     const bool_1 = CheckPercentIsNotFollowedByNumber(str);
     const bool_2 = checkStartingCharacter(str);
 
@@ -234,7 +234,6 @@ function checkStartingCharacter(str) {
     if (str.length == 0) return true;
     let char = str[str.length - 1];
     if ("%^*/".split("").includes(char)) return false;
-    console.log("1");
     return true;
 }
 
@@ -248,7 +247,7 @@ function compute(inpStr) {
     inpStr = translateExpression(inpStr);
     if (SHOW_LOGS) console.log("After translation:" + inpStr);
 
-    if (!doAllChecksPass(inpStr)) {
+    if (!doAllPreChecksPass(inpStr)) {
         // An incorrect expression is entered
         return [1,];
     }
@@ -257,7 +256,7 @@ function compute(inpStr) {
     inpStr = removeSyntaxSugars(inpStr);
     if (SHOW_LOGS) console.log("After Syntax Sugar removed:" + inpStr);
 
-    if (!doAllChecksPass(inpStr)) {
+    if (!doAllPostChecksPass(inpStr)) {
         // An incorrect expression is entered
         return [1,];
     }
@@ -314,7 +313,7 @@ function handleEqualsButton() {
 }
 
 // Returns true if all checks are passed by the given expression
-function doAllChecksPass(str) {
+function doAllPreChecksPass(str) {
 
     const bool_1 = checkBothSideOfOperators(str);
     // Add more if required TODO !!!
@@ -783,6 +782,14 @@ function calculatorButtonPressed(btn) {
 
 // Adds the corresponding input to display
 function acceptInput(value) {
+    let length = CALC_INPUT_DISPLAY_ELEMENT.innerHTML.length;
+    
+    let cond_1 = '+-×÷%^'.split('').includes(value);
+    let cond_2 = length != 0;
+    let cond_3 = '+-×÷%^'.split('').includes(CALC_INPUT_DISPLAY_ELEMENT.innerHTML.substring(length-1,length));
+    if (cond_1 && cond_2 && cond_3) {
+        CALC_INPUT_DISPLAY_ELEMENT.innerHTML = CALC_INPUT_DISPLAY_ELEMENT.innerHTML.substring(0,length-1);
+    }
     CALC_INPUT_DISPLAY_ELEMENT.innerHTML += value;
     updateEqualsButton();
 }
@@ -821,3 +828,181 @@ function isOrientationPortrait() {
         return true;
     }
 }
+
+
+// ========================= TESTING ==========================================
+
+// Test suite
+function runTests() {
+    const tests = [
+        // Valid expressions
+        { expr: "2+2", expectedValid: true, expectedValue: 4 },
+        { expr: "10/2", expectedValid: true, expectedValue: 5 },
+        { expr: "5*(2+3)", expectedValid: true, expectedValue: 25 },
+        { expr: "16^(1/2)", expectedValid: true, expectedValue: 4 },
+        { expr: "2^3", expectedValid: true, expectedValue: 8 },
+        { expr: "3+7", expectedValid: true, expectedValue: 10 },
+        { expr: "14-7", expectedValid: true, expectedValue: 7 },
+        { expr: "6*6", expectedValid: true, expectedValue: 36 },
+        { expr: "81/9", expectedValid: true, expectedValue: 9 },
+        { expr: "0+0", expectedValid: true, expectedValue: 0 },
+        { expr: "1-1", expectedValid: true, expectedValue: 0 },
+        { expr: "5*0", expectedValid: true, expectedValue: 0 },
+        { expr: "8/4", expectedValid: true, expectedValue: 2 },
+        { expr: "2^10", expectedValid: true, expectedValue: 1024 },
+        { expr: "1+1+1+1", expectedValid: true, expectedValue: 4 },
+        { expr: "10-2-2", expectedValid: true, expectedValue: 6 },
+        { expr: "2*2*2*2", expectedValid: true, expectedValue: 16 },
+        { expr: "100/10/2", expectedValid: true, expectedValue: 5 },
+        { expr: "4*4-2*2", expectedValid: true, expectedValue: 12 },
+        { expr: "(1+2)*(3+4)", expectedValid: true, expectedValue: 21 },
+        { expr: "(2+3)*(4-1)", expectedValid: true, expectedValue: 15 },
+        { expr: "2*(3+(4*5))", expectedValid: true, expectedValue: 46 },
+        { expr: "(5*(2+3))*2", expectedValid: true, expectedValue: 50 },
+        { expr: "((2+3)*2)^2", expectedValid: true, expectedValue: 100 },
+        { expr: "((2^3)+2)*3", expectedValid: true, expectedValue: 30 },
+        { expr: "3+(2*3)-(4/2)", expectedValid: true, expectedValue: 7 },
+        { expr: "4/(2+2)", expectedValid: true, expectedValue: 1 },
+        { expr: "(2+3)^(2-1)", expectedValid: true, expectedValue: 5 },
+        { expr: "3+4*(2-1)", expectedValid: true, expectedValue: 7 },
+        { expr: "((3+5)*2)/4", expectedValid: true, expectedValue: 4 },
+        { expr: "10/(2*5)", expectedValid: true, expectedValue: 1 },
+        { expr: "2*(3+(4*5))", expectedValid: true, expectedValue: 46 },
+        { expr: "6*(2+1)", expectedValid: true, expectedValue: 18 },
+        { expr: "3*(5-2)", expectedValid: true, expectedValue: 9 },
+        { expr: "(8/4)+(2*3)", expectedValid: true, expectedValue: 8 },
+        { expr: "(10+2)/2", expectedValid: true, expectedValue: 6 },
+        { expr: "5*(4-1)", expectedValid: true, expectedValue: 15 },
+        { expr: "6*(7-4)", expectedValid: true, expectedValue: 18 },
+        { expr: "8/(4/2)", expectedValid: true, expectedValue: 4 },
+        { expr: "9-(3*2)", expectedValid: true, expectedValue: 3 },
+        { expr: "4*(3+2)", expectedValid: true, expectedValue: 20 },
+        { expr: "10-(5+3)", expectedValid: true, expectedValue: 2 },
+        { expr: "20/(4*5)", expectedValid: true, expectedValue: 1 },
+        { expr: "(6+2)-(3*2)", expectedValid: true, expectedValue: 2 },
+        { expr: "7+(6/2)", expectedValid: true, expectedValue: 10 },
+        { expr: "5*(3-1)", expectedValid: true, expectedValue: 10 },
+        { expr: "12/(3*2)", expectedValid: true, expectedValue: 2 },
+        { expr: "10-(4+3)", expectedValid: true, expectedValue: 3 },
+        { expr: "9/(3/1)", expectedValid: true, expectedValue: 3 },
+        { expr: "4+(5-3)", expectedValid: true, expectedValue: 6 },
+        { expr: "8*(2-1)", expectedValid: true, expectedValue: 8 },
+        { expr: "15/(5-2)", expectedValid: true, expectedValue: 5 },
+        { expr: "3+7", expectedValid: true, expectedValue: 10 },
+        { expr: "14-7", expectedValid: true, expectedValue: 7 },
+        { expr: "6*6", expectedValid: true, expectedValue: 36 },
+        { expr: "81/9", expectedValid: true, expectedValue: 9 },
+        { expr: "0+0", expectedValid: true, expectedValue: 0 },
+        { expr: "1-1", expectedValid: true, expectedValue: 0 },
+        { expr: "5*0", expectedValid: true, expectedValue: 0 },
+        { expr: "8/4", expectedValid: true, expectedValue: 2 },
+        { expr: "2^10", expectedValid: true, expectedValue: 1024 },
+        { expr: "1+1+1+1", expectedValid: true, expectedValue: 4 },
+        { expr: "10-2-2", expectedValid: true, expectedValue: 6 },
+        { expr: "2*2*2*2", expectedValid: true, expectedValue: 16 },
+        { expr: "100/10/2", expectedValid: true, expectedValue: 5 },
+        { expr: "4*4-2*2", expectedValid: true, expectedValue: 12 },
+        { expr: "(1+2)*(3+4)", expectedValid: true, expectedValue: 21 },
+        { expr: "(2+3)*(4-1)", expectedValid: true, expectedValue: 15 },
+        { expr: "2*(3+(4*5))", expectedValid: true, expectedValue: 46 },
+        { expr: "(5*(2+3))*2", expectedValid: true, expectedValue: 50 },
+        { expr: "((2+3)*2)^2", expectedValid: true, expectedValue: 100 },
+        { expr: "((2^3)+2)*3", expectedValid: true, expectedValue: 30 },
+        { expr: "3+(2*3)-(4/2)", expectedValid: true, expectedValue: 7 },
+        { expr: "4/(2+2)", expectedValid: true, expectedValue: 1 },
+        { expr: "(2+3)^(2-1)", expectedValid: true, expectedValue: 5 },
+        { expr: "3+4*(2-1)", expectedValid: true, expectedValue: 7 },
+        { expr: "((3+5)*2)/4", expectedValid: true, expectedValue: 4 },
+        { expr: "10/(2*5)", expectedValid: true, expectedValue: 1 },
+        { expr: "2*(3+(4*5))", expectedValid: true, expectedValue: 46 },
+        { expr: "6*(2+1)", expectedValid: true, expectedValue: 18 },
+        { expr: "3*(5-2)", expectedValid: true, expectedValue: 9 },
+        { expr: "(8/4)+(2*3)", expectedValid: true, expectedValue: 8 },
+        { expr: "(10+2)/2", expectedValid: true, expectedValue: 6 },
+        { expr: "5*(4-1)", expectedValid: true, expectedValue: 15 },
+        { expr: "6*(7-4)", expectedValid: true, expectedValue: 18 },
+        { expr: "8/(4/2)", expectedValid: true, expectedValue: 4 },
+        { expr: "9-(3*2)", expectedValid: true, expectedValue: 3 },
+        { expr: "4*(3+2)", expectedValid: true, expectedValue: 20 },
+        { expr: "10-(5+3)", expectedValid: true, expectedValue: 2 },
+        { expr: "20/(4*5)", expectedValid: true, expectedValue: 1 },
+        { expr: "(6+2)-(3*2)", expectedValid: true, expectedValue: 2 },
+        { expr: "7+(6/2)", expectedValid: true, expectedValue: 10 },
+        { expr: "5*(3-1)", expectedValid: true, expectedValue: 10 },
+        { expr: "12/(3*2)", expectedValid: true, expectedValue: 2 },
+        { expr: "10-(4+3)", expectedValid: true, expectedValue: 3 },
+        { expr: "9/(3/1)", expectedValid: true, expectedValue: 3 },
+        { expr: "4+(5-3)", expectedValid: true, expectedValue: 6 },
+        { expr: "8*(2-1)", expectedValid: true, expectedValue: 8 },
+        { expr: "15/(5-2)", expectedValid: true, expectedValue: 5 },
+        { expr: "-2+2", expectedValid: true, expectedValue: 0 },
+        { expr: "-10-5", expectedValid: true, expectedValue: -15 },
+        { expr: "-5*-3", expectedValid: true, expectedValue: 15 },
+        { expr: "-20/4", expectedValid: true, expectedValue: -5 },
+        { expr: "-8%3", expectedValid: true, expectedValue: -2 },
+
+        // More complex expressions
+        { expr: "-(2+2)", expectedValid: true, expectedValue: -4 },
+        { expr: "(-5)*(2+3)", expectedValid: true, expectedValue: -25 },
+        { expr: "10-(-5)", expectedValid: true, expectedValue: 15 },
+        { expr: "-10-(-5)", expectedValid: true, expectedValue: -5 },
+        { expr: "-5*(2-(-3))", expectedValid: true, expectedValue: -25 },
+        
+        // Nested negative operations
+        { expr: "-(2*-(3+4))", expectedValid: true, expectedValue: 14 },
+        { expr: "-(2+3)*-(4-1)", expectedValid: true, expectedValue: 15 },
+        { expr: "2*-(-3+2)", expectedValid: true, expectedValue: -2 },
+        { expr: "-(10/2)", expectedValid: true, expectedValue: -5 },
+        { expr: "-(10/(-2))", expectedValid: true, expectedValue: 5 },
+
+        // Edge cases with negative numbers
+        { expr: "-0", expectedValid: true, expectedValue: 0 },
+        { expr: "-(0)", expectedValid: true, expectedValue: 0 },
+        { expr: "-(0*1)", expectedValid: true, expectedValue: 0 },
+        { expr: "-(1/1)", expectedValid: true, expectedValue: -1 },
+        { expr: "-(1/(-1))", expectedValid: true, expectedValue: 1 },
+
+        // Negative powers
+        { expr: "(-2)^3", expectedValid: true, expectedValue: -8 },
+        { expr: "(-2)^2", expectedValid: true, expectedValue: 4 },
+        { expr: "(-1)^5", expectedValid: true, expectedValue: -1 },
+        { expr: "(-3)^3", expectedValid: true, expectedValue: -27 },
+        { expr: "(-2)^4", expectedValid: true, expectedValue: 16 },
+
+        // Combining negative numbers with other operations
+        { expr: "(-2)+(-2)", expectedValid: true, expectedValue: -4 },
+        { expr: "(-10)/(-2)", expectedValid: true, expectedValue: 5 },
+        { expr: "(-10)-(2-(-3))", expectedValid: true, expectedValue: -15 },
+        { expr: "-(2+3)*(-4-(-1))", expectedValid: true, expectedValue: 15 },
+        { expr: "10+(-2)*5", expectedValid: true, expectedValue: 0 },
+        // Invalid expressions
+        { expr: "2+", expectedValid: false, expectedValue: null },
+        { expr: "10/0", expectedValid: true, expectedValue: Infinity },
+        { expr: "-1^(1/2)", expectedValid: true, expectedValue: NaN },
+        { expr: "5*(2+", expectedValid: false, expectedValue: null },
+
+        // Edge cases
+        { expr: "", expectedValid: false, expectedValue: null },
+        { expr: "0", expectedValid: true, expectedValue: 0 },
+    ];
+
+    tests.forEach(({ expr, expectedValid, expectedValue }, index) => {
+        
+        let out = compute(expr);
+        const valid = out[0]==0;
+        const valueCorrect = out[1];
+        // console.log(`Expected valid: ${expectedValid}, Actual valid: ${valid}`);
+
+        if (valid != expectedValid) {
+            console.log(`Test #${index + 1}: Expression: "${expr}"`);
+            console.log(`Test #${index + 1} failed validity: Expected valid: ${expectedValid}, Actual valid: ${valid}`);
+        } else {
+            if (valueCorrect != expectedValue) { // NaN check
+                console.log(`Test #${index + 1}: Expression: "${expr}"`);
+                console.log(`Test #${index + 1} failed: Expected value: ${expectedValue}, Actual value: ${valueCorrect}`);
+            }
+        }
+    });
+}
+console.log('=========== TESTING ===========');
+runTests();
