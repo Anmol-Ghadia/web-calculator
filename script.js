@@ -36,11 +36,11 @@ addEventListener('keydown', keyPressHandler);
 // PWA Service worker
 // ========================
 if ("serviceWorker" in navigator) {
-    window.addEventListener("load", function() {
-      navigator.serviceWorker
-        .register("serviceWorker.js")
-        .then(res => console.log("service worker registered"))
-        .catch(err => console.log("service worker not registered", err))
+    window.addEventListener("load", function () {
+        navigator.serviceWorker
+            .register("serviceWorker.js")
+            .then(res => console.log("service worker registered"))
+            .catch(err => console.log("service worker not registered", err))
     })
 }
 
@@ -49,12 +49,12 @@ if ("serviceWorker" in navigator) {
 
 // recomputes the best font-size in calculator output display
 function fitTextOutputDisplay() {
-    var container = CALC_OUTPUT_DISPLAY_ELEMENT; 
+    var container = CALC_OUTPUT_DISPLAY_ELEMENT;
     // var container = document.getElementById('container');
-    
+
     var containerWidth = container.offsetWidth;
     var textWidth = container.scrollWidth;
-    
+
     var fontSize = parseInt(window.getComputedStyle(container).fontSize);
     fontSize /= window.innerHeight;
     fontSize *= 100;
@@ -65,7 +65,7 @@ function fitTextOutputDisplay() {
         container.style.fontSize = fontSize + 'vh';
         textWidth = container.scrollWidth;
     }
-    
+
     // If increasing font size makes text overflow, decrease font size
     while (textWidth > containerWidth && fontSize > 1) {
         fontSize -= 1;
@@ -88,14 +88,14 @@ function handleThemeToggle() {
         IS_LIGHT_THEME = false;
     } else {
         // Change to light theme
-        
+
         var link = document.createElement('link');
         link.rel = 'stylesheet';
         link.type = 'text/css';
         link.href = lightThemeFile;
 
         document.head.appendChild(link);
-            
+
         IS_LIGHT_THEME = true;
     }
     if (SHOW_LOGS) console.log("Theme toggled, is white: ", IS_LIGHT_THEME);
@@ -107,14 +107,14 @@ function keyPressHandler(event) {
         acceptInput(event.key);
     } else if (event.key === 'Backspace') {
         removeInput();
-    } else if (['Enter','='].includes(event.key)) {
+    } else if (['Enter', '='].includes(event.key)) {
         handleEqualsButton();
         event.preventDefault();
     }
 }
 
 // Adds the given formula and answer as a dom element in the history tab
-function appendHistory(formula,answer) {
+function appendHistory(formula, answer) {
     const historyCellElement = document.createElement('div');
     const historyFormulaElement = document.createElement('div');
     const historyAnswerElement = document.createElement('div');
@@ -124,7 +124,7 @@ function appendHistory(formula,answer) {
     historyCellElement.classList.add("history_cell");
     historyFormulaElement.classList.add("history_formula");
     historyAnswerElement.classList.add("history_answer");
-    
+
     // Styling
     if (IS_LIGHT_THEME) {
         // Current theme is light, (add classes)
@@ -137,7 +137,7 @@ function appendHistory(formula,answer) {
         historyFormulaElement.classList.add(theme_primary_text)
     }
 
-    historyCellElement.addEventListener('click', function() {
+    historyCellElement.addEventListener('click', function () {
         // Copy the answer text to the clipboard
         navigator.clipboard.writeText(historyAnswerElement.textContent)
             .catch(err => {
@@ -145,7 +145,7 @@ function appendHistory(formula,answer) {
             });
     });
 
-    historyFormulaElement.innerHTML = beautifyHistoryFormula(formula+" =");
+    historyFormulaElement.innerHTML = beautifyHistoryFormula(formula + " =");
     historyAnswerElement.innerHTML = answer;
 
     historyCellElement.appendChild(hitoryCellTopSpacer);
@@ -191,7 +191,7 @@ function handleHistoryToggleButtonClick() {
 }
 
 // All clear of output and input display
-function clearInput(){
+function clearInput() {
     CALC_INPUT_DISPLAY_ELEMENT.innerHTML = "";
 
     CALC_OUTPUT_DISPLAY_ELEMENT.innerHTML = "";
@@ -203,12 +203,12 @@ function CheckPercentIsNotFollowedByNumber(str) {
 
     let lastCharacterWasPercent = false;
     let foundMistake = false;
-    
+
     str.split("").forEach(ele => {
-        if (SHOW_LOGS) console.log("(12) current_element:" , ele);
+        if (SHOW_LOGS) console.log("(12) current_element:", ele);
         if (lastCharacterWasPercent) {
             if (!"+-*/%^(".includes(ele)) {
-                if (SHOW_LOGS) console.log("(12)" , ele);
+                if (SHOW_LOGS) console.log("(12)", ele);
                 foundMistake = true;
                 return;
             }
@@ -218,7 +218,7 @@ function CheckPercentIsNotFollowedByNumber(str) {
             lastCharacterWasPercent = true;
         }
     });
-    
+
     return !foundMistake;
 }
 
@@ -231,8 +231,8 @@ function doAllChecksPass(str) {
 }
 
 function checkStartingCharacter(str) {
-    if (str.length==0) return true;
-    let char = str[str.length-1];
+    if (str.length == 0) return true;
+    let char = str[str.length - 1];
     if ("%^*/".split("").includes(char)) return false;
     console.log("1");
     return true;
@@ -253,31 +253,31 @@ function compute(inpStr) {
         return [1,];
     }
     if (SHOW_LOGS) console.log("Passed all pre Checks:" + inpStr);
-    
+
     inpStr = removeSyntaxSugars(inpStr);
     if (SHOW_LOGS) console.log("After Syntax Sugar removed:" + inpStr);
-    
+
     if (!doAllChecksPass(inpStr)) {
         // An incorrect expression is entered
         return [1,];
     }
     if (SHOW_LOGS) console.log("Passed all post Checks:" + inpStr);
-    
+
     // TODO: division by 0 case
-    
+
     const dataStructure = parseDataStructure(inpStr);
     if (SHOW_LOGS) console.log("Data Structure:" + dataStructure);
-    
+
     const evaluatedArray = evaluateDataStructure(dataStructure);
     if (SHOW_LOGS) console.log("Value:");
-    
+
     return evaluatedArray;
 }
 
 // Adds spacing to improve readibility of the formula when displayed
 function beautifyHistoryFormula(inFormula) {
 
-    let outFormula = Array.from(inFormula).map((char,index) => {
+    let outFormula = Array.from(inFormula).map((char, index) => {
         if ("+-×÷^()".includes(char)) {
             return " " + char + " ";
         } else {
@@ -290,12 +290,12 @@ function beautifyHistoryFormula(inFormula) {
 
 // Evaluates the expression and displays appropriately
 function handleEqualsButton() {
-    
+
     // Close all brackets and update equals button
     CALC_INPUT_DISPLAY_ELEMENT.innerHTML += calculateClosingBracketsString();
     var str = CALC_INPUT_DISPLAY_ELEMENT.innerHTML;
     updateEqualsButton();
-    
+
     const arr = compute(str);
 
     if (arr[0] == 1) {
@@ -304,7 +304,7 @@ function handleEqualsButton() {
     } else {
         // Correct expression
         CALC_OUTPUT_DISPLAY_ELEMENT.innerHTML = arr[1];
-        appendHistory(str,arr[1]);
+        appendHistory(str, arr[1]);
         navigator.clipboard.writeText(arr[1]).catch(err => {
             console.error('Could not copy text: ', arr[1], err);
         });
@@ -315,7 +315,7 @@ function handleEqualsButton() {
 
 // Returns true if all checks are passed by the given expression
 function doAllChecksPass(str) {
-    
+
     const bool_1 = checkBothSideOfOperators(str);
     // Add more if required TODO !!!
 
@@ -325,15 +325,15 @@ function doAllChecksPass(str) {
 // Translates the expression that is understandable by the data structure
 function translateExpression(str) {
     if (SHOW_LOGS) console.log("(6) Received for translation:" + str);
-    
+
     var char_map = {
-        "×":"*",
-        "÷":"/",
-        ",":""
+        "×": "*",
+        "÷": "/",
+        ",": ""
     };
     var out_str = "";
 
-    var out_str = str.split('').map(function(char) {
+    var out_str = str.split('').map(function (char) {
         return char_map[char] || char;
     }).join('');
 
@@ -346,11 +346,11 @@ function checkBothSideOfOperators(str) {
 
     if (SHOW_LOGS) console.log("(5) Received for check:" + str);
 
-    if (!"+-*/^)".includes(str[0]) && !"+-*/^(".includes(str[str.length-1])) {
-        for (let index = 1; index < str.length-1; index++) {
-            const previousElement = str[index-1];
+    if (!"+-*/^)".includes(str[0]) && !"+-*/^(".includes(str[str.length - 1])) {
+        for (let index = 1; index < str.length - 1; index++) {
+            const previousElement = str[index - 1];
             const ele = str[index];
-            const nextElement = str[index+1];
+            const nextElement = str[index + 1];
             if ("+-*/^".split("").includes(ele)) {
                 // Current element is an operator. check both sides
                 const valid_left = "0123456789).".split("");
@@ -374,7 +374,7 @@ function checkBothSideOfOperators(str) {
 //          1 if value is incorrect
 // index 1: correct value if index 0 == 0
 function evaluateDataStructure(nestedArray) {
-    
+
     var outArray = nestedArray.map(ele => {
         if (typeof ele == "number") {
             return ele;
@@ -390,14 +390,14 @@ function evaluateDataStructure(nestedArray) {
     })
 
     if (outArray.length == 1) {
-        return [0,outArray[0]];
+        return [0, outArray[0]];
     } else if (outArray.length == 2) {
         return [1,];
     } else if (outArray.length == 3) {
-        return [0,evaluateExpression(outArray[0],outArray[1],outArray[2])];
+        return [0, evaluateExpression(outArray[0], outArray[1], outArray[2])];
     }
-    if ((outArray.length-3)%2 != 0) {
-        console.log("ERROR: Incorrect size of array (102)",outArray);
+    if ((outArray.length - 3) % 2 != 0) {
+        console.log("ERROR: Incorrect size of array (102)", outArray);
         return [1,];
     }
     var updatedOutArray = outArray;
@@ -409,35 +409,35 @@ function evaluateDataStructure(nestedArray) {
         loopCount++;
 
         operators.forEach(current_operator => {
-            for (let index = 1; index < updatedOutArray.length; index+=2) {
+            for (let index = 1; index < updatedOutArray.length; index += 2) {
                 const element = updatedOutArray[index];
                 if (element == current_operator) {
-                    if (SHOW_LOGS) console.log("==> op. match at index:",index);
-                
-                    const element_left = updatedOutArray[index-1];
-                    const element_right = updatedOutArray[index+1];
-                    
-                    const value = evaluateExpression(element_left,element,element_right);
-                    
-                    updatedOutArray[index -1] = value;
+                    if (SHOW_LOGS) console.log("==> op. match at index:", index);
+
+                    const element_left = updatedOutArray[index - 1];
+                    const element_right = updatedOutArray[index + 1];
+
+                    const value = evaluateExpression(element_left, element, element_right);
+
+                    updatedOutArray[index - 1] = value;
                     // remove the index from array and return new array
-                    updatedOutArray = shiftElementsLeft(updatedOutArray,index);
-                    updatedOutArray = shiftElementsLeft(updatedOutArray,index);
+                    updatedOutArray = shiftElementsLeft(updatedOutArray, index);
+                    updatedOutArray = shiftElementsLeft(updatedOutArray, index);
                 }
-            
+
             }
-        if (SHOW_LOGS) console.log("=== ",current_operator," ===");
-        if (SHOW_LOGS) console.log(updatedOutArray);
-        
+            if (SHOW_LOGS) console.log("=== ", current_operator, " ===");
+            if (SHOW_LOGS) console.log(updatedOutArray);
+
         });
     }
-    
-    return [0,updatedOutArray[0]];
+
+    return [0, updatedOutArray[0]];
 }
 
 // remove the index from array and return new array
 function shiftElementsLeft(inArray, indexToRemove) {
-    
+
     outArray = [];
 
     // Push everything that is not at the given index
@@ -454,15 +454,15 @@ function shiftElementsLeft(inArray, indexToRemove) {
 function evaluateExpression(opperandA, opperator, opperandB) {
     switch (opperator) {
         case "+":
-            return Decimal.add(opperandA,opperandB);
+            return Decimal.add(opperandA, opperandB);
         case "-":
-            return Decimal.sub(opperandA,opperandB);
-            case "*":
-                return Decimal.mul(opperandA,opperandB);
+            return Decimal.sub(opperandA, opperandB);
+        case "*":
+            return Decimal.mul(opperandA, opperandB);
         case "/":
-            return Decimal.div(opperandA,opperandB);
+            return Decimal.div(opperandA, opperandB);
         case "^":
-            return Decimal.pow(opperandA,opperandB);
+            return Decimal.pow(opperandA, opperandB);
         default:
             console.log("Error (101)");
             break;
@@ -495,41 +495,41 @@ function removeSyntaxSugarPlusPlusAndMinusMinus(inString) {
     let outString = '';
     if (inString.length <= 1) return inString;
 
-    for (let firstPtr = 0;firstPtr < inString.length-1;) {
-        let secondPtr = firstPtr+1;
+    for (let firstPtr = 0; firstPtr < inString.length - 1;) {
+        let secondPtr = firstPtr + 1;
         if ("+-".includes(inString[firstPtr])) {
             while (secondPtr < inString.length) {
-                if (inString[firstPtr]==inString[secondPtr]) {
+                if (inString[firstPtr] == inString[secondPtr]) {
                     secondPtr++;
                 } else {
                     break;
                 }
             }
         }
-        if ('-'.includes(inString[firstPtr]) && ((secondPtr-firstPtr)%2 == 0)) {
-            outString+= '+';
+        if ('-'.includes(inString[firstPtr]) && ((secondPtr - firstPtr) % 2 == 0)) {
+            outString += '+';
         } else {
-            outString+= inString[firstPtr];
+            outString += inString[firstPtr];
         }
         firstPtr = secondPtr;
     }
-    outString += inString[inString.length-1];
+    outString += inString[inString.length - 1];
 
     return outString;
 }
 
 // Changes a % into a `*0.01` expression
 function removeSyntaxSugarPercent(inString) {
-    if (SHOW_LOGS) console.log("(11) Received:",inString);
-    
+    if (SHOW_LOGS) console.log("(11) Received:", inString);
+
     inString = Array.from(inString).map((char, index) => {
         if (char == "%") {
             return "*0.01";
         }
         return char;
     }).join("");
-    
-    if (SHOW_LOGS) console.log("(11) After De sugar:",inString);
+
+    if (SHOW_LOGS) console.log("(11) After De sugar:", inString);
     return inString;
 }
 
@@ -543,7 +543,7 @@ function removeSyntaxSugarPlusMinusBothSideNumber(inString) {
     var lastCharWasNumber = false;
     for (let index = 0; index < inString.length; index++) {
         const ele = inString[index];
-        
+
         if (!lastCharWasNumber && "+-".split("").includes(ele)) {
             outStr += "0";
             lastCharWasNumber = false;
@@ -571,7 +571,7 @@ function removeSyntaxSugarImplicitMultiplication(inString) {
     var lastCharWasNumber = false;
     for (let index = 0; index < inString.length; index++) {
         const ele = inString[index];
-        
+
         if (lastCharWasNumber && ele == "(") {
             outString += "*";
         } else if ("0123456789".split("").includes(ele)) {
@@ -589,14 +589,14 @@ function removeSyntaxSugarImplicitMultiplication(inString) {
 
 // De sugars the plus minus operator
 function removeSyntaxSugarPlusMinus(inString) {
-    if (SHOW_LOGS) console.log("(2) Received:"+ inString);
-    
+    if (SHOW_LOGS) console.log("(2) Received:" + inString);
+
     if (inString.length < 2) return inString
     var outString = "";
     var last_ele_plus_mius = false;
-    for (let index = 0; index < inString.length-1; index++) {
+    for (let index = 0; index < inString.length - 1; index++) {
         const ele = inString[index];
-        const next_ele = inString[index+1];
+        const next_ele = inString[index + 1];
 
         if (last_ele_plus_mius) {
             last_ele_plus_mius = false;
@@ -608,10 +608,10 @@ function removeSyntaxSugarPlusMinus(inString) {
             outString += ele;
         }
     }
-    
-    outString += inString[inString.length-1];
-    
-    if (SHOW_LOGS) console.log("(3) de sugared:"+ outString);
+
+    outString += inString[inString.length - 1];
+
+    if (SHOW_LOGS) console.log("(3) de sugared:" + outString);
     return outString;
 }
 
@@ -649,7 +649,7 @@ function isStringWrappedInBrackets(inString) {
         if (char == "(") bracketCount++;
         if (char == ")") bracketCount--;
         if (haveClosedInitialBracket) return false;
-        if (bracketCount == 0) haveClosedInitialBracket=true;
+        if (bracketCount == 0) haveClosedInitialBracket = true;
     }
 
     return true;
@@ -659,12 +659,12 @@ function isStringWrappedInBrackets(inString) {
 function parseDataStructure(inString) {
 
     if (SHOW_LOGS) console.log("Parse DS :" + inString);
-    
+
     if (isStringWrappedInBrackets(inString)) {
-        inString = inString.substring(1,inString.length-1);
+        inString = inString.substring(1, inString.length - 1);
     }
     if (SHOW_LOGS) console.log("Front, last bracket removed :" + inString);
-    
+
     var outArray = [];
     var currentChunk = "";
 
@@ -675,8 +675,8 @@ function parseDataStructure(inString) {
         if (SHOW_LOGS) console.log("=== " + ele + " ===");
         if (insideBrackets) {
             // Inside the bracket, only count brackets until last one is closed
-            if (SHOW_LOGS) console.log("letter:"+ele+" (0)")
-            
+            if (SHOW_LOGS) console.log("letter:" + ele + " (0)")
+
             if (ele == "(") {
                 bracketCounter++;
             } else if (ele == ")") {
@@ -695,17 +695,17 @@ function parseDataStructure(inString) {
             }
 
         } else {
-            
+
             if (ele == "(") {
-                if (SHOW_LOGS) console.log("letter:"+ele+" (1)")
+                if (SHOW_LOGS) console.log("letter:" + ele + " (1)")
                 insideBrackets = true;
                 bracketCounter++;
                 currentChunk = "(";
             } else if ("0123456789.".split("").includes(ele)) {
-                if (SHOW_LOGS) console.log("letter:"+ele+" (2)")
+                if (SHOW_LOGS) console.log("letter:" + ele + " (2)")
                 currentChunk += ele;
             } else if ("+-*/^".split("").includes(ele)) {
-                if (SHOW_LOGS) console.log("letter:"+ele+" (3)")
+                if (SHOW_LOGS) console.log("letter:" + ele + " (3)")
                 outArray.push(currentChunk);
                 currentChunk = "";
                 outArray.push(ele);
@@ -765,7 +765,7 @@ function updateEqualsButton() {
         return;
     }
     const arr = compute(str);
-    
+
     if (arr[0] == 1) {
         // Incorrect expression
         // TODO: can add a popup for user or another way to hint that the expr is wrong
@@ -791,8 +791,8 @@ function acceptInput(value) {
 function removeInput() {
     const len = CALC_INPUT_DISPLAY_ELEMENT.innerHTML.length;
     if (len != 0) {
-        CALC_INPUT_DISPLAY_ELEMENT.innerHTML = CALC_INPUT_DISPLAY_ELEMENT.innerHTML.substring(0,len -1);
-        if (len==1) CALC_OUTPUT_DISPLAY_ELEMENT.innerHTML='';
+        CALC_INPUT_DISPLAY_ELEMENT.innerHTML = CALC_INPUT_DISPLAY_ELEMENT.innerHTML.substring(0, len - 1);
+        if (len == 1) CALC_OUTPUT_DISPLAY_ELEMENT.innerHTML = '';
     }
     updateEqualsButton();
 }
