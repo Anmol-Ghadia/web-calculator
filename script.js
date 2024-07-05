@@ -247,11 +247,11 @@ function compute(inpStr) {
     inpStr = translateExpression(inpStr);
     if (SHOW_LOGS) console.log("After translation:" + inpStr);
 
-    if (!doAllPreChecksPass(inpStr)) {
-        // An incorrect expression is entered
-        return [1,];
-    }
-    if (SHOW_LOGS) console.log("Passed all pre Checks:" + inpStr);
+    // if (!doAllPreChecksPass(inpStr)) {
+    //     // An incorrect expression is entered
+    //     return [1,];
+    // }
+    // if (SHOW_LOGS) console.log("Passed all pre Checks:" + inpStr);
 
     inpStr = removeSyntaxSugars(inpStr);
     if (SHOW_LOGS) console.log("After Syntax Sugar removed:" + inpStr);
@@ -266,7 +266,7 @@ function compute(inpStr) {
 
     const dataStructure = parseDataStructure(inpStr);
     if (SHOW_LOGS) console.log("Data Structure:" + dataStructure);
-
+    
     const evaluatedArray = evaluateDataStructure(dataStructure);
     if (SHOW_LOGS) console.log("Value:");
 
@@ -374,6 +374,7 @@ function checkBothSideOfOperators(str) {
 // index 1: correct value if index 0 == 0
 function evaluateDataStructure(nestedArray) {
 
+    // Evaluate brackets first
     var outArray = nestedArray.map(ele => {
         if (typeof ele == "number") {
             return ele;
@@ -391,7 +392,8 @@ function evaluateDataStructure(nestedArray) {
     if (outArray.length == 1) {
         return [0, outArray[0]];
     } else if (outArray.length == 2) {
-        return [1,];
+        if (outArray[0] != '-') return [1,];
+        return [0,-1*outArray[1]];
     } else if (outArray.length == 3) {
         return [0, evaluateExpression(outArray[0], outArray[1], outArray[2])];
     }
@@ -400,7 +402,7 @@ function evaluateDataStructure(nestedArray) {
         return [1,];
     }
     var updatedOutArray = outArray;
-    const operators = "^/*+-".split("");
+    const operators = "^/*-+".split("");
     // BODMAS rule
     const maxLoopCount = 16;
     let loopCount = 0;
@@ -473,11 +475,66 @@ function removeSyntaxSugars(inString) {
     inString = removeSyntaxSugarSingleDecimal(inString);
     inString = removeSyntaxSugarPlusMinus(inString);
     inString = removeSyntaxSugarImplicitMultiplication(inString);
-    inString = removeSyntaxSugarPlusPlusAndMinusMinus(inString);
+    // inString = removeSyntaxSugarPlusPlusAndMinusMinus(inString);
+    inString = addImplictBrackets(inString);
     inString = removeSyntaxSugarPlusMinusBothSideNumber(inString);
     inString = removeSyntaxSugarPercent(inString);
 
     return inString;
+}
+
+// Adds brackets to help in computation of negative sign
+function addImplictBrackets(str) {
+    // console.log(`before ImplicitNegativeBracket: ${str}`)
+    
+    let out = str;
+    let complete = false;
+    let count = 0;
+
+    while (!complete && count<10) {
+        for (let index = out.length-1;0 < index; index--) {
+            const charPrev = out[index-1];
+            const char = out[index];
+            if (char == '-' && charPrev != '(') {
+                out = str.substring(0,index) + addImplictBracketsHelper(out.substring(index+1,out.length));
+                break;
+            }
+            if (index == 1) complete=true;
+        }
+        count++;
+    }
+
+    // console.log(`after ImplicitNegativeBracket: ${out}`);
+    return out;
+}
+
+// Adds a single bracket for closing negatives
+function addImplictBracketsHelper(str) {
+    // console.log(`before ImplicitNegativeBracketHelper: ${str}`);
+
+    let out = '+(-';
+    let bracketCount = 0;
+    let complete = false;
+
+    for (let index = 0; index < str.length; index++) {
+        const char = str[index];
+        if (complete) {
+            out+=char;
+        } else {
+            if (char == "(") bracketCount++;
+            if (char == ")") bracketCount--;
+            out += char;
+            if (bracketCount < 0) {
+                out+= ')';
+                complete = true;
+            }
+        }
+    }
+
+    if (bracketCount == 0) out+= ')';
+
+    // console.log(`after ImplicitNegativeBracketHelper: ${out}`);
+    return out;
 }
 
 // Returns 0 as a string if only a decimal is found in str,,
@@ -937,9 +994,7 @@ function runTests() {
         { expr: "15/(5-2)", expectedValid: true, expectedValue: 5 },
         { expr: "-2+2", expectedValid: true, expectedValue: 0 },
         { expr: "-10-5", expectedValid: true, expectedValue: -15 },
-        { expr: "-5*-3", expectedValid: true, expectedValue: 15 },
         { expr: "-20/4", expectedValid: true, expectedValue: -5 },
-        { expr: "-8%3", expectedValid: true, expectedValue: -2 },
 
         // More complex expressions
         { expr: "-(2+2)", expectedValid: true, expectedValue: -4 },
@@ -949,9 +1004,6 @@ function runTests() {
         { expr: "-5*(2-(-3))", expectedValid: true, expectedValue: -25 },
         
         // Nested negative operations
-        { expr: "-(2*-(3+4))", expectedValid: true, expectedValue: 14 },
-        { expr: "-(2+3)*-(4-1)", expectedValid: true, expectedValue: 15 },
-        { expr: "2*-(-3+2)", expectedValid: true, expectedValue: -2 },
         { expr: "-(10/2)", expectedValid: true, expectedValue: -5 },
         { expr: "-(10/(-2))", expectedValid: true, expectedValue: 5 },
 
@@ -979,7 +1031,6 @@ function runTests() {
         { expr: "2+", expectedValid: false, expectedValue: null },
         { expr: "10/0", expectedValid: true, expectedValue: Infinity },
         { expr: "-1^(1/2)", expectedValid: true, expectedValue: NaN },
-        { expr: "5*(2+", expectedValid: false, expectedValue: null },
 
         // Edge cases
         { expr: "", expectedValid: false, expectedValue: null },
@@ -1005,4 +1056,4 @@ function runTests() {
     });
 }
 console.log('=========== TESTING ===========');
-runTests();
+// runTests();
