@@ -1,19 +1,18 @@
-
 @media only screen and (orientation: landscape) {
     /* For wide screens: */
 
     #calculator_container {
-        border: 0.5vh solid rgba(0,0,0,0.5);
+        border: 0.5vh solid rgba(0, 0, 0, 0.5);
         border-right: 0px solid black;
     }
 
     #history_container {
-        border-top: 0.5vh solid rgba(0,0,0,0.5);
-        border-bottom: 0.5vh solid rgba(0,0,0,0.5);
+        border-top: 0.5vh solid rgba(0, 0, 0, 0.5);
+        border-bottom: 0.5vh solid rgba(0, 0, 0, 0.5);
     }
-    
+
     .history_btn_container {
-        border: 0.5vh solid rgba(0,0,0,0.53);
+        border: 0.5vh solid rgba(0, 0, 0, 0.53);
         border-left: 0vh solid white;
     }
 }
@@ -29,12 +28,12 @@ body {
 
 .output_container {
     color: gold;
-    background-color: rgba(0,0,0,0.4);
+    background-color: rgba(0, 0, 0, 0.4);
 }
 
 #display {
     color: black;
-    background-color: rgba(0,0,0,0.3);
+    background-color: rgba(0, 0, 0, 0.3);
 }
 
 .history_formula {
@@ -51,14 +50,15 @@ body {
 }
 
 .history_cell_top_spacer {
-    background: rgb(255,255,255);
-    background: -moz-linear-gradient(90deg, rgba(255,255,255,0) 15%, rgba(255,255,255,1) 55%, rgba(255,255,255,0) 95%);
-    background: -webkit-linear-gradient(90deg, rgba(255,255,255,0) 15%, rgba(255,255,255,1) 55%, rgba(255,255,255,0) 95%);
-    background: linear-gradient(90deg, rgba(255,255,255,0) 15%, rgba(255,255,255,1) 55%, rgba(255,255,255,0) 95%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#ffffff",endColorstr="#ffffff",GradientType=1);
+    background: rgb(255, 255, 255);
+    background: -moz-linear-gradient(90deg, rgba(255, 255, 255, 0) 15%, rgba(255, 255, 255, 1) 55%, rgba(255, 255, 255, 0) 95%);
+    background: -webkit-linear-gradient(90deg, rgba(255, 255, 255, 0) 15%, rgba(255, 255, 255, 1) 55%, rgba(255, 255, 255, 0) 95%);
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0) 15%, rgba(255, 255, 255, 1) 55%, rgba(255, 255, 255, 0) 95%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#ffffff", endColorstr="#ffffff", GradientType=1);
 }
 
-.history_cell:hover {
+.history_cell:hover,
+.history_cell:active {
     background: none;
     background-color: rgba(0, 0, 0, 0.3);
 }
@@ -68,12 +68,20 @@ body {
     color: white;
 }
 
+.history_cell:active .history_answer {
+    color: white;
+}
+
 .history_cell:hover .history_formula {
     color: white;
 }
 
+.history_cell:active .history_formula {
+    color: white;
+}
+
 button {
-    background-color: rgba(0,0,0,0.6);
+    background-color: rgba(0, 0, 0, 0.6);
 }
 
 #btn_clear {
@@ -81,25 +89,27 @@ button {
 }
 
 #display_append {
-    background-color: rgba(255,215,0,0.550);
+    background-color: rgba(255, 215, 0, 0.550);
 }
 
-#display_append:hover {
-    background-color: rgba(255,215,0,0.550);
+#display_append:hover,
+#display_append:active {
+    background-color: rgba(255, 215, 0, 0.550);
     color: black;
 }
 
 #theme_toggle {
 
-    background-color: rgba(255,255,255,0.70);
+    background-color: rgba(255, 255, 255, 0.70);
     border: 0.45vh solid rgba(0, 0, 0, 0.6);
     border-radius: 40%;
 
-    transition: background-color,border 1s cubic-bezier(0.075, 0.82, 0.165, 1);
+    transition: background-color, border 1s cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 
-#theme_toggle:hover {
-    background-color: rgba(255,255,255,1);
+#theme_toggle:hover,
+#theme_toggle:active {
+    background-color: rgba(255, 255, 255, 1);
     border: 0.7vh solid rgba(0, 0, 0, 0.6);
     border-radius: 50%;
 }

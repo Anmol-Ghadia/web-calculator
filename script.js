@@ -255,7 +255,7 @@ function compute(inpStr) {
 
     const dataStructure = parseDataStructure(inpStr);
     if (SHOW_LOGS) console.log("Data Structure:" + dataStructure);
-    
+
     const evaluatedArray = evaluateDataStructure(dataStructure);
     if (SHOW_LOGS) console.log("Value:");
 
@@ -382,7 +382,7 @@ function evaluateDataStructure(nestedArray) {
         return [0, outArray[0]];
     } else if (outArray.length == 2) {
         if (outArray[0] != '-') return [1,];
-        return [0,-1*outArray[1]];
+        return [0, -1 * outArray[1]];
     } else if (outArray.length == 3) {
         return [0, evaluateExpression(outArray[0], outArray[1], outArray[2])];
     }
@@ -475,20 +475,20 @@ function removeSyntaxSugars(inString) {
 // Adds brackets to help in computation of negative sign
 function addImplictBrackets(str) {
     // console.log(`before ImplicitNegativeBracket: ${str}`)
-    
+
     let out = str;
     let complete = false;
     let count = 0;
 
-    while (!complete && count<10) {
-        for (let index = out.length-1;0 < index; index--) {
-            const charPrev = out[index-1];
+    while (!complete && count < 10) {
+        for (let index = out.length - 1; 0 < index; index--) {
+            const charPrev = out[index - 1];
             const char = out[index];
             if (char == '-' && charPrev != '(') {
-                out = str.substring(0,index) + addImplictBracketsHelper(out.substring(index+1,out.length));
+                out = str.substring(0, index) + addImplictBracketsHelper(out.substring(index + 1, out.length));
                 break;
             }
-            if (index == 1) complete=true;
+            if (index == 1) complete = true;
         }
         count++;
     }
@@ -508,19 +508,19 @@ function addImplictBracketsHelper(str) {
     for (let index = 0; index < str.length; index++) {
         const char = str[index];
         if (complete) {
-            out+=char;
+            out += char;
         } else {
             if (char == "(") bracketCount++;
             if (char == ")") bracketCount--;
             out += char;
             if (bracketCount < 0) {
-                out+= ')';
+                out += ')';
                 complete = true;
             }
         }
     }
 
-    if (bracketCount == 0) out+= ')';
+    if (bracketCount == 0) out += ')';
 
     // console.log(`after ImplicitNegativeBracketHelper: ${out}`);
     return out;
@@ -829,12 +829,12 @@ function calculatorButtonPressed(btn) {
 // Adds the corresponding input to display
 function acceptInput(value) {
     let length = CALC_INPUT_DISPLAY_ELEMENT.innerHTML.length;
-    
+
     let cond_1 = '+-×÷%^'.split('').includes(value);
     let cond_2 = length != 0;
-    let cond_3 = '+-×÷%^'.split('').includes(CALC_INPUT_DISPLAY_ELEMENT.innerHTML.substring(length-1,length));
+    let cond_3 = '+-×÷%^'.split('').includes(CALC_INPUT_DISPLAY_ELEMENT.innerHTML.substring(length - 1, length));
     if (cond_1 && cond_2 && cond_3) {
-        CALC_INPUT_DISPLAY_ELEMENT.innerHTML = CALC_INPUT_DISPLAY_ELEMENT.innerHTML.substring(0,length-1);
+        CALC_INPUT_DISPLAY_ELEMENT.innerHTML = CALC_INPUT_DISPLAY_ELEMENT.innerHTML.substring(0, length - 1);
     }
     CALC_INPUT_DISPLAY_ELEMENT.innerHTML += value;
     updateEqualsButton();
@@ -991,7 +991,7 @@ function runTests() {
         { expr: "10-(-5)", expectedValid: true, expectedValue: 15 },
         { expr: "-10-(-5)", expectedValid: true, expectedValue: -5 },
         { expr: "-5*(2-(-3))", expectedValid: true, expectedValue: -25 },
-        
+
         // Nested negative operations
         { expr: "-(10/2)", expectedValid: true, expectedValue: -5 },
         { expr: "-(10/(-2))", expectedValid: true, expectedValue: 5 },
@@ -1027,9 +1027,9 @@ function runTests() {
     ];
 
     tests.forEach(({ expr, expectedValid, expectedValue }, index) => {
-        
+
         let out = compute(expr);
-        const valid = out[0]==0;
+        const valid = out[0] == 0;
         const valueCorrect = out[1];
         // console.log(`Expected valid: ${expectedValid}, Actual valid: ${valid}`);
 

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <link rel="shortcut icon" href="./icons/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="styles/style.css">
@@ -9,12 +10,13 @@
     <title>Web-Calculator</title>
     <meta name="theme-color" content="#000000">
 </head>
+
 <body>
     <div id="container">
         <div id="calculator_container">
-            
+
             <div class="output_container"><span class="output_display" id="output_display"></span></div>
-            
+
             <span id="display" class=""></span>
             <button type="button" id="display_append" onclick="handleEqualsButton()">=</button>
 
@@ -28,28 +30,29 @@
             </div>
             <button id="btn_backspace" type="button" onclick="removeInput()">←</button>
             <button id="btn_clear" type="button" value="AC" onclick="clearInput()">AC</button>
-            
+
             <button id="btn_7" type="button" value="7" onclick="calculatorButtonPressed(this)">7</button>
             <button id="btn_8" type="button" value="8" onclick="calculatorButtonPressed(this)">8</button>
             <button id="btn_9" type="button" value="9" onclick="calculatorButtonPressed(this)">9</button>
             <button id="btn_div" type="button" value="÷" onclick="calculatorButtonPressed(this)">÷</button>
-            
+
             <button id="btn_4" type="button" value="4" onclick="calculatorButtonPressed(this)">4</button>
             <button id="btn_5" type="button" value="5" onclick="calculatorButtonPressed(this)">5</button>
             <button id="btn_6" type="button" value="6" onclick="calculatorButtonPressed(this)">6</button>
             <button id="btn_mult" type="button" value="×" onclick="calculatorButtonPressed(this)">×</button>
-            
+
             <button id="btn_1" type="button" value="1" onclick="calculatorButtonPressed(this)">1</button>
             <button id="btn_2" type="button" value="2" onclick="calculatorButtonPressed(this)">2</button>
             <button id="btn_3" type="button" value="3" onclick="calculatorButtonPressed(this)">3</button>
             <button id="btn_minus" type="button" value="-" onclick="calculatorButtonPressed(this)">-</button>
-            
+
             <button id="btn_0" type="button" value="0" onclick="calculatorButtonPressed(this)">0</button>
             <button id="btn_decimal" type="button" value="." onclick="calculatorButtonPressed(this)">.</button>
             <button id="btn_plus" type="button" value="+" onclick="calculatorButtonPressed(this)">+</button>
-        
+
         </div>
-        <div class="history_btn_container"><button id="history_toggle_btn" onclick="handleHistoryToggleButtonClick()">△</button></div>
+        <div class="history_btn_container"><button id="history_toggle_btn"
+                onclick="handleHistoryToggleButtonClick()">△</button></div>
         <div id="history_container" class="history_container history_hide">
             <!-- <div class="history_cell">
                 <div class="history_formula">10+3(5%100)</div>
@@ -59,13 +62,13 @@
         <div id="theme_toggle"></div>
     </div>
 </body>
-<!-- styles -->
-<!-- <link rel="stylesheet" href="theme.css"> -->
 <!-- scripts -->
 <script src="library/decimal.js"></script>
 <script src="script.js"></script>
 <!-- fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Teko:wght@300..700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Teko:wght@300..700&display=swap"
+    rel="stylesheet">
+
 </html>
