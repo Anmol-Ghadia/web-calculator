@@ -284,7 +284,33 @@ button:focus {
 #theme_toggle:active {
     background-color: rgba(0, 0, 0, 0.6);
     border: 0.7vh solid rgba(255, 255, 255, 1);
-    border-radius: 50%;
+    border-radius: 2vh;
+}
+
+#help_button {
+    position: absolute;
+    top: 2vh;
+    left: 2vh;
+    height: 4vh;
+    width: 8vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 1.5vh;
+    background-color: rgba(0, 0, 0, 0.6);
+    border: 0.45vh solid rgba(255, 255, 255, 0.70);
+    padding: 0.5vh;
+    font-weight: 600;
+    font-family: "Manrope", sans-serif;
+    color: rgba(255, 255, 255, 0.70);
+    transition: background-color, border 1s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+#help_button:hover,
+#help_button:active {
+    background-color: rgba(0, 0, 0, 0.6);
+    border: 0.7vh solid rgba(255, 255, 255, 1);
+    border-radius: 2vh;
 }
 
 @media only screen and (orientation: landscape) {

@@ -74,6 +74,11 @@ function fitTextOutputDisplay() {
     }
 }
 
+// Redirects the client to github project
+function redriectToHelp() {
+    window.location.href = 'https://github.com/Anmol-Ghadia/WebCalculator';
+}
+
 // Toggles between dark and light theme each time it is called
 function handleThemeToggle() {
     let lightThemeFile = 'styles/lightTheme.css';
