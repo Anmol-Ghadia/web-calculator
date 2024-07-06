@@ -126,17 +126,6 @@ function appendHistory(formula, answer) {
     historyAnswerElement.classList.add("history_answer");
 
     // Styling
-    if (IS_LIGHT_THEME) {
-        // Current theme is light, (add classes)
-        // TODO !!!
-        historyCellElement.classList.add(theme_primary);
-        historyCellElement.classList.add(theme_primary_text);
-        historyAnswerElement.classList.add(theme_primary)
-        historyAnswerElement.classList.add(theme_primary_text)
-        historyFormulaElement.classList.add(theme_primary)
-        historyFormulaElement.classList.add(theme_primary_text)
-    }
-
     historyCellElement.addEventListener('click', function () {
         // Copy the answer text to the clipboard
         navigator.clipboard.writeText(historyAnswerElement.textContent)
