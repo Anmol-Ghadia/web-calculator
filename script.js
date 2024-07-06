@@ -76,7 +76,7 @@ function fitTextOutputDisplay() {
 
 // Toggles between dark and light theme each time it is called
 function handleThemeToggle() {
-    let lightThemeFile = 'lightTheme.css';
+    let lightThemeFile = 'styles/lightTheme.css';
     if (IS_LIGHT_THEME) {
         // Change to dark theme
 

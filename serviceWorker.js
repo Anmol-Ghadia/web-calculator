@@ -7,8 +7,8 @@ const assets = [
     "./library/decimal.js",
     "./manifest.json",
     "./script.js",
-    "./style.css",
-    "./lightTheme.css",
+    "./styles/style.css",
+    "./styles/lightTheme.css",
     "./manifest.json",
     'https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Teko:wght@300..700&display=swap'
 ];
