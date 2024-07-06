@@ -303,6 +303,7 @@ button:focus {
     font-weight: 600;
     font-family: "Manrope", sans-serif;
     color: rgba(255, 255, 255, 0.70);
+    font-size: 0.9em;
     transition: background-color, border 1s cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 
