@@ -1,8 +1,19 @@
-# WebCalculator
+# [WebCalculator](https://www.students.cs.ubc.ca/~aghadia/WebCalculator/index.html)
 A user-friendly web-based calculator available in both light and dark themes. It can be installed on any device as a Progressive Web App (PWA).
 
 Features include auto bracket completion and history tab to keep track calculations among other smaller ones.
 
+[Experience the demo, by clicking here](https://www.students.cs.ubc.ca/~aghadia/WebCalculator/index.html)
+
+## Examples
+
+https://github.com/Anmol-Ghadia/WebCalculator/assets/47422194/8ecc1900-1426-4fe3-a632-764a13273568
+
+https://github.com/Anmol-Ghadia/WebCalculator/assets/47422194/a6aa13b2-0c6a-4455-b5ea-fedf98be0e97
+
+https://github.com/Anmol-Ghadia/WebCalculator/assets/47422194/30ca5f66-90cc-4f40-add8-42dd3e188f69
+
+---
 ## Working of the calculator
 The calculator implements a parser and evaluater built from scratch. Hence, this section is aimed at giving an overview of the parser and evaluator.
 
