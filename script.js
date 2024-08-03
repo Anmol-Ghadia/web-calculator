@@ -834,11 +834,12 @@ function calculatorButtonPressed(btn) {
 // Adds the corresponding input to display
 function acceptInput(value) {
     let length = CALC_INPUT_DISPLAY_ELEMENT.innerHTML.length;
+    const lastChar = CALC_INPUT_DISPLAY_ELEMENT.innerHTML.substring(length - 1, length);
 
     let cond_1 = '+-×÷%^'.split('').includes(value);
     let cond_2 = length != 0;
-    let cond_3 = '+-×÷%^'.split('').includes(CALC_INPUT_DISPLAY_ELEMENT.innerHTML.substring(length - 1, length));
-    if (cond_1 && cond_2 && cond_3) {
+    let cond_3 = '+-×÷%^'.split('').includes(lastChar);
+    if (cond_1 && cond_2 && cond_3 && (lastChar != '%')) {
         CALC_INPUT_DISPLAY_ELEMENT.innerHTML = CALC_INPUT_DISPLAY_ELEMENT.innerHTML.substring(0, length - 1);
     }
     CALC_INPUT_DISPLAY_ELEMENT.innerHTML += value;
