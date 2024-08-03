@@ -1,7 +1,12 @@
 # [WebCalculator](https://www.students.cs.ubc.ca/~aghadia/WebCalculator/index.html)
-A user-friendly web-based calculator available in both light and dark themes. It can be installed on any device as a Progressive Web App (PWA).
+This is a Progressive Web App (PWA) for a simple calculator built using vanilla JavaScript. It includes several advanced features:
 
-Features include auto bracket completion and history tab to keep track calculations among other smaller ones.
+1) Offline Functionality: Operates seamlessly offline, leveraging Service Workers for caching.
+1) Auto Completion: easily complete long expressions using auto complete for brackets
+1) Calculation History: Tracks and displays a history of past calculations.
+1) Dark and Light Mode: Provides a toggle between dark and light themes for enhanced usability in different lighting conditions.
+
+The app is designed to be fast, responsive, and user-friendly, making it a versatile tool for quick calculations on the go.
 
 [Experience the demo, by clicking here](https://www.students.cs.ubc.ca/~aghadia/WebCalculator/index.html)
 
