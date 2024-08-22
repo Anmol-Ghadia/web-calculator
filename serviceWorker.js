@@ -1,4 +1,4 @@
-const cacheName = "calc-pwa-v1.1";
+const cacheName = "calc-pwa-v1";
 const assets = [
     "./",
     "./index.html",
@@ -7,7 +7,6 @@ const assets = [
     "./library/decimal.js",
     "./manifest.json",
     "./script.js",
-    "./logic.js",
     "./styles/style.css",
     "./styles/lightTheme.css",
     "./manifest.json",
